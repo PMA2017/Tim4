@@ -30,6 +30,11 @@ public class ChatRoomAdapter  extends ArrayAdapter<Model> {
 
 
 
+
+
+
+
+
         
 
         if (v == null) {
