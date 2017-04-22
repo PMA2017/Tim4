@@ -3,6 +3,7 @@
     <string name="facebook_app_id">403716676658006</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_aaaaa">Settings</string>
+    <string name="home">Home</string>
 
     <!-- Strings related to Settings -->
 
