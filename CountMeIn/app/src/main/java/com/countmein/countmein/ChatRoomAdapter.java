@@ -28,6 +28,10 @@ public class ChatRoomAdapter  extends ArrayAdapter<Model> {
 
         View v = convertView;
 
+
+
+        
+
         if (v == null) {
             LayoutInflater vi;
             vi = LayoutInflater.from(getContext());
