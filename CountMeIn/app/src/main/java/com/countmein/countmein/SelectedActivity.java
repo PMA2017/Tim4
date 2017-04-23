@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.countmein.countmein.beans.ChatMessageBean;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,7 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SelectedActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private FirebaseListAdapter<ChatMessage> adapter;
+    private FirebaseListAdapter<ChatMessageBean> adapter;
     private static final int MY_LOCATION_REQUEST_CODE = 1;
     private static final int SIGN_IN_REQUEST_CODE = 1;
 
@@ -80,11 +80,11 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
                 EditText input = (EditText)findViewById(R.id.input);
 
                 // Read the input field and push a new instance
-                // of ChatMessage to the Firebase database
+                // of ChatMessageBean to the Firebase database
                 FirebaseDatabase.getInstance()
                         .getReference()
                         .push()
-                        .setValue(new ChatMessage(input.getText().toString(),
+                        .setValue(new ChatMessageBean(input.getText().toString(),
                                 FirebaseAuth.getInstance()
                                         .getCurrentUser()
                                         .getDisplayName())
@@ -107,10 +107,10 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
         listOfMessages.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         listOfMessages.setStackFromBottom(true);
 
-        adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class,
+        adapter = new FirebaseListAdapter<ChatMessageBean>(this, ChatMessageBean.class,
                 R.layout.message, FirebaseDatabase.getInstance().getReference()) {
             @Override
-            protected void populateView(View v, ChatMessage model, int position) {
+            protected void populateView(View v, ChatMessageBean model, int position) {
                 // Get references to the views of message.xml
                 TextView messageText = (TextView)v.findViewById(R.id.message_text);
                 TextView messageUser = (TextView)v.findViewById(R.id.message_user);

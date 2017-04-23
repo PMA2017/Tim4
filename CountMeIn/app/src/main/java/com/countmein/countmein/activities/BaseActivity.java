@@ -1,8 +1,10 @@
-package com.countmein.countmein;
+package com.countmein.countmein.activities;
 
 import android.app.ProgressDialog;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
+
+import com.countmein.countmein.R;
 
 /**
  * Created by Home on 4/22/2017.

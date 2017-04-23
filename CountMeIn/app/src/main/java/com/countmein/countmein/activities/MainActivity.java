@@ -1,12 +1,10 @@
-package com.countmein.countmein;
+package com.countmein.countmein.activities;
 
-import android.app.ProgressDialog;
+import com.bugsnag.android.Bugsnag;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,24 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.firebase.auth.FirebaseAuth;
+import com.countmein.countmein.EmailPasswordActivity;
+import com.countmein.countmein.GoogleSignInActivity;
+import com.countmein.countmein.R;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -57,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chooser);
 
+        Bugsnag.init(this);
 
         // Set up ListView and Adapter
         ListView listView = (ListView) findViewById(R.id.list_view);

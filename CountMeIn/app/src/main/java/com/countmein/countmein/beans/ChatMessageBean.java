@@ -1,4 +1,4 @@
-package com.countmein.countmein;
+package com.countmein.countmein.beans;
 
 import java.util.Date;
 
@@ -6,19 +6,19 @@ import java.util.Date;
  * Created by Home on 4/22/2017.
  */
 
-public class ChatMessage {
+public class ChatMessageBean {
 
     private String messageText;
     private String messageUser;
     private long messageTime;
 
-    public ChatMessage(String messageText, String messageUser) {
+    public ChatMessageBean(String messageText, String messageUser) {
         this.messageText = messageText;
         this.messageUser = messageUser;
         messageTime = new Date().getTime();
     }
 
-    public ChatMessage(){
+    public ChatMessageBean(){
 
     }
 

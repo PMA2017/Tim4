@@ -24,6 +24,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.countmein.countmein.activities.BaseActivity;
+import com.countmein.countmein.activities.HomeActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -199,7 +201,7 @@ public class GoogleSignInActivity extends BaseActivity implements
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);*/
-            Intent intent = new Intent(GoogleSignInActivity.this, NavDrawer.class);
+            Intent intent = new Intent(GoogleSignInActivity.this, HomeActivity.class);
             startActivity(intent);
 
 

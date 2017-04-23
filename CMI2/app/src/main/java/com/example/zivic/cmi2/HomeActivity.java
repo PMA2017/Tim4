@@ -1,9 +1,10 @@
-package com.countmein.countmein;
+package com.example.zivic.cmi2;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,40 +14,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.CallbackManager;
+import com.example.zivic.cmi2.adapters.RVAdapter;
+import com.example.zivic.cmi2.beans.ActivityBean;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class NavDrawer extends AppCompatActivity
+public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    CallbackManager callbackManager;
+    private List<ActivityBean> activities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nav_drawer);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        toolbar.setTitle(R.string.home);
+        setContentView(R.layout.activity_home);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        callbackManager = CallbackManager.Factory.create();
-
-        List<Model> podaci=getData();
-
-        final ListView lv = (ListView) findViewById(R.id.list);
-
-// get data from the table by the ListAdapter
-        ChatRoomAdapter customAdapter = new ChatRoomAdapter(this, R.layout.singlerow, podaci);
-
-        lv .setAdapter(customAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -54,29 +40,6 @@ public class NavDrawer extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-            }
-        });
-
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                // selected item
-                String selected1 = ((TextView) view.findViewById(R.id.naslov)).getText().toString();
-                String selected2 = ((TextView) view.findViewById(R.id.opis)).getText().toString();
-                String selected3 = ((TextView) view.findViewById(R.id.datum)).getText().toString();
-
-
-                Toast toast = Toast.makeText(getApplicationContext(), selected1, Toast.LENGTH_SHORT);
-                toast.show();
-                Intent i = new Intent(NavDrawer.this, SelectedActivity.class);
-                i.putExtra("naslov", selected1);
-                i.putExtra("opis", selected2);
-
-                i.putExtra("datum", selected3);
-
-                startActivity(i);
-
-
             }
         });
 
@@ -88,6 +51,15 @@ public class NavDrawer extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
+        rv.setHasFixedSize(true);
+
+        getData();
+        RVAdapter adapter = new RVAdapter(activities);
+        rv.setAdapter(adapter);
     }
 
     @Override
@@ -100,10 +72,10 @@ public class NavDrawer extends AppCompatActivity
         }
     }
 
-  /*  @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav_drawer, menu);
+        getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
 
@@ -120,7 +92,7 @@ public class NavDrawer extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -128,7 +100,7 @@ public class NavDrawer extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-   /*     if (id == R.id.nav_camera) {
+        if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
@@ -140,35 +112,25 @@ public class NavDrawer extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
-        } */
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    public List<Model> getData(){
+    private void getData(){
+        activities = new ArrayList<>();
+        activities.add(new ActivityBean("Rodjendan 1","Ovo je rodjendan 1", new Date().toString()));
+        activities.add(new ActivityBean("Rodjendan 2","Ovo je rodjendan 2", new Date().toString()));
+        activities.add(new ActivityBean("Rodjendan 3","Ovo je rodjendan 3", new Date().toString()));
+        activities.add(new ActivityBean("Rodjendan 4","Ovo je rodjendan 4", new Date().toString()));
+        activities.add(new ActivityBean("Rodjendan 5","Ovo je rodjendan 5", new Date().toString()));
+        activities.add(new ActivityBean("Rodjendan 6","Ovo je rodjendan 6", new Date().toString()));
+        activities.add(new ActivityBean("Rodjendan 7","Ovo je rodjendan 7", new Date().toString()));
 
-        Model c1=new Model("Rodjendan 1","Ovo je rodjendan", new Date());
-        Model c2=new Model("Rodjendan 1","Ovo je rodjendan", new Date());
-        Model c3=new Model("Rodjendan 1","Ovo je rodjendan", new Date());
-        Model c4=new Model("Rodjendan 1","Ovo je rodjendan", new Date());
-        Model c5=new Model("Rodjendan 1","Ovo je rodjendan", new Date());
 
-
-        Model c11=new Model("Rodjendan 1","Ovo je rodjendan", new Date());
-
-        Model c12=new Model("Rodjendan 1","Ovo je rodjendan", new Date());
-
-        ArrayList<Model> lista= new ArrayList<Model>();
-        lista.add(c1);
-        lista.add(c2);
-        lista.add(c3);
-        lista.add(c4);
-        lista.add(c5);
-
-        lista.add(c11);
-        return lista;
+        //   return activities;
 
     }
 }
