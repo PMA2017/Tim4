@@ -22,7 +22,10 @@ import com.countmein.countmein.R;
 import com.countmein.countmein.SelectedActivity;
 import com.countmein.countmein.adapters.RVAdapter;
 import com.countmein.countmein.beans.ActivityBean;
+import com.countmein.countmein.listeners.RecyclerItemClickListener;
 import com.facebook.CallbackManager;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,9 +71,30 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         final RecyclerView rv = (RecyclerView)findViewById(R.id.recycler_view);
+
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
+
+        rv.addOnItemTouchListener(new RecyclerItemClickListener(this,rv,new RecyclerItemClickListener.OnItemClickListener(){
+            @Override
+            public void onItemClick(View view, int position){
+              //selected item
+                String selectedTitle = ((TextView)view.findViewById(R.id.activity_name)).getText().toString();
+                String selectedDescription = ((TextView)view.findViewById(R.id.activity_description)).getText().toString();
+                String selectedDate = ((TextView)view.findViewById(R.id.activity_date)).getText().toString();
+
+                Toast toast = Toast.makeText(getApplicationContext(), selectedTitle, Toast.LENGTH_SHORT);
+                toast.show();
+                Intent i = new Intent(HomeActivity.this, SelectedActivity.class);
+                i.putExtra("naslov", selectedTitle);
+                i.putExtra("opis", selectedDescription);
+                i.putExtra("datum", selectedDate);
+
+                startActivity(i);
+            }
+        }));
+
 
         getData();
         RVAdapter adapter = new RVAdapter(activities);

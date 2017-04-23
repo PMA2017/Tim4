@@ -47,6 +47,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ActivityViewHolder
         View v = LayoutInflater
                     .from(parent.getContext())
                     .inflate(R.layout.single_card_view, parent, false); //check whether single_card_view should be here
+
         ActivityViewHolder avh = new ActivityViewHolder(v);
         return avh;
     }
