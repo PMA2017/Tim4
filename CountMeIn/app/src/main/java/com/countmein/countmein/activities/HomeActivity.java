@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.design.widget.NavigationView;
@@ -21,6 +23,8 @@ import com.countmein.countmein.R;
 import com.countmein.countmein.SelectedActivity;
 import com.countmein.countmein.adapters.RVAdapter;
 import com.countmein.countmein.beans.ActivityBean;
+import com.countmein.countmein.fragments.AttendingActivitiesFragment;
+import com.countmein.countmein.fragments.MainFragment;
 import com.countmein.countmein.listeners.RecyclerItemClickListener;
 import com.facebook.CallbackManager;
 
@@ -31,6 +35,9 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    NavigationView navigationView = null;
+    Toolbar toolbar = null;
+
     CallbackManager callbackManager;
     private List<ActivityBean> activities;
 
@@ -40,7 +47,15 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        //set the fragment initially
+        MainFragment fragment = new MainFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                .beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container,fragment);
+        fragmentTransaction.commit();
+
+
+        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         toolbar.setTitle(R.string.home);
         setSupportActionBar(toolbar);
 
@@ -54,8 +69,8 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent i = new Intent(HomeActivity.this, NewActivityActivity.class);
+                startActivity(i);
             }
         });
 
@@ -66,38 +81,10 @@ public class HomeActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        final RecyclerView rv = (RecyclerView)findViewById(R.id.recycler_view);
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
-        rv.setHasFixedSize(true);
-
-        rv.addOnItemTouchListener(new RecyclerItemClickListener(this,rv,new RecyclerItemClickListener.OnItemClickListener(){
-            @Override
-            public void onItemClick(View view, int position){
-              //selected item
-                String selectedTitle = ((TextView)view.findViewById(R.id.activity_name)).getText().toString();
-                String selectedDescription = ((TextView)view.findViewById(R.id.activity_description)).getText().toString();
-                String selectedDate = ((TextView)view.findViewById(R.id.activity_date)).getText().toString();
-
-                Toast toast = Toast.makeText(getApplicationContext(), selectedTitle, Toast.LENGTH_SHORT);
-                toast.show();
-                Intent i = new Intent(HomeActivity.this, SelectedActivity.class);
-                i.putExtra("naslov", selectedTitle);
-                i.putExtra("opis", selectedDescription);
-                i.putExtra("datum", selectedDate);
-
-                startActivity(i);
-            }
-        }));
-
-
-        getData();
-        RVAdapter adapter = new RVAdapter(activities);
-        rv.setAdapter(adapter);
 
     }
 
@@ -139,33 +126,64 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-   /*     if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_home) {
 
-        } else if (id == R.id.nav_slideshow) {
+            MainFragment fragment = new MainFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                    .beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,fragment);
+            fragmentTransaction.commit();
 
-        } else if (id == R.id.nav_manage) {
+            //set specific floating action
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(HomeActivity.this, NewActivityActivity.class);
+                    startActivity(i);
+                }
+            });
 
-        } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
 
-        } */
+        } else if (id == R.id.nav_attending) {
+
+            AttendingActivitiesFragment fragment = new AttendingActivitiesFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                    .beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,fragment);
+            fragmentTransaction.commit();
+
+            //set specific floating action
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(HomeActivity.this, NewGroupActivity.class);
+                    startActivity(i);
+                }
+            });
+
+
+      /*  } else if (id == R.id.nav_my_activities) {
+
+        } else if (id == R.id.nav_my_friends) {
+
+        } else if (id == R.id.nav_my_groups) {
+
+        } else if (id == R.id.nav_about) {
+
+        } else if (id == R.id.nav_settings){
+
+        } else if (id == R.id.logout) {
+        */
+
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    public void getData(){
-        activities = new ArrayList<>();
-        activities.add(new ActivityBean("Rodjendan 1","Ovo je rodjendan 1", new Date().toString()));
-        activities.add(new ActivityBean("Rodjendan 2","Ovo je rodjendan 2", new Date().toString()));
-        activities.add(new ActivityBean("Rodjendan 3","Ovo je rodjendan 3", new Date().toString()));
-        activities.add(new ActivityBean("Rodjendan 4","Ovo je rodjendan 4", new Date().toString()));
-        activities.add(new ActivityBean("Rodjendan 5","Ovo je rodjendan 5", new Date().toString()));
-        activities.add(new ActivityBean("Rodjendan 6","Ovo je rodjendan 6", new Date().toString()));
-        activities.add(new ActivityBean("Rodjendan 7","Ovo je rodjendan 7", new Date().toString()));
-    }
+
 }
