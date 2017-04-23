@@ -42,7 +42,7 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="Name"/>
+                    android:text="@string/name"/>
                 <EditText
                     android:id="@+id/groupName"
                     android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="Description"/>
+                    android:text="@string/description"/>
                 <EditText
                     android:id="@+id/groupDesc"
                     android:layout_width="match_parent"

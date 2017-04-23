@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,8 +23,6 @@ import com.countmein.countmein.adapters.RVAdapter;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.listeners.RecyclerItemClickListener;
 import com.facebook.CallbackManager;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;

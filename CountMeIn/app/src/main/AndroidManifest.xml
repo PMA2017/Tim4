@@ -37,6 +37,8 @@
         <activity android:name=".GoogleSignInActivity" />
         <activity
             android:name=".activities.HomeActivity"
+            android:label="@string/title_activity_nav_drawer"
+
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
@@ -44,11 +46,12 @@
             android:value="16d59f191d5cd8479b39338fee9e4a27" />
 
         <activity
+
             android:name=".activities.NewActivityActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            ></activity>
-
-
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activities.NewGroupActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
