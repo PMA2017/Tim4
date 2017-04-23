@@ -87,7 +87,7 @@ public class HomeActivity extends AppCompatActivity
 
                 Toast toast = Toast.makeText(getApplicationContext(), selectedTitle, Toast.LENGTH_SHORT);
                 toast.show();
-                Intent i = new Intent(HomeActivity.this, NewGroupActivity.class);
+                Intent i = new Intent(HomeActivity.this, SelectedActivity.class);
                 i.putExtra("naslov", selectedTitle);
                 i.putExtra("opis", selectedDescription);
                 i.putExtra("datum", selectedDate);
