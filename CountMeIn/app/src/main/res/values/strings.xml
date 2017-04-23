@@ -4,6 +4,7 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_aaaaa">Settings</string>
     <string name="home">Home</string>
+    <string name="new_activity">New Activity</string>
 
     <!-- Strings related to Settings -->
 

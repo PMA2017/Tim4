@@ -47,6 +47,8 @@ public class HomeActivity extends AppCompatActivity
         toolbar.setTitle(R.string.home);
         setSupportActionBar(toolbar);
 
+
+
         callbackManager = CallbackManager.Factory.create();
 
    /*     ChatRoomAdapter customAdapter = new ChatRoomAdapter(this, R.layout.single_card_view, getData());
