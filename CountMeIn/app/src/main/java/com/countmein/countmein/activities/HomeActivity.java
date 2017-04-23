@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.countmein.countmein.NewGroupActivity;
 import com.countmein.countmein.R;
 import com.countmein.countmein.SelectedActivity;
 import com.countmein.countmein.adapters.RVAdapter;
@@ -86,7 +87,7 @@ public class HomeActivity extends AppCompatActivity
 
                 Toast toast = Toast.makeText(getApplicationContext(), selectedTitle, Toast.LENGTH_SHORT);
                 toast.show();
-                Intent i = new Intent(HomeActivity.this, SelectedActivity.class);
+                Intent i = new Intent(HomeActivity.this, NewGroupActivity.class);
                 i.putExtra("naslov", selectedTitle);
                 i.putExtra("opis", selectedDescription);
                 i.putExtra("datum", selectedDate);
