@@ -24,6 +24,8 @@ import com.countmein.countmein.SelectedActivity;
 import com.countmein.countmein.adapters.RVAdapter;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.fragments.AttendingActivitiesFragment;
+import com.countmein.countmein.fragments.FriendFragment;
+import com.countmein.countmein.fragments.GroupFragment;
 import com.countmein.countmein.fragments.MainFragment;
 import com.countmein.countmein.listeners.RecyclerItemClickListener;
 import com.facebook.CallbackManager;
@@ -136,6 +138,7 @@ public class HomeActivity extends AppCompatActivity
 
             //set specific floating action
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.show();
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -151,11 +154,12 @@ public class HomeActivity extends AppCompatActivity
             AttendingActivitiesFragment fragment = new AttendingActivitiesFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,fragment);
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
 
             //set specific floating action
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.show();
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -164,12 +168,35 @@ public class HomeActivity extends AppCompatActivity
                 }
             });
 
+        }else if (id == R.id.nav_my_groups){
+            GroupFragment fragment = new GroupFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                    .beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.commit();
 
-      /*  } else if (id == R.id.nav_my_activities) {
-
+            //set specific floating action
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.show();
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(HomeActivity.this, NewGroupActivity.class);
+                    startActivity(i);
+                }
+            });
         } else if (id == R.id.nav_my_friends) {
+            FriendFragment fragment = new FriendFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                    .beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.commit();
 
-        } else if (id == R.id.nav_my_groups) {
+            //set specific floating action
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.hide();
+        }
+      /*  } else if (id == R.id.nav_my_activities) {
 
         } else if (id == R.id.nav_about) {
 
@@ -178,7 +205,6 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.logout) {
         */
 
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
