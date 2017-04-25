@@ -1,4 +1,4 @@
-package com.countmein.countmein;
+package com.countmein.countmein.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ChatMessageBean;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -23,13 +24,36 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+
+@EActivity(R.layout.activity_selected)
 public class SelectedActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private FirebaseListAdapter<ChatMessageBean> adapter;
     private static final int MY_LOCATION_REQUEST_CODE = 1;
     private static final int SIGN_IN_REQUEST_CODE = 1;
+
+    public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
+    public final static String AUTH_KEY_FCM = "Your api key";
+
 
 
     @Override
@@ -90,7 +114,9 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
                                         .getDisplayName())
                         );
 
+               // searchAsync();
                 // Clear the input
+
                 input.setText("");
             }
         });
@@ -99,7 +125,83 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
 
     }
 
+    /*@Background
+    void searchAsync() {
+        String result = "";
+        URL url = null;
+        try {
+            url = new URL(API_URL_FCM);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        HttpURLConnection conn = null;
+        try {
+            conn = (HttpURLConnection) url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        conn.setUseCaches(false);
+        conn.setDoInput(true);
+        conn.setDoOutput(true);
+
+        try {
+            conn.setRequestMethod("POST");
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        }
+        conn.setRequestProperty("Authorization", "key=" + AUTH_KEY_FCM);
+        conn.setRequestProperty("Content-Type", "application/json");
+
+        JSONObject json = new JSONObject();
+
+        try {
+            json.put("to", FirebaseInstanceId.getInstance().getToken().trim());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject info = new JSONObject();
+        try {
+            info.put("title", "notification title"); // Notification title
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            info.put("body", "message body"); // Notification
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        // body
+        try {
+            json.put("notification", info);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            OutputStreamWriter wr = new OutputStreamWriter(
+                    conn.getOutputStream());
+            wr.write(json.toString());
+            wr.flush();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (conn.getInputStream())));
+
+            String output;
+            System.out.println("Output from Server .... \n");
+            while ((output = br.readLine()) != null) {
+                System.out.println(output);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        System.out.println("GCM Notification is sent successfully");
+
+
+
+    }
+*/
 
     private void displayChatMessages() {
 

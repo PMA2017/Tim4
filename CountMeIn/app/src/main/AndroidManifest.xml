@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -15,6 +16,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan|adjustResize">
+        <service android:name=".Services.MyAndroidFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".Services.MyAndroidFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -23,7 +35,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAz2Rr6lwMxPxZTJWm5CtgFvHLXCL90VeE" />
+            android:value="AIzaSyA5Pfr2MCi3H5KgmBW4V6lMQ8vDHytNd9k" />
 
         <activity android:name=".activities.MainActivity">
             <intent-filter>
@@ -32,26 +44,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SelectedActivity" />
+        <activity
+            android:name=".activities.SelectedActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".EmailPasswordActivity" />
         <activity android:name=".GoogleSignInActivity" />
+        <activity android:name=".activities.SelectedActivity_" />
         <activity
             android:name=".activities.HomeActivity"
             android:label="@string/title_activity_nav_drawer"
-
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
-            android:value="16d59f191d5cd8479b39338fee9e4a27" />
+            android:value="AIzaSyA5Pfr2MCi3H5KgmBW4V6lMQ8vDHytNd9k" />
 
         <activity
-
             android:name=".activities.NewActivityActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.NewGroupActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

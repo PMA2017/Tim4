@@ -1,8 +1,6 @@
 package com.countmein.countmein.fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,9 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.countmein.countmein.R;
-import com.countmein.countmein.SelectedActivity;
-import com.countmein.countmein.activities.HomeActivity;
-import com.countmein.countmein.activities.NewGroupActivity;
+import com.countmein.countmein.activities.SelectedActivity;
 import com.countmein.countmein.adapters.RVAdapter;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.listeners.RecyclerItemClickListener;
