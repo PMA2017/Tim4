@@ -43,7 +43,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
-@EActivity(R.layout.activity_selected)
+//@EActivity(R.layout.activity_selected)
 public class SelectedActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -53,6 +53,9 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
 
     public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
     public final static String AUTH_KEY_FCM = "Your api key";
+    TextView mTextView1;
+    TextView mTextView2;
+    TextView mTextView3;
 
 
 
@@ -64,6 +67,18 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        Intent myIntent = getIntent(); // gets the previously created intent
+        String naslov = myIntent.getStringExtra("naslov"); // will return "FirstKeyValue"
+        String opis= myIntent.getStringExtra("opis");
+        String datum= myIntent.getStringExtra("datum");
+
+        mTextView1 = (TextView) findViewById(R.id.naslov);
+        mTextView2 = (TextView) findViewById(R.id.opis);
+        mTextView3 = (TextView) findViewById(R.id.datum);
+        mTextView1.setText(naslov);
+        mTextView2.setText(opis);
+        mTextView3.setText(datum);
+
 
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             // Start sign in/sign up activity
@@ -74,28 +89,13 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
         } else {
             // User is already signed in. Therefore, display
             // a welcome Toast
-            Toast.makeText(this,
-                    "Welcome " + FirebaseAuth.getInstance()
-                            .getCurrentUser()
-                            .getDisplayName(),
-                    Toast.LENGTH_LONG)
-                    .show();
+
 
             displayChatMessages();
         }
 
 
-        Intent myIntent = getIntent(); // gets the previously created intent
-        String naslov = myIntent.getStringExtra("naslov"); // will return "FirstKeyValue"
-        String opis= myIntent.getStringExtra("opis");
-        String datum= myIntent.getStringExtra("datum");
 
-        TextView mTextView1 = (TextView) findViewById(R.id.naslov);
-        TextView mTextView2 = (TextView) findViewById(R.id.opis);
-        TextView mTextView3 = (TextView) findViewById(R.id.datum);
-        mTextView1.setText(naslov);
-        mTextView2.setText(opis);
-        mTextView3.setText(datum);
 
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +106,7 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
                 // Read the input field and push a new instance
                 // of ChatMessageBean to the Firebase database
                 FirebaseDatabase.getInstance()
-                        .getReference()
+                        .getReference().child("chatrooms").child(mTextView1.getText().toString())
                         .push()
                         .setValue(new ChatMessageBean(input.getText().toString(),
                                 FirebaseAuth.getInstance()
@@ -210,7 +210,7 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
         listOfMessages.setStackFromBottom(true);
 
         adapter = new FirebaseListAdapter<ChatMessageBean>(this, ChatMessageBean.class,
-                R.layout.message, FirebaseDatabase.getInstance().getReference()) {
+                R.layout.message, FirebaseDatabase.getInstance().getReference().child("chatrooms").child(mTextView1.getText().toString())) {
             @Override
             protected void populateView(View v, ChatMessageBean model, int position) {
                 // Get references to the views of message.xml

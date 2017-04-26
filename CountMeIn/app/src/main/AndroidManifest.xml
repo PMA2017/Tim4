@@ -35,7 +35,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA5Pfr2MCi3H5KgmBW4V6lMQ8vDHytNd9k" />
+            android:value="AIzaSyCYQ_CFHK4okU2vvwYsf7RcUp6ICj05r_s" />
 
         <activity android:name=".activities.MainActivity">
             <intent-filter>
@@ -47,8 +47,8 @@
         <activity
             android:name=".activities.SelectedActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".EmailPasswordActivity" />
-        <activity android:name=".GoogleSignInActivity" />
+        <activity android:name=".activities.EmailPasswordActivity" />
+        <activity android:name=".activities.GoogleSignInActivity" />
         <activity android:name=".activities.SelectedActivity_" />
         <activity
             android:name=".activities.HomeActivity"
@@ -57,7 +57,7 @@
 
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
-            android:value="AIzaSyA5Pfr2MCi3H5KgmBW4V6lMQ8vDHytNd9k" />
+            android:value=" AIzaSyDIxMZBk5_5rM3OWbX6j4VN7LX-uJg44_c" />
 
         <activity
             android:name=".activities.NewActivityActivity"

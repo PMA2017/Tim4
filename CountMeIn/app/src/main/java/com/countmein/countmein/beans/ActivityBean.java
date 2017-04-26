@@ -12,9 +12,14 @@ public class ActivityBean {
     public String description;
     public String date;
 
+
+    public ActivityBean() {
+    }
+
     public ActivityBean(String name, String description, String date){
         this.name = name;
         this.description = description;
+
         this.date = date;
     }
 

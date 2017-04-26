@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.countmein.countmein;
+package com.countmein.countmein.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,7 +25,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.countmein.countmein.activities.BaseActivity;
+import com.countmein.countmein.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -148,6 +148,7 @@ public class EmailPasswordActivity extends BaseActivity implements
                         // [END_EXCLUDE]
                     }
                 });
+
         // [END sign_in_with_email]
     }
 

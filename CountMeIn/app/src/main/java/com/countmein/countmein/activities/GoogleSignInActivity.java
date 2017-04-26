@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.countmein.countmein;
+package com.countmein.countmein.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,8 +24,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.countmein.countmein.activities.BaseActivity;
-import com.countmein.countmein.activities.HomeActivity;
+import com.countmein.countmein.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;

@@ -13,8 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.countmein.countmein.EmailPasswordActivity;
-import com.countmein.countmein.GoogleSignInActivity;
 import com.countmein.countmein.R;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {

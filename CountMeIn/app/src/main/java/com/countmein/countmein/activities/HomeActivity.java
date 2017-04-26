@@ -20,6 +20,7 @@ import com.countmein.countmein.fragments.FriendFragment;
 import com.countmein.countmein.fragments.GroupFragment;
 import com.countmein.countmein.fragments.MainFragment;
 import com.facebook.CallbackManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -190,9 +191,14 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
 
         } else if (id == R.id.nav_settings){
+*/
+         else if (id == R.id.nav_logout)
 
-        } else if (id == R.id.logout) {
-        */
+    {
+        FirebaseAuth.getInstance().signOut();
+        Intent i=new Intent(this,MainActivity.class);
+        startActivity(i);
+    }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
