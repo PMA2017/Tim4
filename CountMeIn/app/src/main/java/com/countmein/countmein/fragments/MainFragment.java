@@ -28,15 +28,19 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -50,6 +54,7 @@ public class MainFragment extends Fragment {
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
     private static final int DATASET_COUNT = 60;
+    private DatabaseReference mDatabase;
 
     private enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
@@ -59,7 +64,8 @@ public class MainFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected RVAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected List<ActivityBean> activities;
+    protected List<ActivityBean> activities=new ArrayList<>();
+    View rootView;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -72,8 +78,11 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        rootView = inflater.inflate(R.layout.fragment_main, container, false);
         rootView.setTag(TAG);
+
+        //getData();
+
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 
@@ -114,18 +123,47 @@ public class MainFragment extends Fragment {
 
 
     public void getData(){
-        ArrayList<ActivityBean> act1 = new ArrayList<>();
 
-        act1.add(new ActivityBean("Rodjendan 1","Ovo je rodjendan 1", new Date().toString()));
+
+       // FirebaseDatabase.getInstance().getReference().child("mid").setValue(new String("AAAAAAAAA"));
+
+
+        mDatabase= FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("useractivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                    ActivityBean child = childSnapshot.getValue(ActivityBean.class);
+                    activities.add(child);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+  /*    List<ActivityBean> act1 = new ArrayList<>();
+
+       act1.add(new ActivityBean("Rodjendan 1","Ovo je rodjendan 1", new Date().toString()));
         act1.add(new ActivityBean("Rodjendan 2","Ovo je rodjendan 2", new Date().toString()));
         act1.add(new ActivityBean("Rodjendan 3","Ovo je rodjendan 3", new Date().toString()));
         act1.add(new ActivityBean("Rodjendan 4","Ovo je rodjendan 4", new Date().toString()));
         act1.add(new ActivityBean("Rodjendan 5","Ovo je rodjendan 5", new Date().toString()));
         act1.add(new ActivityBean("Rodjendan 6","Ovo je rodjendan 6", new Date().toString()));
         act1.add(new ActivityBean("Rodjendan 7","Ovo je rodjendan 7", new Date().toString()));
-
-
-        activities = act1;
+//
+//
+/// //       FirebaseDatabase.getInstance().getReference().child("useractivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().setValue(act1);
+//
+//
+//*/
+  //    activities = act1;
 
     }
 }

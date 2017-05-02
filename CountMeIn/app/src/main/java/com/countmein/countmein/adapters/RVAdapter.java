@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,6 +18,9 @@ import java.util.List;
  */
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ActivityViewHolder> {
+
+    public RVAdapter(Collection<List<ActivityBean>> values) {
+    }
 
     public static class ActivityViewHolder extends RecyclerView.ViewHolder{
         private CardView cv;

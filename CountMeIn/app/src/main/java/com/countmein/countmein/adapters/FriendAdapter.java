@@ -32,6 +32,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ActivityVi
 
         public ActivityViewHolder(View itemView){
             super(itemView);
+
             cv = (CardView) itemView.findViewById(R.id.friend_cardview);
             fName = (TextView) itemView.findViewById(R.id.friend_name);
             fSurname = (TextView) itemView.findViewById(R.id.friend_surname);
