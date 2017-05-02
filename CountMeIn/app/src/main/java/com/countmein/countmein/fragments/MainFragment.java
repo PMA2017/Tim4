@@ -61,12 +61,13 @@ public class MainFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected RVAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected List<ActivityBean> activities=new ArrayList<>();
+    protected List<ActivityBean> activities;
     View rootView;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        activities = new ArrayList<ActivityBean>();
         getData();
     }
 
@@ -115,14 +116,17 @@ public class MainFragment extends Fragment {
     public void getData(){
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("useractivities").child(currentUser.getUid());
-
+       // mDatabase.removeValue(); //Help while developing xD
         mDatabase.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
                     ActivityBean child = childSnapshot.getValue(ActivityBean.class);
                     activities.add(child);
                 }
+               //activities.add(dataSnapshot.getValue(ActivityBean.class));
             }
 
             @Override
