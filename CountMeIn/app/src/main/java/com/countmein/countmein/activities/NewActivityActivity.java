@@ -1,14 +1,18 @@
 package com.countmein.countmein.activities;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.DatePicker;
+import android.widget.EditText;
 
 import com.countmein.countmein.R;
 import com.facebook.CallbackManager;
@@ -37,7 +41,31 @@ public class NewActivityActivity extends AppCompatActivity {
             }
         });
 
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                String aName;
+                String aDesc;
+                DatePicker aDate;
+
+                switch (item.getItemId()){
+                    case  R.id.miSave:
+
+                        aName = ((EditText) findViewById(R.id.activityName)).getText().toString();
+                        aDesc = ((EditText) findViewById(R.id.activityDesc)).getText().toString();
+                        aDate = ((DatePicker) findViewById(R.id.new_activity_date));
+                        int day = aDate.getDayOfMonth();
+                        int mth = aDate.getMonth() + 1;
+                        int year = aDate.getYear();
+                        String ja = "bleja";
+                        break;
+                }
+                return false;
+            }
+        });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

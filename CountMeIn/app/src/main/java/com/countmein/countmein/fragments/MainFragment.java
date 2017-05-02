@@ -23,6 +23,7 @@ import com.countmein.countmein.listeners.RecyclerItemClickListener;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,11 +56,7 @@ public class MainFragment extends Fragment {
     private static final int SPAN_COUNT = 2;
     private static final int DATASET_COUNT = 60;
     private DatabaseReference mDatabase;
-
-    private enum LayoutManagerType {
-        GRID_LAYOUT_MANAGER,
-        LINEAR_LAYOUT_MANAGER
-    }
+    private FirebaseUser currentUser;
 
     protected RecyclerView mRecyclerView;
     protected RVAdapter mAdapter;
@@ -70,9 +67,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
         getData();
-
     }
 
     @Override
@@ -82,7 +77,6 @@ public class MainFragment extends Fragment {
         rootView.setTag(TAG);
 
         //getData();
-
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 
@@ -115,30 +109,20 @@ public class MainFragment extends Fragment {
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
 
-
         return rootView;
     }
 
-
-
-
     public void getData(){
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("useractivities").child(currentUser.getUid());
 
-
-       // FirebaseDatabase.getInstance().getReference().child("mid").setValue(new String("AAAAAAAAA"));
-
-
-        mDatabase= FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("useractivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-
                 for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
                     ActivityBean child = childSnapshot.getValue(ActivityBean.class);
                     activities.add(child);
                 }
-
             }
 
             @Override
@@ -147,23 +131,5 @@ public class MainFragment extends Fragment {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-
-  /*    List<ActivityBean> act1 = new ArrayList<>();
-
-       act1.add(new ActivityBean("Rodjendan 1","Ovo je rodjendan 1", new Date().toString()));
-        act1.add(new ActivityBean("Rodjendan 2","Ovo je rodjendan 2", new Date().toString()));
-        act1.add(new ActivityBean("Rodjendan 3","Ovo je rodjendan 3", new Date().toString()));
-        act1.add(new ActivityBean("Rodjendan 4","Ovo je rodjendan 4", new Date().toString()));
-        act1.add(new ActivityBean("Rodjendan 5","Ovo je rodjendan 5", new Date().toString()));
-        act1.add(new ActivityBean("Rodjendan 6","Ovo je rodjendan 6", new Date().toString()));
-        act1.add(new ActivityBean("Rodjendan 7","Ovo je rodjendan 7", new Date().toString()));
-//
-//
-/// //       FirebaseDatabase.getInstance().getReference().child("useractivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().setValue(act1);
-//
-//
-//*/
-  //    activities = act1;
-
     }
 }
