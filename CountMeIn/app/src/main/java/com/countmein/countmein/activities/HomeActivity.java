@@ -46,17 +46,12 @@ public class HomeActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragment_container,fragment);
         fragmentTransaction.commit();
 
-
         toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         toolbar.setTitle(R.string.home);
         setSupportActionBar(toolbar);
 
-
-
         callbackManager = CallbackManager.Factory.create();
 
-   /*     ChatRoomAdapter customAdapter = new ChatRoomAdapter(this, R.layout.single_card_view, getData());
-*/
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,8 +70,6 @@ public class HomeActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
 
     }
 
@@ -137,8 +130,6 @@ public class HomeActivity extends AppCompatActivity
                 }
             });
 
-
-
         } else if (id == R.id.nav_attending) {
 
             AttendingActivitiesFragment fragment = new AttendingActivitiesFragment();
@@ -175,6 +166,7 @@ public class HomeActivity extends AppCompatActivity
                     startActivity(i);
                 }
             });
+
         } else if (id == R.id.nav_my_friends) {
             FriendFragment fragment = new FriendFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
@@ -185,26 +177,15 @@ public class HomeActivity extends AppCompatActivity
             //set specific floating action
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
             fab.hide();
+
+        } else if (id == R.id.nav_logout) {
+            FirebaseAuth.getInstance().signOut();
+            Intent i=new Intent(this,MainActivity.class);
+            startActivity(i);
         }
-      /*  } else if (id == R.id.nav_my_activities) {
-
-        } else if (id == R.id.nav_about) {
-
-        } else if (id == R.id.nav_settings){
-*/
-         else if (id == R.id.nav_logout)
-
-    {
-        FirebaseAuth.getInstance().signOut();
-        Intent i=new Intent(this,MainActivity.class);
-        startActivity(i);
-    }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 }

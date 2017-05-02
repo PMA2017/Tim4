@@ -52,9 +52,6 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 public class MainFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
-    private static final String KEY_LAYOUT_MANAGER = "layoutManager";
-    private static final int SPAN_COUNT = 2;
-    private static final int DATASET_COUNT = 60;
     private DatabaseReference mDatabase;
     private FirebaseUser currentUser;
 
@@ -77,8 +74,6 @@ public class MainFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
         rootView.setTag(TAG);
 
-        //getData();
-
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
@@ -86,8 +81,6 @@ public class MainFragment extends Fragment {
         // elements are laid out.
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(),mRecyclerView,new RecyclerItemClickListener.OnItemClickListener(){
             @Override
             public void onItemClick(View view, int position){
@@ -126,7 +119,6 @@ public class MainFragment extends Fragment {
                     ActivityBean child = childSnapshot.getValue(ActivityBean.class);
                     activities.add(child);
                 }
-               //activities.add(dataSnapshot.getValue(ActivityBean.class));
             }
 
             @Override
