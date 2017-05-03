@@ -36,7 +36,7 @@ public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     NavigationView navigationView = null;
-    Toolbar toolbar = null;
+    public static Toolbar toolbar = null;
 
     CallbackManager callbackManager;
 

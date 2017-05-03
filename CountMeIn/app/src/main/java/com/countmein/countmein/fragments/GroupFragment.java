@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.countmein.countmein.R;
+import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.activities.NewGroupActivity;
 import com.countmein.countmein.adapters.RVAdapter;
 import com.countmein.countmein.beans.ActivityBean;
@@ -43,6 +44,7 @@ public class GroupFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        HomeActivity.toolbar.setTitle("My Groups");
         getData();
     }
 

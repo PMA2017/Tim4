@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.countmein.countmein.R;
+import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.activities.SelectedActivity;
 import com.countmein.countmein.adapters.RVAdapter;
 import com.countmein.countmein.beans.ActivityBean;
@@ -44,7 +45,7 @@ public class AttendingActivitiesFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
-
+            HomeActivity.toolbar.setTitle("My Activities");
             getData();
 
         }

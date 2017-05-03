@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.countmein.countmein.R;
+import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.adapters.FriendAdapter;
 import com.countmein.countmein.beans.PersonInfoBean;
 
@@ -32,6 +33,7 @@ public class FriendFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        HomeActivity.toolbar.setTitle("My Friends");
         getData();
     }
 
