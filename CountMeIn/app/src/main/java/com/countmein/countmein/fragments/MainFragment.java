@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 
 import com.countmein.countmein.R;
+import com.countmein.countmein.activities.HomeActivity;
+import com.countmein.countmein.activities.MainActivity;
 import com.countmein.countmein.activities.SelectedActivity;
 import com.countmein.countmein.adapters.RVAdapter;
 import com.countmein.countmein.beans.ActivityBean;
@@ -58,14 +60,14 @@ public class MainFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected RVAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected List<ActivityBean> activities;
+   // protected List<ActivityBean> activities;
     View rootView;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        activities = new ArrayList<ActivityBean>();
-        getData();
+
+        //getData();
     }
 
     @Override
@@ -99,14 +101,14 @@ public class MainFragment extends Fragment {
                 startActivity(i);
             }
         }));
-        mAdapter = new RVAdapter(activities);
+        mAdapter = new RVAdapter(MainActivity.activities);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
     }
 
-    public void getData(){
+  /*  public void getData(){
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("useractivities").child(currentUser.getUid());
        // mDatabase.removeValue(); //Help while developing xD
@@ -127,5 +129,5 @@ public class MainFragment extends Fragment {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-    }
+    }*/
 }

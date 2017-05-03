@@ -69,7 +69,7 @@ public class NewActivityActivity extends AppCompatActivity {
                         newAct = new ActivityBean(aName, aDesc, convertData(aDate));
                         addNewActivityAsaChild(newAct);
 
-                        Toast.makeText(getBaseContext(),"Activiti was made successfully", Toast.LENGTH_SHORT);
+                        Toast.makeText(getApplicationContext(),"Activiti was made successfully", Toast.LENGTH_SHORT);
                         Intent i = new Intent(NewActivityActivity.this, HomeActivity.class);
                         startActivity(i);
                         break;

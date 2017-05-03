@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,22 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.countmein.countmein.R;
+import com.countmein.countmein.beans.ActivityBean;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+    private DatabaseReference mDatabase;
+    private FirebaseUser currentUser;
+    public static List<ActivityBean> activities;
 
     private static final Class[] CLASSES = new Class[]{
             GoogleSignInActivity.class,
@@ -48,6 +63,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("useractivities").child(currentUser.getUid());
+        // mDatabase.removeValue(); //Help while developing xD
+        getData();
     }
 
     @Override
@@ -87,5 +107,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         public void setDescriptionIds(int[] descriptionIds) {
             mDescriptionIds = descriptionIds;
         }
+
+    }
+
+    private void getData() {
+        activities = new ArrayList<>();
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                activities = new ArrayList<>();
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    ActivityBean child = childSnapshot.getValue(ActivityBean.class);
+                    activities.add(child);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("failRead", "Failed to read value.", error.toException());
+            }
+        });
     }
 }
