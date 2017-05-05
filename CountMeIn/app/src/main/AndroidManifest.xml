@@ -18,12 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan|adjustResize">
-        <service android:name=".Services.MyAndroidFirebaseMessagingService">
+        <service android:name=".services.MyAndroidFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".Services.MyAndroidFirebaseInstanceIDService">
+        <service android:name=".services.MyAndroidFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

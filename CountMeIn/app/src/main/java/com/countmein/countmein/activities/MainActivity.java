@@ -3,6 +3,7 @@ package com.countmein.countmein.activities;
 import com.bugsnag.android.Bugsnag;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,7 +32,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private DatabaseReference mDatabase;
     private FirebaseUser currentUser;
-    public static List<ActivityBean> activities;
+    public static List<ActivityBean> activities = new ArrayList<>();
 
     private static final Class[] CLASSES = new Class[]{
             GoogleSignInActivity.class,
@@ -110,7 +112,34 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    private void getData() {
+    private void getData(){
+      //  LoadingData lD = new LoadingData();
+      //  lD.execute(mDatabase);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mDatabase.addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        activities = new ArrayList<>();
+                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                            ActivityBean child = childSnapshot.getValue(ActivityBean.class);
+                            activities.add(child);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+                        Log.w("failRead", "Failed to read value.", error.toException());
+                    }
+                });
+            }
+        }).start();
+    }
+  /*  private void getData() {
         activities = new ArrayList<>();
 
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -130,5 +159,38 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Log.w("failRead", "Failed to read value.", error.toException());
             }
         });
-    }
+    }*/
+
+  /*  private class LoadingData extends AsyncTask<DatabaseReference ,String ,DatabaseReference > {
+
+        @Override
+        protected DatabaseReference doInBackground(DatabaseReference... params) {
+
+            publishProgress("Loading...");
+
+            return params[0];
+        }
+
+        @Override
+        protected void onPostExecute(DatabaseReference mDatabase) {
+
+            mDatabase.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    activities = new ArrayList<>();
+                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                        ActivityBean child = childSnapshot.getValue(ActivityBean.class);
+                        activities.add(child);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w("failRead", "Failed to read value.", error.toException());
+                }
+            });
+        }
+    }*/
 }
