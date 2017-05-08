@@ -1,6 +1,8 @@
 package com.countmein.countmein.activities;
 
 import com.bugsnag.android.Bugsnag;
+
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -113,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void getData(){
+       final ProgressDialog progress = ProgressDialog.show(this, "Count Me In", "Loading...", true);
 
         (new Thread(new Runnable() {
 
@@ -140,6 +143,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     @Override
                     public void run() {
                         mDatabase.addValueEventListener(valueEventListener);
+                      //  progress.dismiss();
+                    }
+                });
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        progress.dismiss();
                     }
                 });
             }
