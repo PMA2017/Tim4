@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.activities.SelectedActivity;
-import com.countmein.countmein.adapters.RVAdapter;
+import com.countmein.countmein.adapters.FriendsActivityAdapter;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.listeners.RecyclerItemClickListener;
 
@@ -28,17 +28,9 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class AttendingActivitiesFragment extends Fragment {
 
         private static final String TAG = "RecyclerViewFragment";
-        private static final String KEY_LAYOUT_MANAGER = "layoutManager";
-        private static final int SPAN_COUNT = 2;
-        private static final int DATASET_COUNT = 60;
-
-        private enum LayoutManagerType {
-            GRID_LAYOUT_MANAGER,
-            LINEAR_LAYOUT_MANAGER
-        }
 
         protected RecyclerView mRecyclerView;
-        protected RVAdapter mAdapter;
+        protected FriendsActivityAdapter mAdapter;
         protected RecyclerView.LayoutManager mLayoutManager;
         protected List<ActivityBean> activities;
 
@@ -84,7 +76,7 @@ public class AttendingActivitiesFragment extends Fragment {
                 }
             }));
 
-            mAdapter = new RVAdapter(activities);
+            mAdapter = new FriendsActivityAdapter(activities);
             // Set CustomAdapter as the adapter for RecyclerView.
             mRecyclerView.setAdapter(mAdapter);
 

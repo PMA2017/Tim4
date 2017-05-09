@@ -27,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.androidannotations.annotations.AfterViews;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,15 +65,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         ListView listView = (ListView) findViewById(R.id.list_view);
 
         MainActivity.MyArrayAdapter adapter = new MainActivity.MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES);
+        
         adapter.setDescriptionIds(DESCRIPTION_IDS);
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
 
+    }
+
+    @Override
+    public void onStart (){
+        super.onStart();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("useractivities").child(currentUser.getUid());
-        // mDatabase.removeValue(); //Help while developing xD
-        getData();
+
+        if(currentUser != null) {
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("useractivities").child(currentUser.getUid());
+            // mDatabase.removeValue(); //Help while developing xD
+
+            getData();
+        }
     }
 
     @Override
