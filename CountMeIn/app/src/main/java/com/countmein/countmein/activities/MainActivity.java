@@ -33,10 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    private DatabaseReference mDatabase;
-    private FirebaseUser currentUser;
-    public static List<ActivityBean> activities = new ArrayList<>();
-    final Handler mHandler = new Handler();
 
     private static final Class[] CLASSES = new Class[]{
             GoogleSignInActivity.class,
@@ -65,25 +61,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         ListView listView = (ListView) findViewById(R.id.list_view);
 
         MainActivity.MyArrayAdapter adapter = new MainActivity.MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES);
-        
+
+
+
         adapter.setDescriptionIds(DESCRIPTION_IDS);
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
 
-    }
-
-    @Override
-    public void onStart (){
-        super.onStart();
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        if(currentUser != null) {
-            mDatabase = FirebaseDatabase.getInstance().getReference().child("useractivities").child(currentUser.getUid());
-            // mDatabase.removeValue(); //Help while developing xD
-
-            getData();
-        }
     }
 
     @Override
@@ -124,49 +109,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             mDescriptionIds = descriptionIds;
         }
 
-    }
-
-    private void getData(){
-       final ProgressDialog progress = ProgressDialog.show(this, "Count Me In", "Loading...", true);
-
-        (new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                final ValueEventListener valueEventListener = new ValueEventListener() {
-
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        activities = new ArrayList<>();
-                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                            ActivityBean child = childSnapshot.getValue(ActivityBean.class);
-                            activities.add(child);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed to read value
-                        Log.w("failRead", "Failed to read value.", error.toException());
-                    }
-                };
-
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mDatabase.addValueEventListener(valueEventListener);
-                      //  progress.dismiss();
-                    }
-                });
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run()
-                    {
-                        progress.dismiss();
-                    }
-                });
-            }
-        })).start();
     }
 }

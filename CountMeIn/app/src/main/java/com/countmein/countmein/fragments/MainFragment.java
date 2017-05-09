@@ -1,16 +1,32 @@
 package com.countmein.countmein.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.activities.MainActivity;
+import com.countmein.countmein.activities.SelectedActivity;
 import com.countmein.countmein.adapters.RVAdapter;
+import com.countmein.countmein.beans.ActivityBean;
+import com.countmein.countmein.beans.ChatMessageBean;
+import com.countmein.countmein.holders.ActivityViewHolder;
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,9 +36,9 @@ public class MainFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
 
     protected RecyclerView mRecyclerView;
-    protected RVAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     View rootView;
+    private FirebaseRecyclerAdapter<ActivityBean,ActivityViewHolder> adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -42,9 +58,40 @@ public class MainFragment extends Fragment {
         // elements are laid out.
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new RVAdapter(MainActivity.activities);
+        adapter  = new FirebaseRecyclerAdapter<ActivityBean,ActivityViewHolder >(ActivityBean.class,
+                R.layout.single_card_view,ActivityViewHolder.class, FirebaseDatabase.getInstance().getReference().child("useractivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+
+            @Override
+            protected void populateViewHolder(ActivityViewHolder viewHolder, ActivityBean model, int position) {
+                viewHolder.vName.setText(model.name);
+                viewHolder.vDescription.setText(model.description);
+                viewHolder.vDate.setText(model.date);
+                //viewHolder.vDate.setVisibility(View.GONE);
+
+                LinearLayout ln = (LinearLayout) viewHolder.cv.findViewById(R.id.text_container);
+                ln.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View view){
+                        String selectedTitle = ((TextView)view.findViewById(R.id.activity_name)).getText().toString();
+                        String selectedDescription = ((TextView)view.findViewById(R.id.activity_description)).getText().toString();
+                        String selectedDate = ((TextView)view.findViewById(R.id.activity_date)).getText().toString();
+
+                        Toast toast = Toast.makeText(getApplicationContext(), selectedTitle, Toast.LENGTH_SHORT);
+                        toast.show();
+                        Intent i = new Intent(view.getContext(), SelectedActivity.class);
+                        i.putExtra("naslov", selectedTitle);
+                        i.putExtra("opis", selectedDescription);
+                        i.putExtra("datum", selectedDate);
+
+                        view.getContext().startActivity(i);
+                    }
+                });
+            }
+        };
+
         // Set CustomAdapter as the adapter for RecyclerView.
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(adapter);
 
         return rootView;
     }

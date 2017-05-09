@@ -34,10 +34,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ActivityViewHolder
     }
 
     public static class ActivityViewHolder extends RecyclerView.ViewHolder{
-        private CardView cv;
-        private TextView vName;
-        private TextView vDescription;
-        private TextView vDate;
+        public CardView cv;
+        public TextView vName;
+        public TextView vDescription;
+        public TextView vDate;
 
         public ActivityViewHolder(View itemView){
             super(itemView);
@@ -46,6 +46,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ActivityViewHolder
             vDescription = (TextView) itemView.findViewById(R.id.activity_description);
             vDate = (TextView) itemView.findViewById(R.id.activity_date);
         }
+
     }
 
     public RVAdapter(List<ActivityBean> activities){
