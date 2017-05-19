@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.countmein.countmein.R;
+import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.ChatMessageBean;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -67,10 +68,13 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        Intent myIntent = getIntent(); // gets the previously created intent
-        String naslov = myIntent.getStringExtra("naslov"); // will return "FirstKeyValue"
-        String opis= myIntent.getStringExtra("opis");
-        String datum= myIntent.getStringExtra("datum");
+
+        Bundle bundle = getIntent().getExtras();
+        ActivityBean activity=(ActivityBean) bundle.getSerializable("data");
+
+        String naslov=activity.getName();
+        String opis= activity.getDescription();
+        String datum=activity.getDate();
 
         mTextView1 = (TextView) findViewById(R.id.naslov);
         mTextView2 = (TextView) findViewById(R.id.opis);
@@ -125,83 +129,7 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
 
     }
 
-    /*@Background
-    void searchAsync() {
-        String result = "";
-        URL url = null;
-        try {
-            url = new URL(API_URL_FCM);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        HttpURLConnection conn = null;
-        try {
-            conn = (HttpURLConnection) url.openConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        conn.setUseCaches(false);
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-
-        try {
-            conn.setRequestMethod("POST");
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        }
-        conn.setRequestProperty("Authorization", "key=" + AUTH_KEY_FCM);
-        conn.setRequestProperty("Content-Type", "application/json");
-
-        JSONObject json = new JSONObject();
-
-        try {
-            json.put("to", FirebaseInstanceId.getInstance().getToken().trim());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JSONObject info = new JSONObject();
-        try {
-            info.put("title", "notification title"); // Notification title
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            info.put("body", "message body"); // Notification
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        // body
-        try {
-            json.put("notification", info);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            OutputStreamWriter wr = new OutputStreamWriter(
-                    conn.getOutputStream());
-            wr.write(json.toString());
-            wr.flush();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    (conn.getInputStream())));
-
-            String output;
-            System.out.println("Output from Server .... \n");
-            while ((output = br.readLine()) != null) {
-                System.out.println(output);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-        System.out.println("GCM Notification is sent successfully");
-
-
-
-    }
-*/
 
     private void displayChatMessages() {
 
