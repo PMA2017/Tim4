@@ -25,8 +25,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.androidannotations.annotations.EBean;
+
+import static com.countmein.countmein.R.id.map;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +44,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private FirebaseListAdapter<ChatMessageBean> adapter;
     private static final int MY_LOCATION_REQUEST_CODE = 1;
-    MarkerOptions marker=new MarkerOptions();
+    MarkerOptions marker=null;
 
     SupportMapFragment mMapFragment;
 
@@ -58,7 +62,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
 
-        mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(map);
         mMapFragment.getMapAsync(this);
 
 
@@ -99,8 +103,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                        @Override
                                        public void onMapClick(LatLng latLng) {
 
-                                           mMap.addMarker(marker.position(latLng));
+                                           FirebaseMessaging.getInstance().subscribeToTopic("blaaaa");
 
+
+                                           if(marker!=null){ //if marker exists (not null or whatever)
+                                               marker.position(latLng);
+                                           }
+                                           else{
+                                               marker=new MarkerOptions();
+                                               mMap.addMarker(marker.position(latLng).draggable(true));
+                                           }
 
                                        }
                                    }

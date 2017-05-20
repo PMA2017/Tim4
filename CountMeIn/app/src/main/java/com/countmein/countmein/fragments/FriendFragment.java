@@ -1,5 +1,6 @@
 package com.countmein.countmein.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,11 +8,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
-import com.countmein.countmein.adapters.FriendAdapter;
+import com.countmein.countmein.activities.SelectedActivity;
+
+import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.PersonInfoBean;
+import com.countmein.countmein.beans.User;
+import com.countmein.countmein.holders.ActivityViewHolder;
+import com.countmein.countmein.holders.FriendActivityViewHolder;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +32,7 @@ public class FriendFragment extends Fragment {
 
     private  List<PersonInfoBean> details;
     protected RecyclerView mRecyclerView;
-    protected FriendAdapter mAdapter;
+    private FirebaseRecyclerAdapter<User,FriendActivityViewHolder> adapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
     public FriendFragment() {
@@ -34,6 +44,9 @@ public class FriendFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         HomeActivity.toolbar.setTitle("My Friends");
+
+
+
         getData();
     }
 
@@ -51,6 +64,21 @@ public class FriendFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        adapter  = new FirebaseRecyclerAdapter<User,FriendActivityViewHolder>(User.class,
+                R.layout.friend_card_view,FriendActivityViewHolder.class, FirebaseDatabase.getInstance().getReference().child("userfriends").child(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+
+            @Override
+            protected void populateViewHolder(FriendActivityViewHolder viewHolder, User model, int position) {
+
+
+                viewHolder.fName.setText(model.getUsername());
+                viewHolder.fSurname.setText(model.getId());
+
+            }
+        };
+
+        // Set CustomAdapter as the adapter for RecyclerView.
+        mRecyclerView.setAdapter(adapter);
 
 /*        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(),mRecyclerView,new RecyclerItemClickListener.OnItemClickListener(){
             @Override
@@ -70,11 +98,7 @@ public class FriendFragment extends Fragment {
                 startActivity(i);
             }
         }));
-        */
-        mAdapter = new FriendAdapter(details);
-        // Set CustomAdapter as the adapter for RecyclerView.
-        mRecyclerView.setAdapter(mAdapter);
-
+      */
 
         return rootView;
     }
@@ -84,6 +108,7 @@ public class FriendFragment extends Fragment {
         details.add(new PersonInfoBean("Ivana","Zivic"));
         details.add(new PersonInfoBean("Ivan","Divljak"));
         details.add(new PersonInfoBean("Violeta","Novakovic"));
+        
         return details;
     }
 }
