@@ -108,7 +108,7 @@ public class FriendFragment extends Fragment {
         details.add(new PersonInfoBean("Ivana","Zivic"));
         details.add(new PersonInfoBean("Ivan","Divljak"));
         details.add(new PersonInfoBean("Violeta","Novakovic"));
-        
+
         return details;
     }
 }

@@ -1,5 +1,7 @@
 package com.countmein.countmein.beans;
 
+import android.widget.BaseAdapter;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 
@@ -13,7 +15,7 @@ import java.util.Map;
  */
 
 
-public class ActivityBean  implements Serializable{
+public class ActivityBean  extends BaseModel implements Serializable{
     public String name;
     public String description;
     public String date;

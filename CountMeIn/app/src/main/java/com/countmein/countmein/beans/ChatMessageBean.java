@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by Home on 4/22/2017.
  */
 
-public class ChatMessageBean {
+public class ChatMessageBean extends BaseModel {
 
     private String messageText;
     private String messageUser;
