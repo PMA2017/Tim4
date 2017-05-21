@@ -15,6 +15,8 @@ import com.google.firebase.database.ValueEventListener;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -81,6 +83,9 @@ public class UserDao {
         }
 
         return null;
+    }
+    public List<User> getAllUsers(){
+        return new ArrayList<User>(users.values());
     }
 
     public User getCurrentUser() {

@@ -16,6 +16,7 @@
 
 package com.countmein.countmein.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -224,6 +225,9 @@ public class EmailPasswordActivity extends BaseActivity implements
             findViewById(R.id.verify_email_button).setEnabled(!user.isEmailVerified());
 
             findViewById(R.id.email_password_fields).setVisibility(View.GONE);
+
+            Intent intent = new Intent(EmailPasswordActivity.this, HomeActivity_.class);
+            startActivity(intent);
             
             /*Intent intent = new Intent(EmailPasswordActivity.this, HomeActivity.class);
             startActivity(intent);*/
