@@ -19,6 +19,7 @@ import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.User;
 import com.countmein.countmein.dao.UserDao;
 import com.countmein.countmein.eventBus.event.UsersLoadedEvent;
+import com.countmein.countmein.fragments.AllPeopleFragment;
 import com.countmein.countmein.fragments.AttendingActivitiesFragment;
 import com.countmein.countmein.fragments.FriendFragment;
 import com.countmein.countmein.fragments.GroupFragment;
@@ -232,6 +233,16 @@ public class HomeActivity extends AppCompatActivity
             FirebaseAuth.getInstance().signOut();
             Intent i=new Intent(this,MainActivity.class);
             startActivity(i);
+        }else if(id==R.id.nav_all_people){
+            AllPeopleFragment fragment = new AllPeopleFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                    .beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.commit();
+
+            //set specific floating action
+           // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+           // fab.hide();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

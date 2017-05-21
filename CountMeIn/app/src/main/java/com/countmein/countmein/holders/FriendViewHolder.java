@@ -11,12 +11,12 @@ import com.countmein.countmein.R;
  * Created by Home on 5/20/2017.
  */
 
-public class FriendActivityViewHolder extends RecyclerView.ViewHolder{
+public class FriendViewHolder extends RecyclerView.ViewHolder{
     public CardView cv;
     public TextView fName;
     public TextView fSurname;
 
-    public FriendActivityViewHolder(View itemView){
+    public FriendViewHolder(View itemView){
         super(itemView);
 
         cv = (CardView) itemView.findViewById(R.id.friend_cardview);
