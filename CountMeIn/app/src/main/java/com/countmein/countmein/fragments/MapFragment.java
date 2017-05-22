@@ -28,6 +28,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -49,6 +50,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FirebaseListAdapter<ChatMessageBean> adapter;
     private static final int MY_LOCATION_REQUEST_CODE = 1;
     MarkerOptions marker=null;
+    Marker mMarker;
     public SupportMapFragment  mMapFragment;
 
     public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
@@ -101,7 +103,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            //mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(mMap.getMyLocation().getLatitude(),mMap.getMyLocation().getLongitude())));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(HomeActivity.hLat,HomeActivity.hLog)));
         } else {
             // Show rationale and request permission.
@@ -116,11 +117,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
                                            if(marker!=null){ //if marker exists (not null or whatever)
-                                               marker.position(latLng);
+                                               mMarker.setPosition(latLng);
                                            }
                                            else{
                                                marker=new MarkerOptions();
-                                               mMap.addMarker(marker.position(latLng).draggable(true));
+                                               mMarker = mMap.addMarker(marker.position(latLng).draggable(true));
                                            }
 
                                        }

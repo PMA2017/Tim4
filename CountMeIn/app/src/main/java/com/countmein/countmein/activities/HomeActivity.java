@@ -116,6 +116,7 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         // simpleDraweeView.setImageURI(userFirebase.getPhotoUrl().toString());
 
+        //Getting location for camera position
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
