@@ -49,8 +49,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private FirebaseListAdapter<ChatMessageBean> adapter;
     private static final int MY_LOCATION_REQUEST_CODE = 1;
-    MarkerOptions marker=null;
-    Marker mMarker;
+    private MarkerOptions marker=null;
+    public static Marker mMarker;
     public SupportMapFragment  mMapFragment;
 
     public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";

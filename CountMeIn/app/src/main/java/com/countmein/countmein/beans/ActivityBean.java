@@ -19,15 +19,18 @@ public class ActivityBean  extends BaseModel implements Serializable{
     public String name;
     public String description;
     public String date;
-    public LatLng location;
+    public String lLng;
+    public String lLat;
 
     public ActivityBean() {
     }
 
-    public ActivityBean(String name, String description, String date){
+    public ActivityBean(String name, String description, String date, String lLat, String lLng){
         this.name = name;
         this.description = description;
         this.date = date;
+        this.lLng = lLng;
+        this.lLat = lLat;
     }
 
     public String getName() {
@@ -54,6 +57,22 @@ public class ActivityBean  extends BaseModel implements Serializable{
         this.date = date;
     }
 
+    public String getlLng() {
+        return lLng;
+    }
+
+    public void setlLng(String lLng) {
+        this.lLng = lLng;
+    }
+
+    public String getlLat() {
+        return lLat;
+    }
+
+    public void setlLat(String lLat) {
+        this.lLat = lLat;
+    }
+
     @Exclude
 
     public Map<String, Object> toMap(){
@@ -61,6 +80,8 @@ public class ActivityBean  extends BaseModel implements Serializable{
         result.put("name", name);
         result.put("description", description);
         result.put("date", date);
+        result.put("lLat", lLat);
+        result.put("lLng", lLng);
 
         return result;
     }

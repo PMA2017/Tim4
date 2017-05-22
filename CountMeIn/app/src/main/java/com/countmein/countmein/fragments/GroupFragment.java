@@ -93,10 +93,10 @@ public class GroupFragment extends Fragment {
     public void getData(){
         ArrayList<ActivityBean> act1 = new ArrayList<>();
 
-        act1.add(new ActivityBean("grupa 1","Ovo je grupa 1", new Date().toString()));
-        act1.add(new ActivityBean("grupa 2","Ovo je grupa 2", new Date().toString()));
-        act1.add(new ActivityBean("grupa 3","Ovo je grupa 3", new Date().toString()));
-        act1.add(new ActivityBean("grupa 4","Ovo je grupa 4", new Date().toString()));
+        act1.add(new ActivityBean("grupa 1","Ovo je grupa 1", new Date().toString(),null,null));
+        act1.add(new ActivityBean("grupa 2","Ovo je grupa 2", new Date().toString(),null,null));
+        act1.add(new ActivityBean("grupa 3","Ovo je grupa 3", new Date().toString(),null,null));
+        act1.add(new ActivityBean("grupa 4","Ovo je grupa 4", new Date().toString(),null,null));
 
         activities = act1;
 

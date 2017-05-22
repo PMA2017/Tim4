@@ -21,6 +21,7 @@ import com.countmein.countmein.fragments.WorkaroundMapFragment;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -81,6 +82,8 @@ public class NewActivityActivity extends AppCompatActivity {
                 String aName;
                 String aDesc;
                 DatePicker aDate;
+                double lLat;
+                double lLng;
                 ActivityBean newAct;
 
                 switch (item.getItemId()){
@@ -89,8 +92,10 @@ public class NewActivityActivity extends AppCompatActivity {
                         aName = ((EditText) findViewById(R.id.activityName)).getText().toString();
                         aDesc = ((EditText) findViewById(R.id.activityDesc)).getText().toString();
                         aDate = ((DatePicker) findViewById(R.id.new_activity_date));
+                        lLng = MapFragment.mMarker.getPosition().longitude;
+                        lLat = MapFragment.mMarker.getPosition().latitude;
 
-                        newAct = new ActivityBean(aName, aDesc, convertData(aDate));
+                        newAct = new ActivityBean(aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng));
                         addNewActivityAsaChild(newAct);
 
                         Toast.makeText(getApplicationContext(),"Activiti was made successfully", Toast.LENGTH_SHORT);
