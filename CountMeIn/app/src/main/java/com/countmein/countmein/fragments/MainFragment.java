@@ -68,6 +68,7 @@ public class MainFragment extends Fragment {
                 viewHolder.vDate.setText(model.date);
 
                 //viewHolder.vDate.setVisibility(View.GONE);
+                viewHolder.cv.findViewById(R.id.button1).setVisibility(View.GONE);
 
 
                 LinearLayout ln = (LinearLayout) viewHolder.cv.findViewById(R.id.text_container);
