@@ -69,6 +69,13 @@ public class AllPeopleFragment  extends Fragment {
 
                 viewHolder.messageUser.setText(model.getUsername());
                 viewHolder.userPhoto.setImageURI(model.getPhotoUrl());
+                viewHolder.button.setTag(model);
+                viewHolder.button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FirebaseDatabase.getInstance().getReference().child("userfriends").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().setValue(v.getTag());
+                    }
+                });
 
             }
         };
