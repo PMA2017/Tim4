@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -84,16 +82,14 @@
                     android:startYear="2016"
                     />
             </LinearLayout>
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:id="@+id/fragment_container">
 
-            </FrameLayout>
         </LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/fragment_map">
+        </FrameLayout>
     </LinearLayout>
-
-
 </ScrollView>
 
 

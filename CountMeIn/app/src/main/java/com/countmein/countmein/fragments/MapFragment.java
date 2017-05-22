@@ -4,6 +4,7 @@ package com.countmein.countmein.fragments;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -14,9 +15,12 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 
 import com.countmein.countmein.R;
+import com.countmein.countmein.activities.HomeActivity;
+import com.countmein.countmein.activities.NewActivityActivity;
 import com.countmein.countmein.beans.ChatMessageBean;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -45,8 +49,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FirebaseListAdapter<ChatMessageBean> adapter;
     private static final int MY_LOCATION_REQUEST_CODE = 1;
     MarkerOptions marker=null;
-
-    SupportMapFragment mMapFragment;
+    public SupportMapFragment  mMapFragment;
 
     public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
     public final static String AUTH_KEY_FCM = "Your api key";
@@ -61,10 +64,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
-
         mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(map);
         mMapFragment.getMapAsync(this);
 
+        ((WorkaroundMapFragment)mMapFragment).setListener(new WorkaroundMapFragment.OnTouchListener() {
+            @Override
+            public void onTouch() {
+                NewActivityActivity.mScrollView.requestDisallowInterceptTouchEvent(true);
+            }
+        });
 
         return v;
     }
@@ -93,7 +101,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(mMap.getMyLocation().getLatitude(),mMap.getMyLocation().getLongitude())));
+            //mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(mMap.getMyLocation().getLatitude(),mMap.getMyLocation().getLongitude())));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(HomeActivity.hLat,HomeActivity.hLog)));
         } else {
             // Show rationale and request permission.
         }
@@ -122,5 +131,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 
     }
-
 }

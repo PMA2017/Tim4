@@ -1,8 +1,14 @@
 package com.countmein.countmein.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +32,9 @@ import com.countmein.countmein.fragments.GroupFragment;
 import com.countmein.countmein.fragments.MainFragment;
 import com.facebook.CallbackManager;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,16 +54,18 @@ import java.util.List;
 
 @EActivity(R.layout.activity_nav_drawer)
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
     @ViewById(R.id.nav_view)
     NavigationView navigationView;
     public static Toolbar toolbar;
-
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+    public static double hLat;
+    public static double hLog;
 
     SimpleDraweeView simpleDraweeView;
-
     CallbackManager callbackManager;
 
     @Bean
@@ -62,15 +73,13 @@ public class HomeActivity extends AppCompatActivity
 
 
     @AfterViews
-    public void create(){
+    public void create() {
         userDao.init();
-        final FirebaseUser userFirebase= FirebaseAuth.getInstance().getCurrentUser();
-        if(userDao.userExists(userFirebase.getUid()))
-        {
+        final FirebaseUser userFirebase = FirebaseAuth.getInstance().getCurrentUser();
+        if (userDao.userExists(userFirebase.getUid())) {
             userDao.setCurrentUser(userDao.getUserById(userFirebase.getUid()));
-        }
-        else{
-            final User user=new User(userFirebase.getUid(),userFirebase.getDisplayName(),userFirebase.getPhotoUrl().toString());
+        } else {
+            final User user = new User(userFirebase.getUid(), userFirebase.getDisplayName(), userFirebase.getPhotoUrl().toString());
             userDao.write(user);
             userDao.setCurrentUser(user);
         }
@@ -78,7 +87,7 @@ public class HomeActivity extends AppCompatActivity
         MainFragment fragment = new MainFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,fragment);
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
 
         toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -105,18 +114,35 @@ public class HomeActivity extends AppCompatActivity
 
 
         navigationView.setNavigationItemSelectedListener(this);
-       // simpleDraweeView.setImageURI(userFirebase.getPhotoUrl().toString());
+        // simpleDraweeView.setImageURI(userFirebase.getPhotoUrl().toString());
 
-    }
-    @Subscribe
-    public void userLoaded(UsersLoadedEvent event){
-        final FirebaseUser userFirebase= FirebaseAuth.getInstance().getCurrentUser();
-        if(userDao.userExists(userFirebase.getUid()))
-        {
-            userDao.setCurrentUser(userDao.getUserById(userFirebase.getUid()));
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
         }
-        else{
-            final User user=new User(userFirebase.getUid(),userFirebase.getDisplayName(),userFirebase.getPhotoUrl().toString());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    public void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
+    }
+
+    @Subscribe
+    public void userLoaded(UsersLoadedEvent event) {
+        final FirebaseUser userFirebase = FirebaseAuth.getInstance().getCurrentUser();
+        if (userDao.userExists(userFirebase.getUid())) {
+            userDao.setCurrentUser(userDao.getUserById(userFirebase.getUid()));
+        } else {
+            final User user = new User(userFirebase.getUid(), userFirebase.getDisplayName(), userFirebase.getPhotoUrl().toString());
             userDao.write(user);
             userDao.setCurrentUser(user);
         }
@@ -167,7 +193,7 @@ public class HomeActivity extends AppCompatActivity
             MainFragment fragment = new MainFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,fragment);
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
 
             //set specific floating action
@@ -200,7 +226,7 @@ public class HomeActivity extends AppCompatActivity
                 }
             });
 
-        }else if (id == R.id.nav_my_groups){
+        } else if (id == R.id.nav_my_groups) {
             GroupFragment fragment = new GroupFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
@@ -231,9 +257,9 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
-            Intent i=new Intent(this,MainActivity.class);
+            Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
-        }else if(id==R.id.nav_all_people){
+        } else if (id == R.id.nav_all_people) {
             AllPeopleFragment fragment = new AllPeopleFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
@@ -241,8 +267,8 @@ public class HomeActivity extends AppCompatActivity
             fragmentTransaction.commit();
 
             //set specific floating action
-           // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-           // fab.hide();
+            // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            // fab.hide();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -250,4 +276,34 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+
+        if(mLastLocation !=null){
+            hLat = mLastLocation.getLatitude();
+            hLog = mLastLocation.getLongitude();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }

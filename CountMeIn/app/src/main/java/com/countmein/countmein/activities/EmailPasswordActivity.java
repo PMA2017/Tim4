@@ -226,8 +226,8 @@ public class EmailPasswordActivity extends BaseActivity implements
 
             findViewById(R.id.email_password_fields).setVisibility(View.GONE);
 
-            Intent intent = new Intent(EmailPasswordActivity.this, HomeActivity_.class);
-            startActivity(intent);
+           /* Intent intent = new Intent(EmailPasswordActivity.this, HomeActivity_.class);
+            startActivity(intent);*/
             
             /*Intent intent = new Intent(EmailPasswordActivity.this, HomeActivity.class);
             startActivity(intent);*/

@@ -10,12 +10,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.ChatMessageBean;
 import com.countmein.countmein.fragments.MapFragment;
+import com.countmein.countmein.fragments.WorkaroundMapFragment;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -32,6 +34,7 @@ public class NewActivityActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseUser ccUser;
     private GoogleMap mMap;
+    public static ScrollView mScrollView;
 
     private static final int MY_LOCATION_REQUEST_CODE = 1;
     private static final int SIGN_IN_REQUEST_CODE = 1;
@@ -44,14 +47,13 @@ public class NewActivityActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_activity);
 
+        mScrollView = (ScrollView) findViewById(R.id.activity_new_activity);
+
         MapFragment fr= new MapFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,  fr);
+        fragmentTransaction.replace(R.id.fragment_map,  fr);
         fragmentTransaction.commit();
-
-
-
 
         ccUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("useractivities").child(ccUser.getUid());
@@ -92,7 +94,7 @@ public class NewActivityActivity extends AppCompatActivity {
                         addNewActivityAsaChild(newAct);
 
                         Toast.makeText(getApplicationContext(),"Activiti was made successfully", Toast.LENGTH_SHORT);
-                        Intent i = new Intent(NewActivityActivity.this, HomeActivity.class);
+                        Intent i = new Intent(NewActivityActivity.this, HomeActivity_.class);
                         startActivity(i);
                         break;
                 }
