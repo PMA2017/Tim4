@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.EditText;
@@ -16,12 +19,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.countmein.countmein.R;
+import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.ChatMessageBean;
+import com.countmein.countmein.fragments.FriendFragment;
+import com.countmein.countmein.fragments.MapFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -44,11 +54,11 @@ import java.net.ProtocolException;
 import java.net.URL;
 
 //@EActivity(R.layout.activity_selected)
-public class SelectedActivity extends FragmentActivity implements OnMapReadyCallback {
+public class SelectedActivity extends AppCompatActivity {
 
-    private GoogleMap mMap;
+
     private FirebaseListAdapter<ChatMessageBean> adapter;
-    private static final int MY_LOCATION_REQUEST_CODE = 1;
+
     private static final int SIGN_IN_REQUEST_CODE = 1;
 
     public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
@@ -59,18 +69,18 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
-        Intent myIntent = getIntent(); // gets the previously created intent
-        String naslov = myIntent.getStringExtra("naslov"); // will return "FirstKeyValue"
-        String opis= myIntent.getStringExtra("opis");
-        String datum= myIntent.getStringExtra("datum");
+        Bundle bundle = getIntent().getExtras();
+        ActivityBean activity=(ActivityBean) bundle.getSerializable("data");
+
+        String naslov=activity.getName();
+        String opis= activity.getDescription();
+        String datum=activity.getDate();
 
         mTextView1 = (TextView) findViewById(R.id.naslov);
         mTextView2 = (TextView) findViewById(R.id.opis);
@@ -80,6 +90,14 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
         mTextView3.setText(datum);
 
 
+        MapFragment fr= new MapFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                .beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container,  fr);
+        fragmentTransaction.commit();
+
+
+
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             // Start sign in/sign up activity
             startActivityForResult(
@@ -87,9 +105,6 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
                     SIGN_IN_REQUEST_CODE
             );
         } else {
-            // User is already signed in. Therefore, display
-            // a welcome Toast
-
 
             displayChatMessages();
         }
@@ -125,84 +140,6 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
 
     }
 
-    /*@Background
-    void searchAsync() {
-        String result = "";
-        URL url = null;
-        try {
-            url = new URL(API_URL_FCM);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        HttpURLConnection conn = null;
-        try {
-            conn = (HttpURLConnection) url.openConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        conn.setUseCaches(false);
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-
-        try {
-            conn.setRequestMethod("POST");
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        }
-        conn.setRequestProperty("Authorization", "key=" + AUTH_KEY_FCM);
-        conn.setRequestProperty("Content-Type", "application/json");
-
-        JSONObject json = new JSONObject();
-
-        try {
-            json.put("to", FirebaseInstanceId.getInstance().getToken().trim());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JSONObject info = new JSONObject();
-        try {
-            info.put("title", "notification title"); // Notification title
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            info.put("body", "message body"); // Notification
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        // body
-        try {
-            json.put("notification", info);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            OutputStreamWriter wr = new OutputStreamWriter(
-                    conn.getOutputStream());
-            wr.write(json.toString());
-            wr.flush();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    (conn.getInputStream())));
-
-            String output;
-            System.out.println("Output from Server .... \n");
-            while ((output = br.readLine()) != null) {
-                System.out.println(output);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-        System.out.println("GCM Notification is sent successfully");
-
-
-
-    }
-*/
-
     private void displayChatMessages() {
 
         ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
@@ -229,56 +166,6 @@ public class SelectedActivity extends FragmentActivity implements OnMapReadyCall
         listOfMessages.setAdapter(adapter);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == MY_LOCATION_REQUEST_CODE) {
-            if (permissions.length == 1 &&
-                    permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    mMap.setMyLocationEnabled(true);
-                    return;
-                }
 
-            } else {
-                // Permission was denied. Display an error message.
-            }
-        }
-    }
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-        } else {
-            // Show rationale and request permission.
-        }
-        // Add a marker in Sydney, Australia, and move the camera.
-        // LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == SIGN_IN_REQUEST_CODE) {
-            if(resultCode == RESULT_OK) {
-                Toast.makeText(this,
-                        "Successfully signed in. Welcome!",
-                        Toast.LENGTH_LONG)
-                        .show();
-
-                displayChatMessages();
-            } else {
-                Toast.makeText(this,
-                        "We couldn't sign you in. Please try again later.",
-                        Toast.LENGTH_LONG)
-                        .show();
-                finish();
-            }
-        }
-    }
 }

@@ -16,11 +16,16 @@ import android.view.View;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
+import com.countmein.countmein.beans.User;
+import com.countmein.countmein.dao.UserDao;
+import com.countmein.countmein.eventBus.event.UsersLoadedEvent;
+import com.countmein.countmein.fragments.AllPeopleFragment;
 import com.countmein.countmein.fragments.AttendingActivitiesFragment;
 import com.countmein.countmein.fragments.FriendFragment;
 import com.countmein.countmein.fragments.GroupFragment;
 import com.countmein.countmein.fragments.MainFragment;
 import com.facebook.CallbackManager;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,25 +33,48 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.otto.Subscribe;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@EActivity(R.layout.activity_nav_drawer)
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    NavigationView navigationView = null;
-    public static Toolbar toolbar = null;
+
+    @ViewById(R.id.nav_view)
+    NavigationView navigationView;
+    public static Toolbar toolbar;
+
+
+    SimpleDraweeView simpleDraweeView;
 
     CallbackManager callbackManager;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Bean
+    UserDao userDao;
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nav_drawer);
 
-        //set the fragment initially
+    @AfterViews
+    public void create(){
+        userDao.init();
+        final FirebaseUser userFirebase= FirebaseAuth.getInstance().getCurrentUser();
+        if(userDao.userExists(userFirebase.getUid()))
+        {
+            userDao.setCurrentUser(userDao.getUserById(userFirebase.getUid()));
+        }
+        else{
+            final User user=new User(userFirebase.getUid(),userFirebase.getDisplayName(),userFirebase.getPhotoUrl().toString());
+            userDao.write(user);
+            userDao.setCurrentUser(user);
+        }
+
         MainFragment fragment = new MainFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction();
@@ -75,8 +103,23 @@ public class HomeActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
+       // simpleDraweeView.setImageURI(userFirebase.getPhotoUrl().toString());
+
+    }
+    @Subscribe
+    public void userLoaded(UsersLoadedEvent event){
+        final FirebaseUser userFirebase= FirebaseAuth.getInstance().getCurrentUser();
+        if(userDao.userExists(userFirebase.getUid()))
+        {
+            userDao.setCurrentUser(userDao.getUserById(userFirebase.getUid()));
+        }
+        else{
+            final User user=new User(userFirebase.getUid(),userFirebase.getDisplayName(),userFirebase.getPhotoUrl().toString());
+            userDao.write(user);
+            userDao.setCurrentUser(user);
+        }
 
     }
 
@@ -190,6 +233,16 @@ public class HomeActivity extends AppCompatActivity
             FirebaseAuth.getInstance().signOut();
             Intent i=new Intent(this,MainActivity.class);
             startActivity(i);
+        }else if(id==R.id.nav_all_people){
+            AllPeopleFragment fragment = new AllPeopleFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                    .beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.commit();
+
+            //set specific floating action
+           // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+           // fab.hide();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

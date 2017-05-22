@@ -1,6 +1,7 @@
 package com.countmein.countmein.activities;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,11 @@ import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
+import com.countmein.countmein.beans.ChatMessageBean;
+import com.countmein.countmein.fragments.MapFragment;
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -25,11 +31,27 @@ public class NewActivityActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private FirebaseUser ccUser;
+    private GoogleMap mMap;
+
+    private static final int MY_LOCATION_REQUEST_CODE = 1;
+    private static final int SIGN_IN_REQUEST_CODE = 1;
+
+    public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
+    public final static String AUTH_KEY_FCM = "Your api key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_activity);
+
+        MapFragment fr= new MapFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                .beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container,  fr);
+        fragmentTransaction.commit();
+
+
+
 
         ccUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("useractivities").child(ccUser.getUid());

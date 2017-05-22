@@ -84,10 +84,12 @@
                     android:startYear="2016"
                     />
             </LinearLayout>
-            <TextView
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Location - TOBE Implemented"/>
+                android:layout_height="200dp"
+                android:id="@+id/fragment_container">
+
+            </FrameLayout>
         </LinearLayout>
     </LinearLayout>
 

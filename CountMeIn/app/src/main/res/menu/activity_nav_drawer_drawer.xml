@@ -29,6 +29,11 @@
             android:id="@+id/nav_my_groups"
             android:icon="@drawable/ic_group_black_18dp"
             android:title="My Groups" />
+
+        <item
+            android:id="@+id/nav_all_people"
+            android:icon="@drawable/ic_group_black_18dp"
+            android:title="Search people" />
     </group>
 
     <group

@@ -66,26 +66,21 @@ public class MainFragment extends Fragment {
                 viewHolder.vName.setText(model.name);
                 viewHolder.vDescription.setText(model.description);
                 viewHolder.vDate.setText(model.date);
+
                 //viewHolder.vDate.setVisibility(View.GONE);
                 viewHolder.cv.findViewById(R.id.button1).setVisibility(View.GONE);
-
                 LinearLayout ln = (LinearLayout) viewHolder.cv.findViewById(R.id.text_container);
+                ln.setTag(model);
                 ln.setOnClickListener(new View.OnClickListener(){
 
                     @Override
                     public void onClick(View view){
-                        String selectedTitle = ((TextView)view.findViewById(R.id.activity_name)).getText().toString();
-                        String selectedDescription = ((TextView)view.findViewById(R.id.activity_description)).getText().toString();
-                        String selectedDate = ((TextView)view.findViewById(R.id.activity_date)).getText().toString();
-
-                        Toast toast = Toast.makeText(getApplicationContext(), selectedTitle, Toast.LENGTH_SHORT);
-                        toast.show();
+                        ActivityBean activity=(ActivityBean) view.getTag();
                         Intent i = new Intent(view.getContext(), SelectedActivity.class);
-                        i.putExtra("naslov", selectedTitle);
-                        i.putExtra("opis", selectedDescription);
-                        i.putExtra("datum", selectedDate);
-
-                        view.getContext().startActivity(i);
+                        Bundle data= new Bundle();
+                        data.putSerializable("data",activity);
+                        i.putExtras(data);
+                         view.getContext().startActivity(i);
                     }
                 });
             }
