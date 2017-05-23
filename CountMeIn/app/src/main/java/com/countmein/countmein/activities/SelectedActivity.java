@@ -68,8 +68,6 @@ public class SelectedActivity extends AppCompatActivity {
     TextView mTextView3;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +79,8 @@ public class SelectedActivity extends AppCompatActivity {
         String naslov=activity.getName();
         String opis= activity.getDescription();
         String datum=activity.getDate();
+        String lLat = activity.getlLat();
+        String lLng = activity.getlLng();
 
         mTextView1 = (TextView) findViewById(R.id.naslov);
         mTextView2 = (TextView) findViewById(R.id.opis);
@@ -89,13 +89,17 @@ public class SelectedActivity extends AppCompatActivity {
         mTextView2.setText(opis);
         mTextView3.setText(datum);
 
+        Bundle mapBundle = new Bundle();
+        mapBundle.putDouble("markLat", Double.valueOf(lLat));
+        mapBundle.putDouble("markLng", Double.valueOf(lLng));
+        mapBundle.putInt("isSelectedAcitvity", 1);
 
         MapFragment fr= new MapFragment();
+        fr.setArguments(mapBundle);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,  fr);
+        fragmentTransaction.replace(R.id.fragment_selected_map,  fr);
         fragmentTransaction.commit();
-
 
 
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
@@ -108,9 +112,6 @@ public class SelectedActivity extends AppCompatActivity {
 
             displayChatMessages();
         }
-
-
-
 
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

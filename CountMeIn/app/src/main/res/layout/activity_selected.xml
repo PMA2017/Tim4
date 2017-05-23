@@ -30,23 +30,12 @@
             android:id="@+id/datum"
             />
 
-
-
-
-
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:id="@+id/fragment_container">
-
+            android:id="@+id/fragment_selected_map">
         </FrameLayout>
 
         <include android:id="@+id/chatinclude" layout="@layout/chatlayout" />
-
-
-
-
-
 
 </LinearLayout>

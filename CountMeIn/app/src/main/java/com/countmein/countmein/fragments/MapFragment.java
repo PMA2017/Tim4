@@ -45,13 +45,15 @@ import static com.countmein.countmein.R.id.map;
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
-    private GoogleMap mMap;
+    public static GoogleMap mMap;
 
     private FirebaseListAdapter<ChatMessageBean> adapter;
     private static final int MY_LOCATION_REQUEST_CODE = 1;
-    private MarkerOptions marker=null;
+    public static MarkerOptions marker=null;
     public static Marker mMarker;
     public SupportMapFragment  mMapFragment;
+    private LatLng setActivityMarkLocation;
+    private int isSelectedActivity;
 
     public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
     public final static String AUTH_KEY_FCM = "Your api key";
@@ -60,21 +62,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Required empty public constructor
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(map);
         mMapFragment.getMapAsync(this);
+        Bundle mapBundle = this.getArguments();
 
-        ((WorkaroundMapFragment)mMapFragment).setListener(new WorkaroundMapFragment.OnTouchListener() {
-            @Override
-            public void onTouch() {
-                NewActivityActivity.mScrollView.requestDisallowInterceptTouchEvent(true);
-            }
-        });
+        try {
+            setActivityMarkLocation = new LatLng(Double.valueOf(mapBundle.getDouble("markLat")), Double.valueOf(mapBundle.getDouble("markLng")));
+            isSelectedActivity = mapBundle.getInt("isSelectedAcitvity");
+        }catch (Exception e){
+            isSelectedActivity = 0;
+        }
+
+            ((WorkaroundMapFragment) mMapFragment).setListener(new WorkaroundMapFragment.OnTouchListener() {
+                @Override
+                public void onTouch() {
+                    if (isSelectedActivity != 1) {
+                        NewActivityActivity.mScrollView.requestDisallowInterceptTouchEvent(true);
+                    }
+                }
+            });
 
         return v;
     }
@@ -96,6 +106,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         }
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -107,7 +118,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         } else {
             // Show rationale and request permission.
         }
-
+        if(isSelectedActivity == 1) {
+            marker = new MarkerOptions();
+            mMarker = mMap.addMarker(marker.position(setActivityMarkLocation).draggable(true));
+        }
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                                        @Override
@@ -115,15 +129,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                            FirebaseMessaging.getInstance().subscribeToTopic("blaaaa");
 
-
-                                           if(marker!=null){ //if marker exists (not null or whatever)
-                                               mMarker.setPosition(latLng);
+                                           if(isSelectedActivity != 1) {
+                                               if (marker != null) { //if marker exists (not null or whatever)
+                                                   mMarker.setPosition(latLng);
+                                               } else {
+                                                   marker = new MarkerOptions();
+                                                   mMarker = mMap.addMarker(marker.position(latLng).draggable(true));
+                                               }
                                            }
-                                           else{
-                                               marker=new MarkerOptions();
-                                               mMarker = mMap.addMarker(marker.position(latLng).draggable(true));
-                                           }
-
                                        }
                                    }
         );
@@ -132,4 +145,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 
     }
+
 }
