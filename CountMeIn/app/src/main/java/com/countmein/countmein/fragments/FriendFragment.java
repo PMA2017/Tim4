@@ -66,8 +66,9 @@ public class FriendFragment extends Fragment {
             protected void populateViewHolder(FriendViewHolder viewHolder, User model, int position) {
 
 
-                viewHolder.fName.setText(model.getUsername());
-                viewHolder.fSurname.setText(model.getId());
+
+                viewHolder.messageUser.setText(model.getUsername());
+                viewHolder.userPhoto.setImageURI(model.getPhotoUrl());
 
             }
         };
