@@ -9,6 +9,7 @@
         <item name="android:windowBackground">@color/windowBackground</item>
 
     </style>
+
     <style name="userPhotoStyle">
         <item name="android:layout_width">@dimen/image_medium_size</item>
         <item name="android:layout_height">@dimen/image_medium_size</item>
@@ -19,6 +20,7 @@
         <item name="colorControlHighlight">@color/colorPrimary</item>
         <item name="colorButtonNormal">@color/colorAccent</item>
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

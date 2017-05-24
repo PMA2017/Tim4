@@ -19,6 +19,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
@@ -32,6 +34,7 @@ import com.countmein.countmein.fragments.GroupFragment;
 import com.countmein.countmein.fragments.MainFragment;
 import com.facebook.CallbackManager;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -114,6 +117,17 @@ public class HomeActivity extends AppCompatActivity
 
 
         navigationView.setNavigationItemSelectedListener(this);
+        View hView = navigationView.getHeaderView(0);
+        TextView nav_user = (TextView)hView.findViewById(R.id.nameView);
+        nav_user.setText(userFirebase.getDisplayName());
+
+        TextView nav_email = (TextView)hView.findViewById(R.id.textView);
+        nav_email.setText(userFirebase.getEmail());
+
+        SimpleDraweeView nav_image = (SimpleDraweeView)hView.findViewById(R.id.navImageView);
+      //  nav_image.setImageURI(null);
+        nav_image.setImageURI(userFirebase.getPhotoUrl());
+
         // simpleDraweeView.setImageURI(userFirebase.getPhotoUrl().toString());
 
         //Getting location for camera position
@@ -258,6 +272,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
+            LoginManager.getInstance().logOut();
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
         } else if (id == R.id.nav_all_people) {
