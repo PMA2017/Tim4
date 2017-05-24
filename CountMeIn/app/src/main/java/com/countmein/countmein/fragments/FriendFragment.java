@@ -65,8 +65,6 @@ public class FriendFragment extends Fragment {
             @Override
             protected void populateViewHolder(FriendViewHolder viewHolder, User model, int position) {
 
-
-
                 viewHolder.messageUser.setText(model.getUsername());
                 viewHolder.userPhoto.setImageURI(model.getPhotoUrl());
 
@@ -100,6 +98,7 @@ public class FriendFragment extends Fragment {
     }
 
     public List<PersonInfoBean> getData(){
+
         details = new ArrayList<>();
         details.add(new PersonInfoBean("Ivana","Zivic"));
         details.add(new PersonInfoBean("Ivan","Divljak"));

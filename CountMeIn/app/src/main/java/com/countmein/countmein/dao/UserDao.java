@@ -1,10 +1,15 @@
 package com.countmein.countmein.dao;
 
+import android.os.Bundle;
 import android.util.Log;
 
 import com.countmein.countmein.beans.User;
 import com.countmein.countmein.eventBus.OttoBus;
 import com.countmein.countmein.eventBus.event.UsersLoadedEvent;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,6 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +36,7 @@ import java.util.Map;
 public class UserDao {
 
     private static final String USERS_TAG = "users";
+    private static final String FRIENDS_TAG = "usersfriends";
 
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
 
@@ -58,8 +67,9 @@ public class UserDao {
 
     public void write(User user) {
         db.getReference(USERS_TAG).child(user.getId()).setValue(user);
-
     }
+
+
 
     public boolean userExists(String userId) {
         return users != null && users.containsKey(userId);
@@ -97,4 +107,7 @@ public class UserDao {
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
+
+
+
 }

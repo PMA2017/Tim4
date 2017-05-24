@@ -8,33 +8,44 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/x_small_margin"
         android:orientation="horizontal">
 
         <com.facebook.drawee.view.SimpleDraweeView
-            fresco:roundedCornerRadius="25dp"
             android:id="@+id/userPhoto"
-            style="@style/userPhotoStyle" />
+            style="@style/userPhotoStyle"
+            fresco:roundedCornerRadius="25dp" />
+
         <TextView
             android:id="@+id/messageUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+
+            android:elevation="1dp"
+            android:textAlignment="center"
             android:textColor="@color/secondary_text"
             android:textStyle="normal" />
 
-
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/addPeopleButton"
-            android:text="Button"
-            android:theme="@style/MyButton"/>
-
+            android:gravity="end">
+            <Button
+                android:id="@+id/addPeopleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Add friend"
+                android:textColor="@color/white"
+                android:theme="@style/MyButton" />
+        </LinearLayout>
     </LinearLayout>
-
-
 
 
 </android.support.v7.widget.CardView>
