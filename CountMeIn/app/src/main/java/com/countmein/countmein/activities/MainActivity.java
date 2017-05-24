@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+    private FirebaseAuth mAuth;
 
     private static final Class[] CLASSES = new Class[]{
             GoogleSignInActivity.class,
@@ -53,6 +54,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null) {
+            startActivity(new Intent(MainActivity.this, HomeActivity_.class));
+        }
+
         setContentView(R.layout.activity_chooser);
 
       //  Bugsnag.init(this);
