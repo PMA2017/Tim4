@@ -27,6 +27,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -114,7 +115,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(HomeActivity.hLat,HomeActivity.hLog)));
+            float zoomLevel = 16;
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(HomeActivity.hLat,HomeActivity.hLog),zoomLevel));
+   /*         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(HomeActivity.hLat,HomeActivity.hLog),zoomLevel));
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(HomeActivity.hLat, HomeActivity.hLog))      // Sets the center of the map to location user
+                    .zoom(17)                   // Sets the zoom
+                    .bearing(90)                // Sets the orientation of the camera to east
+                    .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+                    .build();                   // Creates a CameraPosition from the builder
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition)); */
         } else {
             // Show rationale and request permission.
         }
