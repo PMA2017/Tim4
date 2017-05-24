@@ -19,6 +19,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
@@ -115,6 +117,17 @@ public class HomeActivity extends AppCompatActivity
 
 
         navigationView.setNavigationItemSelectedListener(this);
+        View hView = navigationView.getHeaderView(0);
+        TextView nav_user = (TextView)hView.findViewById(R.id.nameView);
+        nav_user.setText(userFirebase.getDisplayName());
+
+        TextView nav_email = (TextView)hView.findViewById(R.id.textView);
+        nav_email.setText(userFirebase.getEmail());
+
+        SimpleDraweeView nav_image = (SimpleDraweeView)hView.findViewById(R.id.navImageView);
+      //  nav_image.setImageURI(null);
+        nav_image.setImageURI(userFirebase.getPhotoUrl());
+
         // simpleDraweeView.setImageURI(userFirebase.getPhotoUrl().toString());
 
         //Getting location for camera position
