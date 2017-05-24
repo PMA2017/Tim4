@@ -70,6 +70,7 @@ public class FacebookLoginActivity extends BaseActivity implements
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
+
             }
 
             @Override
@@ -98,16 +99,19 @@ public class FacebookLoginActivity extends BaseActivity implements
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+        if(currentUser != null) {
+            startActivity(new Intent(FacebookLoginActivity.this, HomeActivity_.class));
+        }
     }
     // [END on_start_check_user]
 
     // [START on_activity_result]
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode,  data);
 
         // Pass the activity result back to the Facebook SDK
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode,data);
     }
     // [END on_activity_result]
 
@@ -128,6 +132,8 @@ public class FacebookLoginActivity extends BaseActivity implements
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+                            startActivity(new Intent(FacebookLoginActivity.this, HomeActivity_.class));
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());

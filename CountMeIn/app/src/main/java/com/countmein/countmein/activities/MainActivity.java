@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         MainActivity.MyArrayAdapter adapter = new MainActivity.MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES);
 
-
-
         adapter.setDescriptionIds(DESCRIPTION_IDS);
 
         listView.setAdapter(adapter);
