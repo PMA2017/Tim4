@@ -72,6 +72,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ActivityViewHolder
         holder.vDescription.setText(activities.get(i).description);
         holder.vDate.setText((CharSequence) activities.get(i).date);
         LinearLayout ln = (LinearLayout) holder.cv.findViewById(R.id.text_container);
+        holder.cv.findViewById(R.id.button_view_myActivity).setVisibility(View.GONE);
+
         ln.setOnClickListener(new View.OnClickListener(){
 
             @Override

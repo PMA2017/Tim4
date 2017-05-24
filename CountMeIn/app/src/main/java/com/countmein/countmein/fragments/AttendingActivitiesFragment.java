@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.activities.SelectedActivity;
-import com.countmein.countmein.adapters.FriendsActivityAdapter;
+import com.countmein.countmein.adapters.RVAdapter;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.listeners.RecyclerItemClickListener;
 
@@ -30,7 +30,7 @@ public class AttendingActivitiesFragment extends Fragment {
         private static final String TAG = "RecyclerViewFragment";
 
         protected RecyclerView mRecyclerView;
-        protected FriendsActivityAdapter mAdapter;
+        protected RVAdapter mAdapter;
         protected RecyclerView.LayoutManager mLayoutManager;
         protected List<ActivityBean> activities;
 
@@ -76,7 +76,7 @@ public class AttendingActivitiesFragment extends Fragment {
                 }
             }));
 
-            mAdapter = new FriendsActivityAdapter(activities);
+            mAdapter = new RVAdapter(activities);
             // Set CustomAdapter as the adapter for RecyclerView.
             mRecyclerView.setAdapter(mAdapter);
 

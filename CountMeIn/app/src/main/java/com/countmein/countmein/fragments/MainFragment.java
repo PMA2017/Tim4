@@ -68,7 +68,7 @@ public class MainFragment extends Fragment {
                 viewHolder.vDate.setText(model.date);
 
                 //viewHolder.vDate.setVisibility(View.GONE);
-                viewHolder.cv.findViewById(R.id.button1).setVisibility(View.GONE);
+                viewHolder.cv.findViewById(R.id.button_view_attending_activity).setVisibility(View.GONE);
                 LinearLayout ln = (LinearLayout) viewHolder.cv.findViewById(R.id.text_container);
                 ln.setTag(model);
                 ln.setOnClickListener(new View.OnClickListener(){
@@ -80,7 +80,7 @@ public class MainFragment extends Fragment {
                         Bundle data= new Bundle();
                         data.putSerializable("data",activity);
                         i.putExtras(data);
-                         view.getContext().startActivity(i);
+                        view.getContext().startActivity(i);
                     }
                 });
             }
