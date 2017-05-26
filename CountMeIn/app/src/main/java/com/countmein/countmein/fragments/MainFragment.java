@@ -72,10 +72,13 @@ public class MainFragment extends Fragment {
 
                 //viewHolder.vDate.setVisibility(View.GONE);
                 viewHolder.cv.findViewById(R.id.button_view_attending_activity).setVisibility(View.GONE);
-                ImageButton btn = (ImageButton) viewHolder.cv.findViewById(R.id.activity_edit);
+                ImageButton btnEdit = (ImageButton) viewHolder.cv.findViewById(R.id.activity_edit);
+                ImageButton btnDelete = (ImageButton) viewHolder.cv.findViewById(R.id.activity_delete);
                 LinearLayout ln = (LinearLayout) viewHolder.cv.findViewById(R.id.text_container);
-                btn.setTag(model);
+                btnEdit.setTag(model);
+                btnDelete.setTag(model);
                 ln.setTag(model);
+
                 ln.setOnClickListener(new View.OnClickListener(){
 
                     @Override
@@ -89,7 +92,7 @@ public class MainFragment extends Fragment {
                     }
                 });
 
-                btn.setOnClickListener(new View.OnClickListener(){
+                btnEdit.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
                         ActivityBean activity=(ActivityBean) view.getTag();
@@ -101,6 +104,17 @@ public class MainFragment extends Fragment {
                         view.getContext().startActivity(i);
                     }
 
+                });
+
+                btnDelete.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View view) {
+                        ActivityBean activity=(ActivityBean) view.getTag();
+                        FirebaseDatabase.getInstance().getReference()
+                                .child("useractivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .child(activity.getId()).removeValue();
+                    }
                 });
             }
         };
