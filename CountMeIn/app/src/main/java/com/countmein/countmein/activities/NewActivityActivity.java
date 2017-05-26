@@ -36,6 +36,8 @@ public class NewActivityActivity extends AppCompatActivity {
     private FirebaseUser ccUser;
     private GoogleMap mMap;
     public static ScrollView mScrollView;
+    public  ActivityBean eActivity;
+    public int isEdit;
 
     private static final int MY_LOCATION_REQUEST_CODE = 1;
     private static final int SIGN_IN_REQUEST_CODE = 1;
@@ -46,16 +48,12 @@ public class NewActivityActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_new_activity);
-
         mScrollView = (ScrollView) findViewById(R.id.activity_new_activity);
-
+        Bundle bundle = getIntent().getExtras();
         MapFragment fr= new MapFragment();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
-                .beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_map,  fr);
-        fragmentTransaction.commit();
-
+        Bundle mapBundle = new Bundle();
         ccUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("useractivities").child(ccUser.getUid());
 
@@ -66,6 +64,35 @@ public class NewActivityActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        try{
+            eActivity = (ActivityBean) bundle.getSerializable("data");
+            isEdit = bundle.getInt("isEdit");
+            toolbar.setTitle(R.string.edit_activity);
+
+            String[] eDate = eActivity.getDate().split("-");
+
+            if(isEdit == 1){
+                ((EditText) findViewById(R.id.activityName)).setText(eActivity.getName());
+                ((EditText) findViewById(R.id.activityDesc)).setText(eActivity.getDescription());
+                ((DatePicker) findViewById(R.id.new_activity_date))
+                        .init(Integer.valueOf(eDate[2]),Integer.valueOf(eDate[1])-1,Integer.valueOf(eDate[0]),null);
+
+                mapBundle.putDouble("markLat", Double.valueOf(eActivity.getlLat()));
+                mapBundle.putDouble("markLng", Double.valueOf(eActivity.getlLng()));
+                mapBundle.putInt("isEdit", 1);
+                fr.setArguments(mapBundle);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            isEdit = 0;
+            eActivity = null;
+        }
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                .beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_map,  fr);
+        fragmentTransaction.commit();
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,22 +113,43 @@ public class NewActivityActivity extends AppCompatActivity {
                 double lLng;
                 ActivityBean newAct;
 
-                switch (item.getItemId()){
-                    case  R.id.miSave:
+                if(isEdit != 1) {
+                    switch (item.getItemId()) {
+                        case R.id.miSave:
 
-                        aName = ((EditText) findViewById(R.id.activityName)).getText().toString();
-                        aDesc = ((EditText) findViewById(R.id.activityDesc)).getText().toString();
-                        aDate = ((DatePicker) findViewById(R.id.new_activity_date));
-                        lLng = MapFragment.mMarker.getPosition().longitude;
-                        lLat = MapFragment.mMarker.getPosition().latitude;
+                            aName = ((EditText) findViewById(R.id.activityName)).getText().toString();
+                            aDesc = ((EditText) findViewById(R.id.activityDesc)).getText().toString();
+                            aDate = ((DatePicker) findViewById(R.id.new_activity_date));
+                            lLng = MapFragment.mMarker.getPosition().longitude;
+                            lLat = MapFragment.mMarker.getPosition().latitude;
 
-                        newAct = new ActivityBean(aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng));
-                        addNewActivityAsaChild(newAct);
+                            newAct = new ActivityBean(aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng));
+                            addNewActivityAsaChild(newAct);
 
-                        Toast.makeText(getApplicationContext(),"Activiti was made successfully", Toast.LENGTH_SHORT);
-                        Intent i = new Intent(NewActivityActivity.this, HomeActivity_.class);
-                        startActivity(i);
-                        break;
+                            Toast.makeText(getApplicationContext(), "Activiti was made successfully", Toast.LENGTH_SHORT);
+                            Intent i = new Intent(NewActivityActivity.this, HomeActivity_.class);
+                            startActivity(i);
+                            break;
+                    }
+                } else
+                {
+                    switch (item.getItemId()) {
+                        case R.id.miSave:
+
+                            aName = ((EditText) findViewById(R.id.activityName)).getText().toString();
+                            aDesc = ((EditText) findViewById(R.id.activityDesc)).getText().toString();
+                            aDate = ((DatePicker) findViewById(R.id.new_activity_date));
+                            lLng = MapFragment.mMarker.getPosition().longitude;
+                            lLat = MapFragment.mMarker.getPosition().latitude;
+
+                            newAct = new ActivityBean(eActivity.getId(), aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng));
+                            updateActivity(newAct);
+
+                            Toast.makeText(getApplicationContext(), "Activiti was edited successfuly", Toast.LENGTH_SHORT);
+                            Intent i = new Intent(NewActivityActivity.this, HomeActivity_.class);
+                            startActivity(i);
+                            break;
+                    }
                 }
                 return false;
             }
@@ -129,10 +177,17 @@ public class NewActivityActivity extends AppCompatActivity {
         Map<String, Object> childUpdates;
 
         key = mDatabase.push().getKey();
+        newAct.setId(key);
         postValues = newAct.toMap();
         childUpdates = new HashMap<>();
 
         childUpdates.put("/"+key, postValues);
         mDatabase.updateChildren(childUpdates);
+    }
+
+    public void updateActivity(ActivityBean activity){
+        FirebaseDatabase.getInstance().getReference()
+                .child("useractivities").child(ccUser.getUid()).child(activity.getId())
+                .setValue(activity);
     }
 }

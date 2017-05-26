@@ -54,6 +54,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public SupportMapFragment  mMapFragment;
     private LatLng setActivityMarkLocation;
     private int isSelectedActivity;
+    private int isEdit;
 
     public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
     public final static String AUTH_KEY_FCM = "Your api key";
@@ -73,6 +74,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         try {
             setActivityMarkLocation = new LatLng(Double.valueOf(mapBundle.getDouble("markLat")), Double.valueOf(mapBundle.getDouble("markLng")));
             isSelectedActivity = mapBundle.getInt("isSelectedAcitvity");
+            isEdit = mapBundle.getInt("isEdit");
         }catch (Exception e){
             isSelectedActivity = 0;
         }
@@ -118,7 +120,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         } else {
             // Show rationale and request permission.
         }
-        if(isSelectedActivity == 1) {
+        if(isSelectedActivity == 1 || isEdit == 1) {
             marker = new MarkerOptions();
             mMarker = mMap.addMarker(marker.position(setActivityMarkLocation).draggable(true));
         }

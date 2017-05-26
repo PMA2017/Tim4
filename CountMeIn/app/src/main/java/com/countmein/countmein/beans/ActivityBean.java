@@ -25,6 +25,15 @@ public class ActivityBean  extends BaseModel implements Serializable{
     public ActivityBean() {
     }
 
+    public ActivityBean(String id, String name, String description, String date, String lLat, String lLng){
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.lLng = lLng;
+        this.lLat = lLat;
+        this.setId(id);
+    }
+
     public ActivityBean(String name, String description, String date, String lLat, String lLng){
         this.name = name;
         this.description = description;
@@ -32,6 +41,7 @@ public class ActivityBean  extends BaseModel implements Serializable{
         this.lLng = lLng;
         this.lLat = lLat;
     }
+
 
     public String getName() {
         return name;
@@ -77,6 +87,7 @@ public class ActivityBean  extends BaseModel implements Serializable{
 
     public Map<String, Object> toMap(){
         HashMap<String, Object> result = new HashMap<>();
+        result.put("id", this.getId());
         result.put("name", name);
         result.put("description", description);
         result.put("date", date);
@@ -85,7 +96,5 @@ public class ActivityBean  extends BaseModel implements Serializable{
 
         return result;
     }
-
-
 
 }

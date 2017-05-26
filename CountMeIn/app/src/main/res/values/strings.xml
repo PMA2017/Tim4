@@ -10,6 +10,8 @@
     <string name="name">Name</string>
     <string name="description">Description</string>
     <string name="date">Date</string>
+    <string name="activity_preview">Activity preview</string>
+    <string name="edit_activity">Edit activity</string>
 
     <!-- Strings related to Settings -->
 

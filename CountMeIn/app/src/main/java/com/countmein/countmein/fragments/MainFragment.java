@@ -9,6 +9,8 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.activities.MainActivity;
+import com.countmein.countmein.activities.NewActivityActivity;
 import com.countmein.countmein.activities.SelectedActivity;
 import com.countmein.countmein.adapters.RVAdapter;
 import com.countmein.countmein.beans.ActivityBean;
@@ -69,7 +72,9 @@ public class MainFragment extends Fragment {
 
                 //viewHolder.vDate.setVisibility(View.GONE);
                 viewHolder.cv.findViewById(R.id.button_view_attending_activity).setVisibility(View.GONE);
+                ImageButton btn = (ImageButton) viewHolder.cv.findViewById(R.id.activity_edit);
                 LinearLayout ln = (LinearLayout) viewHolder.cv.findViewById(R.id.text_container);
+                btn.setTag(model);
                 ln.setTag(model);
                 ln.setOnClickListener(new View.OnClickListener(){
 
@@ -82,6 +87,20 @@ public class MainFragment extends Fragment {
                         i.putExtras(data);
                         view.getContext().startActivity(i);
                     }
+                });
+
+                btn.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view) {
+                        ActivityBean activity=(ActivityBean) view.getTag();
+                        Intent i = new Intent(view.getContext(), NewActivityActivity.class);
+                        Bundle data= new Bundle();
+                        data.putSerializable("data",activity);
+                        data.putInt("isEdit", 1);
+                        i.putExtras(data);
+                        view.getContext().startActivity(i);
+                    }
+
                 });
             }
         };
