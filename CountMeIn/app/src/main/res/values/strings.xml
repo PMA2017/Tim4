@@ -2,7 +2,7 @@
     <string name="app_name">CountMeIn</string>
     <string name="facebook_app_id">1678626569105465</string>
     <string name="fb_login_protocol_scheme">fb1678626569105465</string>
-    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home">Home Activity</string>
     <string name="title_activity_aaaaa">Settings</string>
     <string name="home">Home</string>
     <string name="new_activity">New Activity</string>
@@ -12,6 +12,13 @@
     <string name="date">Date</string>
     <string name="activity_preview">Activity preview</string>
     <string name="edit_activity">Edit activity</string>
+    <string name="attending_activities">Attending activities</string>
+    <string name="my_activites">My activities</string>
+    <string name="my_friends">My friends</string>
+    <string name="my_groups">My groups</string>
+    <string name="search_people">Search people</string>
+    <string name="about">About</string>
+    <string name="app_version">Version 1.0.0</string>
 
     <!-- Strings related to Settings -->
 

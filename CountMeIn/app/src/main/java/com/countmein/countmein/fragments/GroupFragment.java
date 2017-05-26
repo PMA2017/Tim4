@@ -44,7 +44,7 @@ public class GroupFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HomeActivity.toolbar.setTitle("My Groups");
+        HomeActivity.toolbar.setTitle(R.string.my_groups);
         getData();
     }
 

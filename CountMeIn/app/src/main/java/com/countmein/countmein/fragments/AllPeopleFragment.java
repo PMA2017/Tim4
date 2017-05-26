@@ -36,14 +36,10 @@ public class AllPeopleFragment  extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HomeActivity.toolbar.setTitle("Search people");
-
-
-
+        HomeActivity.toolbar.setTitle(R.string.search_people);
     }
 
     @Override
@@ -52,21 +48,14 @@ public class AllPeopleFragment  extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_all_people, container, false);
         rootView.setTag(TAG);
 
-
-
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-
-
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
         adapter  = new FirebaseRecyclerAdapter<User,PeopleViewHolder>(User.class,
                 R.layout.people_card_view,PeopleViewHolder.class, FirebaseDatabase.getInstance().getReference().child("users")) {
 
             @Override
             protected void populateViewHolder(PeopleViewHolder viewHolder, User model, int position) {
-
-
                 viewHolder.messageUser.setText(model.getUsername());
                 viewHolder.userPhoto.setImageURI(model.getPhotoUrl());
                 viewHolder.button.setTag(model);
@@ -83,10 +72,7 @@ public class AllPeopleFragment  extends Fragment {
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(adapter);
 
-
-
         return rootView;
     }
-
 
 }

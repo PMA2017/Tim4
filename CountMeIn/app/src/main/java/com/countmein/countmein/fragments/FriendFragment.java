@@ -38,9 +38,7 @@ public class FriendFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HomeActivity.toolbar.setTitle("My Friends");
-
-
+        HomeActivity.toolbar.setTitle(R.string.my_friends);
 
         getData();
     }

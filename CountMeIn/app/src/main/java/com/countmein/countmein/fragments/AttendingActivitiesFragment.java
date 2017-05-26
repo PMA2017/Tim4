@@ -37,7 +37,7 @@ public class AttendingActivitiesFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
-            HomeActivity.toolbar.setTitle("My Activities");
+            HomeActivity.toolbar.setTitle(R.string.attending_activities);
             getData();
 
         }

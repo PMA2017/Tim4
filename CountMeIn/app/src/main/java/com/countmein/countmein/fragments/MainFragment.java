@@ -46,7 +46,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        HomeActivity.toolbar.setTitle("Home");
+        HomeActivity.toolbar.setTitle(R.string.my_activites);
     }
 
     @Override

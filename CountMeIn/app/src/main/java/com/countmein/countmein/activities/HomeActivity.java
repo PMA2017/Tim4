@@ -27,6 +27,7 @@ import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.User;
 import com.countmein.countmein.dao.UserDao;
 import com.countmein.countmein.eventBus.event.UsersLoadedEvent;
+import com.countmein.countmein.fragments.AboutFragment;
 import com.countmein.countmein.fragments.AllPeopleFragment;
 import com.countmein.countmein.fragments.AttendingActivitiesFragment;
 import com.countmein.countmein.fragments.FriendFragment;
@@ -203,7 +204,7 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_my_activities) {
 
             MainFragment fragment = new MainFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
@@ -275,6 +276,7 @@ public class HomeActivity extends AppCompatActivity
             LoginManager.getInstance().logOut();
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
+
         } else if (id == R.id.nav_all_people) {
             AllPeopleFragment fragment = new AllPeopleFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
@@ -285,6 +287,18 @@ public class HomeActivity extends AppCompatActivity
             //set specific floating action
             // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
             // fab.hide();
+
+        } else if(id == R.id.nav_about){
+            AboutFragment fragment = new AboutFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                    .beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.commit();
+
+            //set specific floating action
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.hide();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
