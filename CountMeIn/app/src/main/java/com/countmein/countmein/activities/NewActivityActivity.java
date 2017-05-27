@@ -1,7 +1,12 @@
 package com.countmein.countmein.activities;
 
+
 import android.content.Intent;
-import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,18 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
-import com.countmein.countmein.beans.ChatMessageBean;
+import com.countmein.countmein.fragments.LocationFragment;
 import com.countmein.countmein.fragments.MapFragment;
-import com.countmein.countmein.fragments.WorkaroundMapFragment;
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
+import com.countmein.countmein.fragments.NewActivityDetailsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -34,26 +34,22 @@ public class NewActivityActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private FirebaseUser ccUser;
-    private GoogleMap mMap;
-    public static ScrollView mScrollView;
     public  ActivityBean eActivity;
     public int isEdit;
+    private NewActivityActivity.SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
 
-    private static final int MY_LOCATION_REQUEST_CODE = 1;
-    private static final int SIGN_IN_REQUEST_CODE = 1;
-
-    public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
-    public final static String AUTH_KEY_FCM = "Your api key";
+    private NewActivityDetailsFragment newActivityDetailsFragment;
+    private LocationFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_new_activity);
-        mScrollView = (ScrollView) findViewById(R.id.activity_new_activity);
         Bundle bundle = getIntent().getExtras();
-        MapFragment fr= new MapFragment();
-        Bundle mapBundle = new Bundle();
+        newActivityDetailsFragment = new NewActivityDetailsFragment();
+        mapFragment = new LocationFragment();
         ccUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("useractivities").child(ccUser.getUid());
 
@@ -65,34 +61,27 @@ public class NewActivityActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
         try{
             eActivity = (ActivityBean) bundle.getSerializable("data");
             isEdit = bundle.getInt("isEdit");
-            toolbar.setTitle(R.string.edit_activity);
-
-            String[] eDate = eActivity.getDate().split("-");
 
             if(isEdit == 1){
-                ((EditText) findViewById(R.id.activityName)).setText(eActivity.getName());
-                ((EditText) findViewById(R.id.activityDesc)).setText(eActivity.getDescription());
-                ((DatePicker) findViewById(R.id.new_activity_date))
-                        .init(Integer.valueOf(eDate[2]),Integer.valueOf(eDate[1])-1,Integer.valueOf(eDate[0]),null);
-
-                mapBundle.putDouble("markLat", Double.valueOf(eActivity.getlLat()));
-                mapBundle.putDouble("markLng", Double.valueOf(eActivity.getlLng()));
-                mapBundle.putInt("isEdit", 1);
-                fr.setArguments(mapBundle);
+                toolbar.setTitle(R.string.edit_activity);
+                newActivityDetailsFragment.setArguments(bundle);
+                mapFragment.setArguments(bundle);
             }
         }catch(Exception e){
             e.printStackTrace();
-            isEdit = 0;
-            eActivity = null;
         }
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
-                .beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_map,  fr);
-        fragmentTransaction.commit();
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +146,11 @@ public class NewActivityActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -189,5 +183,43 @@ public class NewActivityActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference()
                 .child("useractivities").child(ccUser.getUid()).child(activity.getId())
                 .setValue(activity);
+    }
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return newActivityDetailsFragment;
+
+                case 1:
+                    return mapFragment;
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "DETAILS";
+
+                case 1:
+                    return "LOCATION";
+            }
+            return null;
+        }
     }
 }

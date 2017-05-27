@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.countmein.countmein">
+    package="com.countmein.countmein"
+    android:installLocation="preferExternal">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -47,8 +48,8 @@
         </activity>
         <activity
             android:name=".activities.SelectedActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activities.EmailPasswordActivity" />
         <activity android:name=".activities.GoogleSignInActivity" />
         <activity
@@ -85,6 +86,10 @@
         <activity
             android:name=".activities.FacebookLoginActivity"
             android:label="@string/title_activity_facebook_login"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.probniTabAkt"
+            android:label="@string/title_activity_probni_tab_akt"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

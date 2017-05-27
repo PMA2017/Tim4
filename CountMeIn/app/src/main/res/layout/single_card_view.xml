@@ -10,13 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/text_container"
                 android:orientation="vertical"
                 android:clickable="true">
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="230dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/activity_name"
                     android:layout_margin="3dp"
@@ -24,7 +24,7 @@
                     android:duplicateParentState="true"
                     />
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="230dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/activity_description"
                     android:layout_margin="3dp"
@@ -32,7 +32,7 @@
                     android:duplicateParentState="true"
                     />
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/activity_date"
                     android:layout_margin="3dp"
@@ -50,34 +50,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/activity_edit"
-                    android:src="@drawable/ic_google"
+                    android:src="@drawable/edit"
                     />
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/activity_delete"
-                    android:src="@drawable/ic_directions_run_black_18dp"
+                    android:src="@drawable/cancel"
                     />
             </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:id="@+id/button_view_attending_activity"
-            android:orientation="vertical">
+            >
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/activity_attending"
-                android:src="@drawable/ic_menu_manage"
+                android:src="@drawable/checked"
                 />
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/activity_quit"
-                android:src="@drawable/ic_check_black_24dp"
+                android:src="@drawable/clear_button"
                 />
-        </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

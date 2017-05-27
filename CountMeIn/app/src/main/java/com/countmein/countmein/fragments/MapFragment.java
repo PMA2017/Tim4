@@ -46,18 +46,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
     public static GoogleMap mMap;
-
-    private FirebaseListAdapter<ChatMessageBean> adapter;
     private static final int MY_LOCATION_REQUEST_CODE = 1;
-    public static MarkerOptions marker=null;
+    public static MarkerOptions marker;
     public static Marker mMarker;
     public SupportMapFragment  mMapFragment;
     private LatLng setActivityMarkLocation;
     private int isSelectedActivity;
     private int isEdit;
 
-    public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
-    public final static String AUTH_KEY_FCM = "Your api key";
 
     public MapFragment() {
         // Required empty public constructor
@@ -69,6 +65,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(map);
         mMapFragment.getMapAsync(this);
+        marker=null;
         Bundle mapBundle = this.getArguments();
 
         try {
@@ -79,14 +76,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             isSelectedActivity = 0;
         }
 
-            ((WorkaroundMapFragment) mMapFragment).setListener(new WorkaroundMapFragment.OnTouchListener() {
+        /*    ((WorkaroundMapFragment) mMapFragment).setListener(new WorkaroundMapFragment.OnTouchListener() {
                 @Override
                 public void onTouch() {
-                    if (isSelectedActivity != 1) {
-                        NewActivityActivity.mScrollView.requestDisallowInterceptTouchEvent(true);
-                    }
+
                 }
-            });
+            });*/
 
         return v;
     }
@@ -142,10 +137,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                        }
                                    }
         );
-        // Add a marker in Sydney, Australia, and move the camera.
-        // LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-
+        
     }
 
 }
