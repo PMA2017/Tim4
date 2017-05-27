@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
+import com.countmein.countmein.fragments.DatePickerFragment;
 import com.countmein.countmein.fragments.LocationFragment;
 import com.countmein.countmein.fragments.MapFragment;
 import com.countmein.countmein.fragments.NewActivityDetailsFragment;
@@ -27,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +43,7 @@ public class NewActivityActivity extends AppCompatActivity {
 
     private NewActivityDetailsFragment newActivityDetailsFragment;
     private LocationFragment mapFragment;
+    private DatePickerFragment datePickerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class NewActivityActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         newActivityDetailsFragment = new NewActivityDetailsFragment();
         mapFragment = new LocationFragment();
+        datePickerFragment = new DatePickerFragment();
         ccUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("useractivities").child(ccUser.getUid());
 
@@ -78,6 +82,7 @@ public class NewActivityActivity extends AppCompatActivity {
                 toolbar.setTitle(R.string.edit_activity);
                 newActivityDetailsFragment.setArguments(bundle);
                 mapFragment.setArguments(bundle);
+                datePickerFragment.setArguments(bundle);
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -95,22 +100,28 @@ public class NewActivityActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                String aName;
-                String aDesc;
-                DatePicker aDate;
-                double lLat;
-                double lLng;
+                String aName = null;
+                String aDesc = null;
+                DatePicker aDate = null;
+                double lLat = 0;
+                double lLng = 0;
                 ActivityBean newAct;
 
                 if(isEdit != 1) {
                     switch (item.getItemId()) {
                         case R.id.miSave:
 
-                            aName = ((EditText) findViewById(R.id.activityName)).getText().toString();
-                            aDesc = ((EditText) findViewById(R.id.activityDesc)).getText().toString();
-                            aDate = ((DatePicker) findViewById(R.id.new_activity_date));
-                            lLng = MapFragment.mMarker.getPosition().longitude;
-                            lLat = MapFragment.mMarker.getPosition().latitude;
+                            try {
+                                NewActivityDetailsFragment.fetchData();
+                                aName = NewActivityDetailsFragment.aName;
+                                aDesc = NewActivityDetailsFragment.aDesc;
+                                DatePickerFragment.fetchData();
+                                aDate = DatePickerFragment.aDate;
+                                lLng = MapFragment.mMarker.getPosition().longitude;
+                                lLat = MapFragment.mMarker.getPosition().latitude;
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
 
                             newAct = new ActivityBean(aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng));
                             addNewActivityAsaChild(newAct);
@@ -125,11 +136,17 @@ public class NewActivityActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.miSave:
 
-                            aName = ((EditText) findViewById(R.id.activityName)).getText().toString();
-                            aDesc = ((EditText) findViewById(R.id.activityDesc)).getText().toString();
-                            aDate = ((DatePicker) findViewById(R.id.new_activity_date));
-                            lLng = MapFragment.mMarker.getPosition().longitude;
-                            lLat = MapFragment.mMarker.getPosition().latitude;
+                            try {
+                                NewActivityDetailsFragment.fetchData();
+                                aName = NewActivityDetailsFragment.aName;
+                                aDesc = NewActivityDetailsFragment.aDesc;
+                                DatePickerFragment.fetchData();
+                                aDate = DatePickerFragment.aDate;
+                                lLng = MapFragment.mMarker.getPosition().longitude;
+                                lLat = MapFragment.mMarker.getPosition().latitude;
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
 
                             newAct = new ActivityBean(eActivity.getId(), aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng));
                             updateActivity(newAct);
@@ -196,8 +213,9 @@ public class NewActivityActivity extends AppCompatActivity {
             switch (position) {
                 case 0:
                     return newActivityDetailsFragment;
-
                 case 1:
+                    return datePickerFragment;
+                case 2:
                     return mapFragment;
                 default:
                     return null;
@@ -207,7 +225,7 @@ public class NewActivityActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
+            return 3;
         }
 
         @Override
@@ -215,8 +233,9 @@ public class NewActivityActivity extends AppCompatActivity {
             switch (position) {
                 case 0:
                     return "DETAILS";
-
                 case 1:
+                    return "DATE";
+                case 2:
                     return "LOCATION";
             }
             return null;

@@ -15,15 +15,14 @@ import com.countmein.countmein.beans.ActivityBean;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewActivityDetailsFragment extends Fragment {
+public class DatePickerFragment extends Fragment {
 
     public  ActivityBean eActivity;
     public int isEdit;
-    public static String aName;
-    public static String aDesc;
-    public static View rootView;
+    public static DatePicker aDate;
+    public static  View rootView;
 
-    public NewActivityDetailsFragment() {
+    public DatePickerFragment() {
         // Required empty public constructor
     }
 
@@ -31,8 +30,7 @@ public class NewActivityDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        rootView = inflater.inflate(R.layout.fragment_new_activity_details, container, false);
+        rootView =inflater.inflate(R.layout.fragment_date_picker, container, false);
         Bundle bundle = this.getArguments();
 
         try {
@@ -40,20 +38,20 @@ public class NewActivityDetailsFragment extends Fragment {
             isEdit = bundle.getInt("isEdit");
 
             if (isEdit == 1) {
-                ((EditText) rootView.findViewById(R.id.activityName)).setText(eActivity.getName());
-                ((EditText) rootView.findViewById(R.id.activityDesc)).setText(eActivity.getDescription());
+                String[] eDate = eActivity.getDate().split("-");
+                ((DatePicker) rootView.findViewById(R.id.new_activity_date))
+                        .init(Integer.valueOf(eDate[2]), Integer.valueOf(eDate[1]) - 1, Integer.valueOf(eDate[0]), null);
             }
 
         }catch (Exception e){
             e.printStackTrace();
         }
-
         return rootView;
     }
 
     public static void fetchData(){
-        aName = ((EditText) rootView.findViewById(R.id.activityName)).getText().toString();
-        aDesc = ((EditText) rootView.findViewById(R.id.activityDesc)).getText().toString();
+        aDate = ((DatePicker) rootView.findViewById(R.id.new_activity_date));
     }
+
 
 }

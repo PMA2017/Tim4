@@ -45,25 +45,10 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp">
-            <TextView
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:text="@string/date"/>
-            <DatePicker
-                android:id="@+id/new_activity_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:calendarViewShown="false"
-                android:spinnersShown="true"
-                android:endYear="2100"
-                android:startYear="2016"
-                />
-        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="vertical"/>
 
     </LinearLayout>
 </ScrollView>
