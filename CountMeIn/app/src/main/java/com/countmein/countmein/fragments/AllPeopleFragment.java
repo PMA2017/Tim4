@@ -14,10 +14,21 @@ import com.countmein.countmein.beans.PersonInfoBean;
 import com.countmein.countmein.beans.User;
 import com.countmein.countmein.holders.FriendViewHolder;
 import com.countmein.countmein.holders.PeopleViewHolder;
+
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +50,9 @@ public class AllPeopleFragment  extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HomeActivity.toolbar.setTitle(R.string.search_people);
+
+        HomeActivity.toolbar.setTitle("Search people");
+
     }
 
     @Override
