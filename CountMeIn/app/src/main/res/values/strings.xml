@@ -7,6 +7,7 @@
     <string name="home">Home</string>
     <string name="new_activity">New Activity</string>
     <string name="new_group">New Group</string>
+    <string name="edit_group">Edit Group</string>
     <string name="name">Name</string>
     <string name="description">Description</string>
     <string name="date">Date</string>
@@ -19,6 +20,7 @@
     <string name="search_people">Search people</string>
     <string name="about">About</string>
     <string name="app_version">Version 1.0.0</string>
+    <string name="add_friends">Add friends</string>
 
     <!-- Strings related to Settings -->
 

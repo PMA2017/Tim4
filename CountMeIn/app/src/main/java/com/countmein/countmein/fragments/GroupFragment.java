@@ -31,6 +31,8 @@ public class GroupFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "RecyclerViewFragment";
 
+
+
     protected RecyclerView mRecyclerView;
     protected RVAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
