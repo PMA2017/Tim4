@@ -129,6 +129,7 @@ public class NewActivityActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Activiti was made successfully", Toast.LENGTH_SHORT);
                             Intent i = new Intent(NewActivityActivity.this, HomeActivity_.class);
                             startActivity(i);
+                            finish();
                             break;
                     }
                 } else
@@ -154,6 +155,7 @@ public class NewActivityActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Activiti was edited successfuly", Toast.LENGTH_SHORT);
                             Intent i = new Intent(NewActivityActivity.this, HomeActivity_.class);
                             startActivity(i);
+                            finish();
                             break;
                     }
                 }

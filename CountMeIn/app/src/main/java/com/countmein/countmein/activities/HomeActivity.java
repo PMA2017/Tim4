@@ -210,6 +210,7 @@ public class HomeActivity extends AppCompatActivity
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack("mainFragment");
             fragmentTransaction.commit();
 
             //set specific floating action
@@ -229,6 +230,7 @@ public class HomeActivity extends AppCompatActivity
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack("attendingActivitiesFragment");
             fragmentTransaction.commit();
 
             //set specific floating action
@@ -247,6 +249,7 @@ public class HomeActivity extends AppCompatActivity
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack("groupFragment");
             fragmentTransaction.commit();
 
             //set specific floating action
@@ -265,6 +268,7 @@ public class HomeActivity extends AppCompatActivity
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack("friendFragment");
             fragmentTransaction.commit();
 
             //set specific floating action
@@ -282,6 +286,7 @@ public class HomeActivity extends AppCompatActivity
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack("allPeopleFragment");
             fragmentTransaction.commit();
 
             //set specific floating action
@@ -293,6 +298,7 @@ public class HomeActivity extends AppCompatActivity
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack("aboutFragment");
             fragmentTransaction.commit();
 
             //set specific floating action
