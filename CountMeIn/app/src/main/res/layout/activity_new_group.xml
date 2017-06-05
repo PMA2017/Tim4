@@ -6,65 +6,34 @@
     android:layout_height="match_parent"
     tools:context="com.countmein.countmein.activities.NewGroupActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/my_toolbar_new_group"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:elevation="4dp"
-            />
-    </android.support.design.widget.AppBarLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="565dp"
         android:orientation="vertical">
-        
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/group_im"
-            android:paddingTop="16dp"/>
 
-        <LinearLayout
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp">
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="@string/name"/>
-            <EditText
-                android:id="@+id/groupName"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+
+            <include layout="@layout/toolbar"></include>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"/>
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="wrap_content" />
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp">
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="@string/description"/>
-            <EditText
-                android:id="@+id/groupDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"/>
-        </LinearLayout>
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </LinearLayout>
-    </LinearLayout>
+
+
+
 </android.support.constraint.ConstraintLayout>

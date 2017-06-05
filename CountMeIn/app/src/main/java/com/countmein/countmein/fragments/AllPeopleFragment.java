@@ -10,26 +10,12 @@ import android.view.ViewGroup;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
-import com.countmein.countmein.beans.PersonInfoBean;
 import com.countmein.countmein.beans.User;
-import com.countmein.countmein.holders.FriendViewHolder;
 import com.countmein.countmein.holders.PeopleViewHolder;
 
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Home on 5/21/2017.
@@ -38,7 +24,7 @@ import java.util.List;
 public class AllPeopleFragment  extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
 
-    private List<PersonInfoBean> details;
+
     protected RecyclerView mRecyclerView;
     private FirebaseRecyclerAdapter<User,PeopleViewHolder> adapter;
     protected RecyclerView.LayoutManager mLayoutManager;

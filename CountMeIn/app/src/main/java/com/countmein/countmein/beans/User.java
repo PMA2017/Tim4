@@ -1,6 +1,7 @@
 package com.countmein.countmein.beans;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Home on 5/20/2017.
@@ -12,8 +13,24 @@ public class User extends BaseModel implements Serializable {
         this.username = username;
         this.photoUrl = photoUrl;
     }
+    private String tokens;
 
     private String username;
+
+    public User(String id,String username, String photoUrl,String tokens){
+        super(id);
+        this.username=username;
+        this.photoUrl=photoUrl;
+        this.tokens=tokens;
+    }
+
+    public String getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(String tokens) {
+        this.tokens = tokens;
+    }
 
     public User() {
     }
