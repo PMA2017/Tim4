@@ -136,7 +136,7 @@ public class NewGroupActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            group = new GroupBean(eGroup.getId(),gName,gDesc,selectedusers);
+                            group = new GroupBean(eGroup.getId(),gName,gDesc,selectedusers,eGroup.getId());
                             editGroup(group);
 
 
@@ -156,6 +156,7 @@ public class NewGroupActivity extends AppCompatActivity {
 
         String key=mDatabase.getInstance().getReference().child("usergroup").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().getKey();
         group.setId(key);
+        group.setTopictoken(key);
         mDatabase.getInstance().getReference().child("usergroup").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(key).setValue(group);
 
     }
