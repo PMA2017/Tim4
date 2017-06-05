@@ -112,7 +112,6 @@ public class NewActivityActivity extends AppCompatActivity {
                         case R.id.miSave:
 
                             try {
-                                NewActivityDetailsFragment.fetchData();
                                 aName = NewActivityDetailsFragment.aName;
                                 aDesc = NewActivityDetailsFragment.aDesc;
                                 DatePickerFragment.fetchData();
@@ -126,7 +125,7 @@ public class NewActivityActivity extends AppCompatActivity {
                             newAct = new ActivityBean(aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng));
                             addNewActivityAsaChild(newAct);
 
-                            Toast.makeText(getApplicationContext(), "Activiti was made successfully", Toast.LENGTH_SHORT);
+                            Toast.makeText(getApplicationContext(), "Activity was made successfully", Toast.LENGTH_SHORT);
                             Intent i = new Intent(NewActivityActivity.this, HomeActivity_.class);
                             startActivity(i);
                             break;
