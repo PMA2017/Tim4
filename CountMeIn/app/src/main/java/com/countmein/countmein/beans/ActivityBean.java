@@ -21,17 +21,38 @@ public class ActivityBean  extends BaseModel implements Serializable{
     public String date;
     public String lLng;
     public String lLat;
+    public GroupBean group;
 
-    public ActivityBean() {
-    }
-
-    public ActivityBean(String id, String name, String description, String date, String lLat, String lLng){
+    public ActivityBean(String name, String description, String date, String lLng, String lLat, GroupBean group) {
         this.name = name;
         this.description = description;
         this.date = date;
         this.lLng = lLng;
         this.lLat = lLat;
-        this.setId(id);
+        this.group = group;
+    }
+
+    public GroupBean getGroup() {
+        return group;
+    }
+
+    public void setGroup(GroupBean group) {
+        this.group = group;
+    }
+
+
+
+    public ActivityBean() {
+    }
+
+    public ActivityBean(String id, String name, String description, String date, String lLat, String lLng){
+        super(id);
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.lLng = lLng;
+        this.lLat = lLat;
+
     }
 
     public ActivityBean(String name, String description, String date, String lLat, String lLng){

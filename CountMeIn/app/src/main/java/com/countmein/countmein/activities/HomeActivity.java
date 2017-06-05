@@ -16,23 +16,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.countmein.countmein.R;
-import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.User;
 import com.countmein.countmein.dao.UserDao;
 import com.countmein.countmein.eventBus.event.UsersLoadedEvent;
 import com.countmein.countmein.fragments.AboutFragment;
-import com.countmein.countmein.fragments.AllPeopleFragment;
+import com.countmein.countmein.fragments.people.AllPeopleFragment;
 import com.countmein.countmein.fragments.AttendingActivitiesFragment;
-import com.countmein.countmein.fragments.FriendFragment;
-import com.countmein.countmein.fragments.GroupFragment;
-import com.countmein.countmein.fragments.MainFragment;
+import com.countmein.countmein.fragments.people.FriendFragment;
+import com.countmein.countmein.fragments.group.GroupFragment;
+import com.countmein.countmein.fragments.ActivitiesFragment;
 import com.facebook.CallbackManager;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.login.LoginManager;
@@ -41,22 +38,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @EActivity(R.layout.activity_nav_drawer)
 public class HomeActivity extends AppCompatActivity
@@ -90,7 +78,7 @@ public class HomeActivity extends AppCompatActivity
             userDao.setCurrentUser(user);
         }
 
-        MainFragment fragment = new MainFragment();
+        ActivitiesFragment fragment = new ActivitiesFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
@@ -208,7 +196,7 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_my_activities) {
 
-            MainFragment fragment = new MainFragment();
+            ActivitiesFragment fragment = new ActivitiesFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);

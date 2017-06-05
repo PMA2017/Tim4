@@ -12,22 +12,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.countmein.countmein.R;
-import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.GroupBean;
 import com.countmein.countmein.beans.User;
-import com.countmein.countmein.fragments.AllPeopleFragment;
-import com.countmein.countmein.fragments.DatePickerFragment;
-import com.countmein.countmein.fragments.GroupFriendFragment;
-import com.countmein.countmein.fragments.MapFragment;
-import com.countmein.countmein.fragments.NewActivityDetailsFragment;
-import com.countmein.countmein.fragments.NewGroupDetailsFragment;
+import com.countmein.countmein.fragments.group.GroupFriendFragment;
+import com.countmein.countmein.fragments.group.NewGroupDetailsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;

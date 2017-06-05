@@ -1,4 +1,4 @@
-package com.countmein.countmein.fragments;
+package com.countmein.countmein.fragments.other;
 
 
 import android.os.Bundle;

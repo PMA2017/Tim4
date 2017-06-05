@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.ChatMessageBean;
-import com.countmein.countmein.fragments.MapFragment;
+import com.countmein.countmein.fragments.other.MapFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
 

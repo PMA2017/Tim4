@@ -1,4 +1,4 @@
-package com.countmein.countmein.fragments;
+package com.countmein.countmein.fragments.group;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,61 +10,77 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.activities.NewActivityActivity;
+import com.countmein.countmein.activities.NewGroupActivity;
 import com.countmein.countmein.activities.SelectedActivity;
 import com.countmein.countmein.beans.ActivityBean;
-import com.countmein.countmein.holders.ActivityViewHolder;
+import com.countmein.countmein.beans.GroupBean;
+import com.countmein.countmein.beans.User;
+import com.countmein.countmein.holders.GroupViewHolder;
+import com.countmein.countmein.holders.PeopleViewHolder;
+import com.countmein.countmein.listeners.RecyclerItemClickListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-/**
- * A simple {@link Fragment} subclass.
+import java.util.List;
 
- */
-public class MainFragment extends Fragment {
+import static com.facebook.FacebookSdk.getApplicationContext;
+
+public class GroupFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "RecyclerViewFragment";
 
     protected RecyclerView mRecyclerView;
+    private FirebaseRecyclerAdapter<GroupBean,GroupViewHolder> adapter;
+
     protected RecyclerView.LayoutManager mLayoutManager;
-    View rootView;
-    private FirebaseRecyclerAdapter<ActivityBean,ActivityViewHolder> adapter;
+    protected List<ActivityBean> activities;
+
+
+    public GroupFragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HomeActivity.toolbar.setTitle(R.string.my_activites);
+        HomeActivity.toolbar.setTitle(R.string.my_groups);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_group, container, false);
         rootView.setTag(TAG);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        // LinearLayoutManager is used here, this will layout the elements in a similar fashion
-        // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
-        // elements are laid out.
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        adapter  = new FirebaseRecyclerAdapter<ActivityBean,ActivityViewHolder >(ActivityBean.class,
-                R.layout.single_card_view,ActivityViewHolder.class, FirebaseDatabase.getInstance().getReference().child("useractivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+
+
+
+        adapter  = new FirebaseRecyclerAdapter<GroupBean,GroupViewHolder>(GroupBean.class,
+                R.layout.single_card_view,GroupViewHolder.class,  FirebaseDatabase.getInstance().getReference().child("usergroup").child(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
 
             @Override
-            protected void populateViewHolder(ActivityViewHolder viewHolder, ActivityBean model, int position) {
-                viewHolder.vName.setText(model.name);
-                viewHolder.vDescription.setText(model.description);
-                viewHolder.vDate.setText(model.date);
-
-                //viewHolder.vDate.setVisibility(View.GONE);
+            protected void populateViewHolder(GroupViewHolder viewHolder, GroupBean model, int position) {
+                viewHolder.vName.setText(model.getName().toString());
+                viewHolder.vDescription.setText(model.getDescription().toString());
                 viewHolder.cv.findViewById(R.id.button_view_attending_activity).setVisibility(View.GONE);
+
+                LinearLayout ln = (LinearLayout) viewHolder.cv.findViewById(R.id.text_container);
                 ImageButton btnEdit = (ImageButton) viewHolder.cv.findViewById(R.id.activity_edit);
                 ImageButton btnDelete = (ImageButton) viewHolder.cv.findViewById(R.id.activity_delete);
-                LinearLayout ln = (LinearLayout) viewHolder.cv.findViewById(R.id.text_container);
                 btnEdit.setTag(model);
                 btnDelete.setTag(model);
                 ln.setTag(model);
@@ -73,22 +89,22 @@ public class MainFragment extends Fragment {
 
                     @Override
                     public void onClick(View view){
-                        ActivityBean activity=(ActivityBean) view.getTag();
+                    /*    ActivityBean activity=(ActivityBean) view.getTag();
                         Intent i = new Intent(view.getContext(), SelectedActivity.class);
                         Bundle data= new Bundle();
                         data.putSerializable("data",activity);
                         i.putExtras(data);
-                        view.getContext().startActivity(i);
+                        view.getContext().startActivity(i);*/
                     }
                 });
 
                 btnEdit.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
-                        ActivityBean activity=(ActivityBean) view.getTag();
-                        Intent i = new Intent(view.getContext(), NewActivityActivity.class);
+                        GroupBean group=(GroupBean) view.getTag();
+                        Intent i = new Intent(view.getContext(), NewGroupActivity.class);
                         Bundle data= new Bundle();
-                        data.putSerializable("data",activity);
+                        data.putSerializable("data",group);
                         data.putInt("isEdit", 1);
                         i.putExtras(data);
                         view.getContext().startActivity(i);
@@ -100,18 +116,21 @@ public class MainFragment extends Fragment {
 
                     @Override
                     public void onClick(View view) {
-                        ActivityBean activity=(ActivityBean) view.getTag();
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("useractivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .child(activity.getId()).removeValue();
+                        GroupBean group=(GroupBean) view.getTag();
+                        FirebaseDatabase.getInstance().getReference().child("usergroup").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(group.getId()).removeValue();
                     }
                 });
+
+
             }
         };
 
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(adapter);
 
+
         return rootView;
     }
+
+
 }

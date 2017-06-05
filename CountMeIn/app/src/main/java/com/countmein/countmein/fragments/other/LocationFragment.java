@@ -1,4 +1,4 @@
-package com.countmein.countmein.fragments;
+package com.countmein.countmein.fragments.other;
 
 
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**

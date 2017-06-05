@@ -1,4 +1,4 @@
-package com.countmein.countmein.fragments;
+package com.countmein.countmein.fragments.group;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,10 +11,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.countmein.countmein.R;
-import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.GroupBean;
 import com.countmein.countmein.beans.User;
+import com.countmein.countmein.holders.GroupViewHolder;
 import com.countmein.countmein.holders.PeopleViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,38 +27,39 @@ import java.util.List;
  * Created by Home on 6/5/2017.
  */
 
-public class GroupFriendFragment extends Fragment {
+public class GroupAddActivityFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
 
 
-    public GroupBean eGroup;
+    public ActivityBean eActivity;
     public int isEdit;
-    public EditText gName;
-    public  EditText gDesc;
-    public  View rootView;
+
+    public View rootView;
 
     protected RecyclerView mRecyclerView;
-    private FirebaseRecyclerAdapter<User,PeopleViewHolder> adapter;
+    private FirebaseRecyclerAdapter<GroupBean,GroupViewHolder> adapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
-    public List<User> getSelectedusers() {
-        return selectedusers;
+
+    List<GroupBean> selectedgroups;
+
+    public List<GroupBean> getSelectedgroups() {
+        return selectedgroups;
     }
 
-    public void setSelectedusers(List<User> selectedusers) {
-        this.selectedusers = selectedusers;
+    public void setSelectedgroups(List<GroupBean> selectedgroups) {
+        this.selectedgroups = selectedgroups;
     }
 
-    List<User> selectedusers;
+    public GroupAddActivityFragment() {
 
-    public  GroupFriendFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        selectedusers=new ArrayList<>();
+        selectedgroups=new ArrayList<>();
         //HomeActivity.toolbar.setTitle("Search people");
 
     }
@@ -72,8 +73,9 @@ public class GroupFriendFragment extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        isEdit=0;
         try {
-            eGroup = (GroupBean) bundle.getSerializable("data");
+            eActivity = (ActivityBean) bundle.getSerializable("data");
             isEdit = bundle.getInt("isEdit");
 
             /*if (isEdit == 1) {
@@ -85,23 +87,27 @@ public class GroupFriendFragment extends Fragment {
             e.printStackTrace();
         }
 
-        adapter  = new FirebaseRecyclerAdapter<User,PeopleViewHolder>(User.class,
-                R.layout.people_card_view,PeopleViewHolder.class, FirebaseDatabase.getInstance().getReference().child("userfriends").child(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+        adapter  = new FirebaseRecyclerAdapter<GroupBean,GroupViewHolder>(GroupBean.class,
+                R.layout.people_card_view,GroupViewHolder.class, FirebaseDatabase.getInstance().getReference().child("usergroup").child(FirebaseAuth.getInstance().getCurrentUser().getUid())){
 
             @Override
-            protected void populateViewHolder(PeopleViewHolder viewHolder, User model, int position) {
-                viewHolder.messageUser.setText(model.getUsername());
-                viewHolder.userPhoto.setImageURI(model.getPhotoUrl());
+            protected void populateViewHolder(GroupViewHolder viewHolder, GroupBean model, int position) {
+
+                viewHolder.vName.setText(model.getName().toString());
+                viewHolder.vDescription.setText(model.getDescription().toString());
+                viewHolder.cv.findViewById(R.id.button_view_attending_activity).setVisibility(View.GONE);
+               /* viewHolder.checkBox.setTag(model);
                 viewHolder.button.setVisibility(View.GONE);
                 viewHolder.checkBox.setTag(model);
-              /*  if (isEdit == 1) {
+                if (isEdit == 1) {
                 for(int i=0;i<eGroup.getFriends().size();i++){
                     if(eGroup.getFriends().get(i).getId()==model.getId()){
                         viewHolder.checkBox.setChecked(true);
                     }
 
                  }
-                }*/
+                    System.out.print("AAAAAAAAAA");
+                }
                 viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -123,7 +129,7 @@ public class GroupFriendFragment extends Fragment {
                 });
 
 
-
+*/
             }
         };
 

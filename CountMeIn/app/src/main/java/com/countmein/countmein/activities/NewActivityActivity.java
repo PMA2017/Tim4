@@ -14,21 +14,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
-import com.countmein.countmein.fragments.DatePickerFragment;
-import com.countmein.countmein.fragments.LocationFragment;
-import com.countmein.countmein.fragments.MapFragment;
+import com.countmein.countmein.fragments.other.DatePickerFragment;
+import com.countmein.countmein.fragments.other.LocationFragment;
+import com.countmein.countmein.fragments.other.MapFragment;
 import com.countmein.countmein.fragments.NewActivityDetailsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
