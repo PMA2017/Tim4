@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
@@ -19,8 +20,8 @@ public class NewGroupDetailsFragment extends android.support.v4.app.Fragment {
 
     public GroupBean eGroup;
     public int isEdit;
-    public  String gName;
-    public  String gDesc;
+    public EditText gName;
+    public  EditText gDesc;
     public  View rootView;
 
     public NewGroupDetailsFragment() {
@@ -33,16 +34,18 @@ public class NewGroupDetailsFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_new_group_details, container, false);
+        gName=(EditText) rootView.findViewById(R.id.groupName);
+        gDesc=(EditText) rootView.findViewById(R.id.groupDesc);
         Bundle bundle = this.getArguments();
 
         try {
-           /* eGroup = (GroupBean) bundle.getSerializable("data");
+            eGroup = (GroupBean) bundle.getSerializable("data");
             isEdit = bundle.getInt("isEdit");
 
             if (isEdit == 1) {
-                ((EditText) rootView.findViewById(R.id.activityName)).setText(eGroup.getName());
-                ((EditText) rootView.findViewById(R.id.activityDesc)).setText(eGroup.getDescription());
-            }*/
+                ((EditText) rootView.findViewById(R.id.groupName)).setText(eGroup.getName());
+                ((EditText) rootView.findViewById(R.id.groupDesc)).setText(eGroup.getDescription());
+            }
 
         }catch (Exception e){
             e.printStackTrace();

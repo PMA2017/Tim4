@@ -12,6 +12,7 @@
     <string name="date">Date</string>
     <string name="activity_preview">Activity preview</string>
     <string name="edit_activity">Edit activity</string>
+    <string name="edit_group">Edit group</string>
     <string name="attending_activities">Attending activities</string>
     <string name="my_activites">My activities</string>
     <string name="my_friends">My friends</string>

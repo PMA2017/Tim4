@@ -31,6 +31,15 @@ public class GroupFriendFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     private FirebaseRecyclerAdapter<User,PeopleViewHolder> adapter;
     protected RecyclerView.LayoutManager mLayoutManager;
+
+    public List<User> getSelectedusers() {
+        return selectedusers;
+    }
+
+    public void setSelectedusers(List<User> selectedusers) {
+        this.selectedusers = selectedusers;
+    }
+
     List<User> selectedusers;
 
     public  GroupFriendFragment() {

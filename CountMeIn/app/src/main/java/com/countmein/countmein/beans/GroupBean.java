@@ -11,9 +11,17 @@ public class GroupBean extends  BaseModel implements Serializable{
 
     public String name;
     public String description;
-    public List<User> friends;
 
     public GroupBean(String name, String description, List<User> friends) {
+        this.name = name;
+        this.description = description;
+        this.friends = friends;
+    }
+
+    public List<User> friends;
+
+    public GroupBean(String id,String name, String description, List<User> friends) {
+        super(id);
         this.name = name;
         this.description = description;
         this.friends = friends;
