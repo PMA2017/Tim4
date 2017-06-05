@@ -1,13 +1,16 @@
 package com.countmein.countmein.fragments.group;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.GroupBean;
@@ -73,11 +76,6 @@ public class GroupFriendFragment extends Fragment {
             eGroup = (GroupBean) bundle.getSerializable("data");
             isEdit = bundle.getInt("isEdit");
 
-            /*if (isEdit == 1) {
-                ((EditText) rootView.findViewById(R.id.activityName)).setText(eActivity.getName());
-                ((EditText) rootView.findViewById(R.id.activityDesc)).setText(eActivity.getDescription());
-            }*/
-
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -86,19 +84,25 @@ public class GroupFriendFragment extends Fragment {
                 R.layout.people_card_view,PeopleViewHolder.class, FirebaseDatabase.getInstance().getReference().child("userfriends").child(FirebaseAuth.getInstance().getCurrentUser().getUid())){
 
             @Override
-            protected void populateViewHolder(PeopleViewHolder viewHolder, User model, int position) {
+            protected void populateViewHolder(final PeopleViewHolder viewHolder, User model, int position) {
                 viewHolder.messageUser.setText(model.getUsername());
                 viewHolder.userPhoto.setImageURI(model.getPhotoUrl());
                 viewHolder.button.setVisibility(View.GONE);
                 viewHolder.checkBox.setTag(model);
                 if (isEdit == 1) {
-                /*for(int i=0;i<eGroup.getFriends().size();i++){
-                    if(eGroup.getFriends().get(i).getId()==model.getId()){
-                        viewHolder.checkBox.setChecked(true);
+                    for(int i=0;i<eGroup.getFriends().size();i++){
+                        String friend_id = eGroup.getFriends().get(i).getId();
+                        String model_id = model.getId();
+                        Log.d("friend_did",friend_id);
+                        Log.d("model_id",model_id);
+                        if(friend_id.equals(model_id)){
+                            viewHolder.checkBox.setChecked(true);
+                            selectedusers.add(model);
+
+                        }
+
                     }
 
-                 }*/
-                System.out.print("AAAAAAAAAA");
                 }
                 viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -107,13 +111,24 @@ public class GroupFriendFragment extends Fragment {
 
                         boolean checked = ((CheckBox) v).isChecked();
                         if(checked){
+                            Log.d("clickListener", "checked");
+
                             selectedusers.add(user);
                         }else {
-                            for(int i=0;i<selectedusers.size();i++){
-                                if(user.getId()==selectedusers.get(i).getId()){
-                                    selectedusers.remove(i);
+                            if(selectedusers.size()==1){
+                                Toast.makeText(getActivity(), "You need to have at least one friend selected!", Toast.LENGTH_LONG).show();
+                                viewHolder.checkBox.setChecked(true);
+                                Log.d("size",Integer.toString(selectedusers.size()));
+                            }else{
+
+                                for(int i=0;i<selectedusers.size();i++){
+                                    if(user.getId().equals(selectedusers.get(i).getId())){
+                                        Log.d("clickListener","removed");
+                                        selectedusers.remove(i);
+                                    }
                                 }
                             }
+
                         }
 
 
