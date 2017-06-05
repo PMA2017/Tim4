@@ -19,9 +19,9 @@ public class NewGroupDetailsFragment extends android.support.v4.app.Fragment {
 
     public GroupBean eGroup;
     public int isEdit;
-    public static String gName;
-    public static String gDesc;
-    public static View rootView;
+    public  String gName;
+    public  String gDesc;
+    public  View rootView;
 
     public NewGroupDetailsFragment() {
         // Required empty public constructor
@@ -51,9 +51,6 @@ public class NewGroupDetailsFragment extends android.support.v4.app.Fragment {
         return rootView;
     }
 
-    public static void fetchData(){
-        gName = ((EditText) rootView.findViewById(R.id.groupName)).getText().toString();
-        gDesc = ((EditText) rootView.findViewById(R.id.groupDesc)).getText().toString();
-    }
+
 
 }

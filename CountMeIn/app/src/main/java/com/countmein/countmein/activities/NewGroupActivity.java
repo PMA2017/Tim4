@@ -14,12 +14,13 @@ import android.view.View;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.fragments.AllPeopleFragment;
+import com.countmein.countmein.fragments.GroupFriendFragment;
 import com.countmein.countmein.fragments.NewGroupDetailsFragment;
 
 public class NewGroupActivity extends AppCompatActivity {
 
     NewGroupDetailsFragment newGroupDetailsFragment;
-    AllPeopleFragment peopleFragment;
+    GroupFriendFragment peopleFragment;
 
     private NewGroupActivity.SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -31,7 +32,7 @@ public class NewGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_group);
 
         newGroupDetailsFragment=new NewGroupDetailsFragment();
-        peopleFragment=new AllPeopleFragment();
+        peopleFragment=new GroupFriendFragment();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         toolbar.setTitle(R.string.new_group);

@@ -62,6 +62,7 @@ public class FriendFragment extends Fragment {
                 viewHolder.messageUser.setText(model.getUsername());
                 viewHolder.userPhoto.setImageURI(model.getPhotoUrl());
                 viewHolder.button.setVisibility(View.GONE);
+                viewHolder.checkBox.setVisibility(View.GONE);
 
 
 

@@ -14,12 +14,9 @@ import android.widget.Toast;
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.activities.NewGroupActivity;
-import com.countmein.countmein.adapters.RVAdapter;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.listeners.RecyclerItemClickListener;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -32,7 +29,7 @@ public class GroupFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
 
     protected RecyclerView mRecyclerView;
-    protected RVAdapter mAdapter;
+
     protected RecyclerView.LayoutManager mLayoutManager;
     protected List<ActivityBean> activities;
 
