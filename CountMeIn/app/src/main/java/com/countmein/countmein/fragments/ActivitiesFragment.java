@@ -62,6 +62,8 @@ public class ActivitiesFragment extends Fragment {
 
                 //viewHolder.vDate.setVisibility(View.GONE);
                 viewHolder.cv.findViewById(R.id.button_view_attending_activity).setVisibility(View.GONE);
+                viewHolder.cv.findViewById(R.id.layout_checkbox).setVisibility(View.GONE);
+
                 ImageButton btnEdit = (ImageButton) viewHolder.cv.findViewById(R.id.activity_edit);
                 ImageButton btnDelete = (ImageButton) viewHolder.cv.findViewById(R.id.activity_delete);
                 LinearLayout ln = (LinearLayout) viewHolder.cv.findViewById(R.id.text_container);

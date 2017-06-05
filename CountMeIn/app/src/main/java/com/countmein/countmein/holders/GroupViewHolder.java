@@ -18,9 +18,7 @@ public class GroupViewHolder  extends RecyclerView.ViewHolder{
     public CardView cv;
     public TextView vName;
     public TextView vDescription;
-
-
-    public SimpleDraweeView userPhoto;
+    public TextView vDate;
 
     public GroupViewHolder(View itemView){
         super(itemView);

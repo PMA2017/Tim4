@@ -92,7 +92,7 @@ public class GroupAddActivityFragment extends Fragment {
                 viewHolder.vName.setText(model.getName().toString());
                 viewHolder.vDescription.setText(model.getDescription().toString());
                 viewHolder.cv.findViewById(R.id.button_view_attending_activity).setVisibility(View.GONE);
-               /* viewHolder.checkBox.setTag(model);
+                viewHolder.checkBox.setTag(model);
                 viewHolder.button.setVisibility(View.GONE);
                 viewHolder.checkBox.setTag(model);
                 if (isEdit == 1) {
