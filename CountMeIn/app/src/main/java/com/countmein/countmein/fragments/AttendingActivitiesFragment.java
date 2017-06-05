@@ -37,7 +37,6 @@ public class AttendingActivitiesFragment extends Fragment {
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
             HomeActivity.toolbar.setTitle(R.string.attending_activities);
-            getData();
 
         }
 
@@ -86,19 +85,5 @@ public class AttendingActivitiesFragment extends Fragment {
 
 
 
-        public void getData(){
-            ArrayList<ActivityBean> act1 = new ArrayList<>();
 
-            act1.add(new ActivityBean("Bleja 1","Ovo je bleja 1", new Date().toString(),null,null));
-            act1.add(new ActivityBean("Bleja 2","Ovo je bleja 2", new Date().toString(),null,null));
-            act1.add(new ActivityBean("Bleja 3","Ovo je bleja 3", new Date().toString(),null,null));
-            act1.add(new ActivityBean("Bleja 4","Ovo je bleja 4", new Date().toString(),null,null));
-            act1.add(new ActivityBean("Bleja 5","Ovo je bleja 5", new Date().toString(),null,null));
-            act1.add(new ActivityBean("Bleja 6","Ovo je bleja 6", new Date().toString(),null,null));
-            act1.add(new ActivityBean("Bleja 7","Ovo je bleja 7", new Date().toString(),null,null));
-
-
-            activities = act1;
-
-        }
 }

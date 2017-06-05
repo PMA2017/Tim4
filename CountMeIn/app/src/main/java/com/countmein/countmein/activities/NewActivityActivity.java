@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
+import com.countmein.countmein.beans.GroupBean;
+import com.countmein.countmein.fragments.group.GroupAddActivityFragment;
 import com.countmein.countmein.fragments.other.DatePickerFragment;
 import com.countmein.countmein.fragments.other.LocationFragment;
 import com.countmein.countmein.fragments.other.MapFragment;
@@ -27,7 +29,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NewActivityActivity extends AppCompatActivity {
@@ -41,6 +45,7 @@ public class NewActivityActivity extends AppCompatActivity {
 
     private NewActivityDetailsFragment newActivityDetailsFragment;
     private LocationFragment mapFragment;
+    private GroupAddActivityFragment groupFragment;
     private DatePickerFragment datePickerFragment;
 
     @Override
@@ -51,6 +56,7 @@ public class NewActivityActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         newActivityDetailsFragment = new NewActivityDetailsFragment();
         mapFragment = new LocationFragment();
+        groupFragment=new GroupAddActivityFragment();
         datePickerFragment = new DatePickerFragment();
         ccUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("useractivities").child(ccUser.getUid());
@@ -80,7 +86,9 @@ public class NewActivityActivity extends AppCompatActivity {
                 toolbar.setTitle(R.string.edit_activity);
                 newActivityDetailsFragment.setArguments(bundle);
                 mapFragment.setArguments(bundle);
+
                 datePickerFragment.setArguments(bundle);
+                groupFragment.setArguments(bundle);
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -103,6 +111,7 @@ public class NewActivityActivity extends AppCompatActivity {
                 DatePicker aDate = null;
                 double lLat = 0;
                 double lLng = 0;
+                List<GroupBean> list= new ArrayList<GroupBean>();
                 ActivityBean newAct;
 
                 if(isEdit != 1) {
@@ -110,18 +119,18 @@ public class NewActivityActivity extends AppCompatActivity {
                         case R.id.miSave:
 
                             try {
-                                NewActivityDetailsFragment.fetchData();
-                                aName = NewActivityDetailsFragment.aName;
-                                aDesc = NewActivityDetailsFragment.aDesc;
-                                DatePickerFragment.fetchData();
-                                aDate = DatePickerFragment.aDate;
+                                aName = newActivityDetailsFragment.aName.getText().toString();
+                                aDesc = newActivityDetailsFragment.aDesc.getText().toString();
+
+                                aDate = datePickerFragment.aDate;
                                 lLng = MapFragment.mMarker.getPosition().longitude;
                                 lLat = MapFragment.mMarker.getPosition().latitude;
+                                list=groupFragment.getSelectedgroups();
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
 
-                            newAct = new ActivityBean(aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng));
+                            newAct = new ActivityBean(aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng),list);
                             addNewActivityAsaChild(newAct);
 
                             Toast.makeText(getApplicationContext(), "Activiti was made successfully", Toast.LENGTH_SHORT);
@@ -135,18 +144,19 @@ public class NewActivityActivity extends AppCompatActivity {
                         case R.id.miSave:
 
                             try {
-                                NewActivityDetailsFragment.fetchData();
-                                aName = NewActivityDetailsFragment.aName;
-                                aDesc = NewActivityDetailsFragment.aDesc;
-                                DatePickerFragment.fetchData();
-                                aDate = DatePickerFragment.aDate;
+
+                                aName = newActivityDetailsFragment.aName.getText().toString();
+                                aDesc = newActivityDetailsFragment.aDesc.getText().toString();
+
+                                aDate = datePickerFragment.aDate;
                                 lLng = MapFragment.mMarker.getPosition().longitude;
                                 lLat = MapFragment.mMarker.getPosition().latitude;
+                                list=groupFragment.getSelectedgroups();
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
 
-                            newAct = new ActivityBean(eActivity.getId(), aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng));
+                            newAct = new ActivityBean(eActivity.getId(), aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng),list);
                             updateActivity(newAct);
 
                             Toast.makeText(getApplicationContext(), "Activiti was edited successfuly", Toast.LENGTH_SHORT);
@@ -181,17 +191,10 @@ public class NewActivityActivity extends AppCompatActivity {
     }
 
     public void addNewActivityAsaChild(ActivityBean newAct){
-        String key;
-        Map<String, Object> postValues;
-        Map<String, Object> childUpdates;
-
-        key = mDatabase.push().getKey();
+        String key = mDatabase.push().getKey();
         newAct.setId(key);
-        postValues = newAct.toMap();
-        childUpdates = new HashMap<>();
 
-        childUpdates.put("/"+key, postValues);
-        mDatabase.updateChildren(childUpdates);
+        mDatabase.child(key).setValue(newAct);
     }
 
     public void updateActivity(ActivityBean activity){
@@ -215,6 +218,8 @@ public class NewActivityActivity extends AppCompatActivity {
                     return datePickerFragment;
                 case 2:
                     return mapFragment;
+                case 3:
+                    return groupFragment;
                 default:
                     return null;
             }
@@ -223,7 +228,7 @@ public class NewActivityActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
@@ -235,6 +240,8 @@ public class NewActivityActivity extends AppCompatActivity {
                     return "DATE";
                 case 2:
                     return "LOCATION";
+                case 3:
+                    return "INVITES";
             }
             return null;
         }

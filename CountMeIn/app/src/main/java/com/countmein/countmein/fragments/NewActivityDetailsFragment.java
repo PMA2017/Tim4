@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
@@ -19,9 +20,9 @@ public class NewActivityDetailsFragment extends Fragment {
 
     public  ActivityBean eActivity;
     public int isEdit;
-    public static String aName;
-    public static String aDesc;
-    public static View rootView;
+    public TextView aName;
+    public  TextView aDesc;
+    public  View rootView;
 
     public NewActivityDetailsFragment() {
         // Required empty public constructor
@@ -34,6 +35,8 @@ public class NewActivityDetailsFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_new_activity_details, container, false);
         Bundle bundle = this.getArguments();
+        aDesc=(EditText) rootView.findViewById(R.id.activityName);
+        aName=(EditText) rootView.findViewById(R.id.activityDesc);
 
         try {
             eActivity = (ActivityBean) bundle.getSerializable("data");
@@ -51,9 +54,5 @@ public class NewActivityDetailsFragment extends Fragment {
         return rootView;
     }
 
-    public static void fetchData(){
-        aName = ((EditText) rootView.findViewById(R.id.activityName)).getText().toString();
-        aDesc = ((EditText) rootView.findViewById(R.id.activityDesc)).getText().toString();
-    }
 
 }

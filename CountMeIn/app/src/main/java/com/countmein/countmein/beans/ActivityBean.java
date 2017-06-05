@@ -8,6 +8,7 @@ import com.google.firebase.database.Exclude;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,9 +22,10 @@ public class ActivityBean  extends BaseModel implements Serializable{
     public String date;
     public String lLng;
     public String lLat;
-    public GroupBean group;
+    public List<GroupBean> group;
 
-    public ActivityBean(String name, String description, String date, String lLng, String lLat, GroupBean group) {
+    public ActivityBean(String name, String description, String date, String lLng, String lLat, List<GroupBean> group) {
+
         this.name = name;
         this.description = description;
         this.date = date;
@@ -31,38 +33,26 @@ public class ActivityBean  extends BaseModel implements Serializable{
         this.lLat = lLat;
         this.group = group;
     }
+    public ActivityBean(String id,String name, String description, String date, String lLng, String lLat, List<GroupBean> group) {
 
-    public GroupBean getGroup() {
-        return group;
-    }
-
-    public void setGroup(GroupBean group) {
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.lLng = lLng;
+        this.lLat = lLat;
         this.group = group;
     }
-
-
 
     public ActivityBean() {
     }
 
-    public ActivityBean(String id, String name, String description, String date, String lLat, String lLng){
-        super(id);
-        this.name = name;
-        this.description = description;
-        this.date = date;
-        this.lLng = lLng;
-        this.lLat = lLat;
-
+    public List<GroupBean> getGroup() {
+        return group;
     }
 
-    public ActivityBean(String name, String description, String date, String lLat, String lLng){
-        this.name = name;
-        this.description = description;
-        this.date = date;
-        this.lLng = lLng;
-        this.lLat = lLat;
+    public void setGroup(List<GroupBean> group) {
+        this.group = group;
     }
-
 
     public String getName() {
         return name;

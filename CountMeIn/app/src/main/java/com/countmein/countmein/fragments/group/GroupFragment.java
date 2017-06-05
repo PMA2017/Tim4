@@ -16,7 +16,7 @@ import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.activities.NewGroupActivity;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.GroupBean;
-import com.countmein.countmein.holders.GroupViewHolder;
+import com.countmein.countmein.holders.ActivityViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,7 +31,7 @@ public class GroupFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
 
     protected RecyclerView mRecyclerView;
-    private FirebaseRecyclerAdapter<GroupBean,GroupViewHolder> adapter;
+    private FirebaseRecyclerAdapter<GroupBean,ActivityViewHolder> adapter;
 
     protected RecyclerView.LayoutManager mLayoutManager;
     protected List<ActivityBean> activities;
@@ -60,14 +60,15 @@ public class GroupFragment extends Fragment {
 
 
 
-        adapter  = new FirebaseRecyclerAdapter<GroupBean,GroupViewHolder>(GroupBean.class,
-                R.layout.single_card_view,GroupViewHolder.class,  FirebaseDatabase.getInstance().getReference().child("usergroup").child(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+        adapter  = new FirebaseRecyclerAdapter<GroupBean,ActivityViewHolder>(GroupBean.class,
+                R.layout.single_card_view,ActivityViewHolder.class,  FirebaseDatabase.getInstance().getReference().child("usergroup").child(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
 
             @Override
-            protected void populateViewHolder(GroupViewHolder viewHolder, GroupBean model, int position) {
+            protected void populateViewHolder(ActivityViewHolder viewHolder, GroupBean model, int position) {
                 viewHolder.vName.setText(model.getName().toString());
                 viewHolder.vDescription.setText(model.getDescription().toString());
                 viewHolder.cv.findViewById(R.id.button_view_attending_activity).setVisibility(View.GONE);
+                viewHolder.vDate.setVisibility(View.GONE);
                 viewHolder.cv.findViewById(R.id.layout_checkbox).setVisibility(View.GONE);
 
 
