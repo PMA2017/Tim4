@@ -8,9 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
+import com.countmein.countmein.beans.ActivityBean;
+import com.countmein.countmein.beans.GroupBean;
 import com.countmein.countmein.beans.User;
 import com.countmein.countmein.holders.PeopleViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -27,6 +30,12 @@ import java.util.List;
 public class GroupFriendFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
 
+
+    public GroupBean eGroup;
+    public int isEdit;
+    public EditText gName;
+    public  EditText gDesc;
+    public  View rootView;
 
     protected RecyclerView mRecyclerView;
     private FirebaseRecyclerAdapter<User,PeopleViewHolder> adapter;
@@ -59,10 +68,23 @@ public class GroupFriendFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_all_people, container, false);
         rootView.setTag(TAG);
-
+        Bundle bundle = this.getArguments();
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        try {
+            eGroup = (GroupBean) bundle.getSerializable("data");
+            isEdit = bundle.getInt("isEdit");
+
+            /*if (isEdit == 1) {
+                ((EditText) rootView.findViewById(R.id.activityName)).setText(eActivity.getName());
+                ((EditText) rootView.findViewById(R.id.activityDesc)).setText(eActivity.getDescription());
+            }*/
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         adapter  = new FirebaseRecyclerAdapter<User,PeopleViewHolder>(User.class,
                 R.layout.people_card_view,PeopleViewHolder.class, FirebaseDatabase.getInstance().getReference().child("userfriends").child(FirebaseAuth.getInstance().getCurrentUser().getUid())){
 
@@ -72,6 +94,14 @@ public class GroupFriendFragment extends Fragment {
                 viewHolder.userPhoto.setImageURI(model.getPhotoUrl());
                 viewHolder.button.setVisibility(View.GONE);
                 viewHolder.checkBox.setTag(model);
+              /*  if (isEdit == 1) {
+                for(int i=0;i<eGroup.getFriends().size();i++){
+                    if(eGroup.getFriends().get(i).getId()==model.getId()){
+                        viewHolder.checkBox.setChecked(true);
+                    }
+
+                 }
+                }*/
                 viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

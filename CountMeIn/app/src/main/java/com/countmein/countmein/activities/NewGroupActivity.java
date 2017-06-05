@@ -102,7 +102,7 @@ public class NewGroupActivity extends AppCompatActivity {
 
                 String gName = null;
                 String gDesc = null;
-                List<User> selectedusers=null;
+                List<User> selectedusers=new ArrayList<User>();
                 GroupBean group;
 
                 GroupBean newGroup;
@@ -113,7 +113,7 @@ public class NewGroupActivity extends AppCompatActivity {
 
                             try {
 
-                               selectedusers=new ArrayList<User>();
+
                                 gDesc=newGroupDetailsFragment.gDesc.getText().toString();
                                 gName=newGroupDetailsFragment.gName.getText().toString();
                                 selectedusers=peopleFragment.getSelectedusers();
@@ -125,7 +125,7 @@ public class NewGroupActivity extends AppCompatActivity {
                             addNewGroup(group);
 
                             Toast.makeText(getApplicationContext(), "Group was made successfully", Toast.LENGTH_SHORT);
-                           // finish();
+                            finish();
                             break;
                     }
                 } else
@@ -133,26 +133,22 @@ public class NewGroupActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.miSave:
 
-                         /*   try {
-                                NewActivityDetailsFragment.fetchData();
-                                aName = NewActivityDetailsFragment.aName;
-                                aDesc = NewActivityDetailsFragment.aDesc;
-                                DatePickerFragment.fetchData();
-                                aDate = DatePickerFragment.aDate;
-                                lLng = MapFragment.mMarker.getPosition().longitude;
-                                lLat = MapFragment.mMarker.getPosition().latitude;
+                            try {
+
+                                selectedusers=new ArrayList<User>();
+                                gDesc=newGroupDetailsFragment.gDesc.getText().toString();
+                                gName=newGroupDetailsFragment.gName.getText().toString();
+                                selectedusers=peopleFragment.getSelectedusers();
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
 
-                            newAct = new ActivityBean(eActivity.getId(), aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng));
-                            updateActivity(newAct);
+                            group = new GroupBean(eGroup.getId(),gName,gDesc,selectedusers);
+                            editGroup(group);
 
-                            Toast.makeText(getApplicationContext(), "Activiti was edited successfuly", Toast.LENGTH_SHORT);
-                            Intent i = new Intent(NewActivityActivity.this, HomeActivity_.class);
-                            startActivity(i);
-                            break;*/
+
                             Toast.makeText(getApplicationContext(), "Group was made successfully", Toast.LENGTH_SHORT);
+                            finish();
 
                     }
                 }
@@ -168,6 +164,10 @@ public class NewGroupActivity extends AppCompatActivity {
         String key=mDatabase.getInstance().getReference().child("usergroup").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().getKey();
         group.setId(key);
         mDatabase.getInstance().getReference().child("usergroup").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(key).setValue(group);
+
+    }
+    private void editGroup(GroupBean group) {
+         mDatabase.getInstance().getReference().child("usergroup").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(group.getId()).setValue(group);
 
     }
 
