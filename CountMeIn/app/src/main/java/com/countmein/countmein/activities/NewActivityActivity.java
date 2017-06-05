@@ -134,8 +134,7 @@ public class NewActivityActivity extends AppCompatActivity {
                             addNewActivityAsaChild(newAct);
 
                             Toast.makeText(getApplicationContext(), "Activiti was made successfully", Toast.LENGTH_SHORT);
-                            Intent i = new Intent(NewActivityActivity.this, HomeActivity_.class);
-                            startActivity(i);
+                            finish();
                             break;
                     }
                 } else
@@ -159,9 +158,8 @@ public class NewActivityActivity extends AppCompatActivity {
                             newAct = new ActivityBean(eActivity.getId(), aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng),list);
                             updateActivity(newAct);
 
-                            Toast.makeText(getApplicationContext(), "Activiti was edited successfuly", Toast.LENGTH_SHORT);
-                            Intent i = new Intent(NewActivityActivity.this, HomeActivity_.class);
-                            startActivity(i);
+                            Toast.makeText(getApplicationContext(), "Activity was edited successfuly", Toast.LENGTH_SHORT);
+                            finish();
                             break;
                     }
                 }
@@ -199,7 +197,7 @@ public class NewActivityActivity extends AppCompatActivity {
 
     public void updateActivity(ActivityBean activity){
         FirebaseDatabase.getInstance().getReference()
-                .child("useractivities").child(ccUser.getUid()).child(activity.getId())
+                .child("useractivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(activity.getId())
                 .setValue(activity);
     }
 

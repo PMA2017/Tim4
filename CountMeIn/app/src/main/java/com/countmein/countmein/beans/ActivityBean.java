@@ -25,7 +25,6 @@ public class ActivityBean  extends BaseModel implements Serializable{
     public List<GroupBean> group;
 
     public ActivityBean(String name, String description, String date, String lLng, String lLat, List<GroupBean> group) {
-
         this.name = name;
         this.description = description;
         this.date = date;
@@ -34,7 +33,7 @@ public class ActivityBean  extends BaseModel implements Serializable{
         this.group = group;
     }
     public ActivityBean(String id,String name, String description, String date, String lLng, String lLat, List<GroupBean> group) {
-
+        super(id);
         this.name = name;
         this.description = description;
         this.date = date;
