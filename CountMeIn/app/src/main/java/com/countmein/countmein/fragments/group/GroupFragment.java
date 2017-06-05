@@ -10,27 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
-import com.countmein.countmein.activities.NewActivityActivity;
 import com.countmein.countmein.activities.NewGroupActivity;
-import com.countmein.countmein.activities.SelectedActivity;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.GroupBean;
-import com.countmein.countmein.beans.User;
 import com.countmein.countmein.holders.GroupViewHolder;
-import com.countmein.countmein.holders.PeopleViewHolder;
-import com.countmein.countmein.listeners.RecyclerItemClickListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class GroupFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -60,7 +51,7 @@ public class GroupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_group, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_recycle_view, container, false);
         rootView.setTag(TAG);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
