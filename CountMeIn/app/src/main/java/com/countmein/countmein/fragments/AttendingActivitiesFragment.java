@@ -99,7 +99,7 @@ public class AttendingActivitiesFragment extends Fragment {
 
                         @Override
                         public void onClick(View view) {
-                            FirebaseDatabase.getInstance().getReference().child("invitedactivities")
+                            FirebaseDatabase.getInstance().getReference().child("attendingactivities")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .child(model.getId()).removeValue();
                         }
