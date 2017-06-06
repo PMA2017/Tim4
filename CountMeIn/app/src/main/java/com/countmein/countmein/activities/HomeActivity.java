@@ -237,14 +237,7 @@ public class HomeActivity extends AppCompatActivity
 
             //set specific floating action
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.show();
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(HomeActivity.this, NewGroupActivity.class);
-                    startActivity(i);
-                }
-            });
+            fab.hide();
 
         } else if (id == R.id.nav_my_groups) {
             GroupFragment fragment = new GroupFragment();

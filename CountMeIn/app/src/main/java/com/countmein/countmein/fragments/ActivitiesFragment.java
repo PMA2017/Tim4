@@ -15,6 +15,7 @@ import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.activities.HomeActivity_;
 import com.countmein.countmein.activities.NewActivityActivity;
+import com.countmein.countmein.activities.NewActivityActivity_;
 import com.countmein.countmein.activities.SelectedActivity;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.holders.ActivityViewHolder;
@@ -89,7 +90,7 @@ public class ActivitiesFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         ActivityBean activity=(ActivityBean) view.getTag();
-                        Intent i = new Intent(view.getContext(), NewActivityActivity.class);
+                        Intent i = new Intent(view.getContext(), NewActivityActivity_.class);
                         Bundle data= new Bundle();
                         data.putSerializable("data",activity);
                         data.putInt("isEdit", 1);
