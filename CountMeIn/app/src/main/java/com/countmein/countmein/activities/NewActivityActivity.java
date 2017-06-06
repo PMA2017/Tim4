@@ -141,7 +141,7 @@ public class NewActivityActivity extends AppCompatActivity {
                             startActivity(jj);
 
                             int size = newAct.getGroup().size();
-
+                            ArrayList<String> tokens = new ArrayList<String>();
                             for(int i=0; i<size; i++){
                                 for(int j=0; j<newAct.getGroup().get(i).getFriends().size(); j++){
                                     String token  = newAct.getGroup().get(i).getFriends().get(j).getTokens();
@@ -151,11 +151,12 @@ public class NewActivityActivity extends AppCompatActivity {
                                     Log.d("If_exists","Doesn't exist");
                                     FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).push().setValue(token);
                                     //  }
+                                    tokens.add(token);
 
                                 }
                             }
 
-                            sendPushNotification();
+                            sendPushNotification(tokens);
 
                             finish();
                             break;
@@ -272,13 +273,11 @@ public class NewActivityActivity extends AppCompatActivity {
     }
 
     @Background
-    public void sendPushNotification(){
+    public void sendPushNotification(ArrayList<String> tokens){
         FcmNotificationBuilder notBuilder = FcmNotificationBuilder.initialize();
         notBuilder.message("You have been added to new activity.");
-        notBuilder.receiverFirebaseToken("dG8hBVCSGvs:APA91bF-UfTYOYcQP7TNAK9ApEczxBO7TC-T_Eb2zvGR8LNIOUB3VqBKFqtg6lpVXEyVXiEpqBjkp-Ur0py1xSN55cE9MqFo5X8bSPHKQXoQTzo3LgqFR7T7cHnFedeE6VHAEOWbrUdO");
-        notBuilder.firebaseToken("dG8hBVCSGvs:APA91bF-UfTYOYcQP7TNAK9ApEczxBO7TC-T_Eb2zvGR8LNIOUB3VqBKFqtg6lpVXEyVXiEpqBjkp-Ur0py1xSN55cE9MqFo5X8bSPHKQXoQTzo3LgqFR7T7cHnFedeE6VHAEOWbrUdO");
+        notBuilder.receiversFirebaseTokens(tokens);
         notBuilder.title("CountMeIn App Notification");
-
         notBuilder.send();
     }
 }

@@ -5,10 +5,13 @@ package com.countmein.countmein.services;
  */
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 import okhttp3.Call;
@@ -46,6 +49,7 @@ public class FcmNotificationBuilder {
     private String mUid;
     private String mFirebaseToken;
     private String mReceiverFirebaseToken;
+    private ArrayList<String> mReceiversFirebaseTokens;
 
     private FcmNotificationBuilder() {
 
@@ -85,6 +89,11 @@ public class FcmNotificationBuilder {
         return this;
     }
 
+    public FcmNotificationBuilder receiversFirebaseTokens(ArrayList<String> receiversFirebaseTokens) {
+        mReceiversFirebaseTokens = receiversFirebaseTokens;
+        return this;
+    }
+
     public void send() {
         RequestBody remoteMessage = null;
         try {
@@ -117,7 +126,10 @@ public class FcmNotificationBuilder {
 
     private JSONObject getValidJsonBody() throws JSONException {
         JSONObject jsonObjectBody = new JSONObject();
-        jsonObjectBody.put(KEY_TO, mReceiverFirebaseToken);
+
+
+        JSONArray jsArray = new JSONArray(mReceiversFirebaseTokens);
+        jsonObjectBody.put("registration_ids", jsArray.toString());
 
         JSONObject jsonObjectData = new JSONObject();
         jsonObjectData.put(KEY_TITLE, mTitle);
