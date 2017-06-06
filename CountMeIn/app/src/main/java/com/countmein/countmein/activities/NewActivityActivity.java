@@ -135,15 +135,14 @@ public class NewActivityActivity extends AppCompatActivity {
                             int size = newAct.getGroup().size();
 
                             for(int i=0; i<size; i++){
-                                Log.d("size", Integer.toString(newAct.getGroup().get(i).getFriends().size()));
                                 for(int j=0; j<newAct.getGroup().get(i).getFriends().size(); j++){
                                     String token  = newAct.getGroup().get(i).getFriends().get(j).getTokens();
-                                    Log.d("token",
-                                    FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).child(token).toString());
-                                //    if(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).child(token) == null){
+
+                                  System.out.print(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).equalTo(token));
+                                  //  if(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).equalTo(token) == null){
                                         Log.d("If_exists","Doesn't exist");
                                         FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).push().setValue(token);
-                                 //   }
+                                  //  }
 
                                 }
                             }
