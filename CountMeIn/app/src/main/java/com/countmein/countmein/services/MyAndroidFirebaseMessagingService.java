@@ -38,7 +38,7 @@ public class MyAndroidFirebaseMessagingService extends FirebaseMessagingService 
         Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder( this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Android Tutorial Point FCM Tutorial")
+
                 .setContentText(messageBody)
                 .setAutoCancel( true )
                 .setSound(notificationSoundURI)

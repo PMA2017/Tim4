@@ -1,4 +1,4 @@
-package com.countmein.countmein.fragments;
+package com.countmein.countmein.fragments.people;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,15 +10,12 @@ import android.view.ViewGroup;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
-import com.countmein.countmein.beans.PersonInfoBean;
 import com.countmein.countmein.beans.User;
-import com.countmein.countmein.holders.FriendViewHolder;
 import com.countmein.countmein.holders.PeopleViewHolder;
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.List;
 
 /**
  * Created by Home on 5/21/2017.
@@ -27,7 +24,7 @@ import java.util.List;
 public class AllPeopleFragment  extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
 
-    private List<PersonInfoBean> details;
+
     protected RecyclerView mRecyclerView;
     private FirebaseRecyclerAdapter<User,PeopleViewHolder> adapter;
     protected RecyclerView.LayoutManager mLayoutManager;
@@ -39,13 +36,15 @@ public class AllPeopleFragment  extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HomeActivity.toolbar.setTitle(R.string.search_people);
+
+        HomeActivity.toolbar.setTitle("Search people");
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_all_people, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_recycle_view, container, false);
         rootView.setTag(TAG);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
@@ -65,7 +64,7 @@ public class AllPeopleFragment  extends Fragment {
                         FirebaseDatabase.getInstance().getReference().child("userfriends").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().setValue(v.getTag());
                     }
                 });
-
+                viewHolder.checkBox.setVisibility(View.GONE);
             }
         };
 

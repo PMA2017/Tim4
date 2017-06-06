@@ -40,7 +40,7 @@
                     android:duplicateParentState="true"
                     />
             </LinearLayout>
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -55,10 +55,11 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/activity_edit"
                     android:id="@+id/activity_delete"
                     android:src="@drawable/cancel"
                     />
-            </LinearLayout>
+            </RelativeLayout>
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,8 +75,25 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/activity_attending"
                 android:id="@+id/activity_quit"
                 android:src="@drawable/clear_button"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:id="@+id/layout_checkbox"
+            >
+            <CheckBox
+                android:id="@+id/checkfriend"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 />
         </RelativeLayout>
     </RelativeLayout>

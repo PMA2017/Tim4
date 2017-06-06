@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.activities.SelectedActivity;
-import com.countmein.countmein.adapters.RVAdapter;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.listeners.RecyclerItemClickListener;
 
@@ -30,7 +29,7 @@ public class AttendingActivitiesFragment extends Fragment {
         private static final String TAG = "RecyclerViewFragment";
 
         protected RecyclerView mRecyclerView;
-        protected RVAdapter mAdapter;
+
         protected RecyclerView.LayoutManager mLayoutManager;
         protected List<ActivityBean> activities;
 
@@ -38,14 +37,13 @@ public class AttendingActivitiesFragment extends Fragment {
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
             HomeActivity.toolbar.setTitle(R.string.attending_activities);
-            getData();
 
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_attending_activities, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_recycle_view, container, false);
             rootView.setTag(TAG);
 
             mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
@@ -76,9 +74,9 @@ public class AttendingActivitiesFragment extends Fragment {
                 }
             }));
 
-            mAdapter = new RVAdapter(activities);
+            //mAdapter = new RVAdapter(activities);
             // Set CustomAdapter as the adapter for RecyclerView.
-            mRecyclerView.setAdapter(mAdapter);
+           // mRecyclerView.setAdapter(mAdapter);
 
 
             return rootView;
@@ -87,19 +85,5 @@ public class AttendingActivitiesFragment extends Fragment {
 
 
 
-        public void getData(){
-            ArrayList<ActivityBean> act1 = new ArrayList<>();
 
-            act1.add(new ActivityBean("Bleja 1","Ovo je bleja 1", new Date().toString(),null,null));
-            act1.add(new ActivityBean("Bleja 2","Ovo je bleja 2", new Date().toString(),null,null));
-            act1.add(new ActivityBean("Bleja 3","Ovo je bleja 3", new Date().toString(),null,null));
-            act1.add(new ActivityBean("Bleja 4","Ovo je bleja 4", new Date().toString(),null,null));
-            act1.add(new ActivityBean("Bleja 5","Ovo je bleja 5", new Date().toString(),null,null));
-            act1.add(new ActivityBean("Bleja 6","Ovo je bleja 6", new Date().toString(),null,null));
-            act1.add(new ActivityBean("Bleja 7","Ovo je bleja 7", new Date().toString(),null,null));
-
-
-            activities = act1;
-
-        }
 }

@@ -5,37 +5,27 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
-import com.countmein.countmein.activities.MainActivity;
 import com.countmein.countmein.activities.NewActivityActivity;
 import com.countmein.countmein.activities.SelectedActivity;
-import com.countmein.countmein.adapters.RVAdapter;
 import com.countmein.countmein.beans.ActivityBean;
-import com.countmein.countmein.beans.ChatMessageBean;
 import com.countmein.countmein.holders.ActivityViewHolder;
-import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
 
  */
-public class MainFragment extends Fragment {
+public class ActivitiesFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
 
     protected RecyclerView mRecyclerView;
@@ -52,7 +42,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        rootView = inflater.inflate(R.layout.fragment_recycle_view, container, false);
         rootView.setTag(TAG);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
@@ -72,6 +62,8 @@ public class MainFragment extends Fragment {
 
                 //viewHolder.vDate.setVisibility(View.GONE);
                 viewHolder.cv.findViewById(R.id.button_view_attending_activity).setVisibility(View.GONE);
+                viewHolder.cv.findViewById(R.id.layout_checkbox).setVisibility(View.GONE);
+
                 ImageButton btnEdit = (ImageButton) viewHolder.cv.findViewById(R.id.activity_edit);
                 ImageButton btnDelete = (ImageButton) viewHolder.cv.findViewById(R.id.activity_delete);
                 LinearLayout ln = (LinearLayout) viewHolder.cv.findViewById(R.id.text_container);

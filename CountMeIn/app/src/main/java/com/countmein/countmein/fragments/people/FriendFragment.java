@@ -1,4 +1,4 @@
-package com.countmein.countmein.fragments;
+package com.countmein.countmein.fragments.people;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,23 +11,19 @@ import android.view.ViewGroup;
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
 
-import com.countmein.countmein.beans.PersonInfoBean;
 import com.countmein.countmein.beans.User;
-import com.countmein.countmein.holders.FriendViewHolder;
+import com.countmein.countmein.holders.PeopleViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class FriendFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
 
-    private  List<PersonInfoBean> details;
+
     protected RecyclerView mRecyclerView;
-    private FirebaseRecyclerAdapter<User,FriendViewHolder> adapter;
+    private FirebaseRecyclerAdapter<User,PeopleViewHolder> adapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
     public FriendFragment() {
@@ -40,13 +36,13 @@ public class FriendFragment extends Fragment {
         super.onCreate(savedInstanceState);
         HomeActivity.toolbar.setTitle(R.string.my_friends);
 
-        getData();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_friend, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_recycle_view, container, false);
         rootView.setTag(TAG);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
@@ -57,16 +53,18 @@ public class FriendFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        adapter  = new FirebaseRecyclerAdapter<User,FriendViewHolder>(User.class,
-                R.layout.friend_card_view,FriendViewHolder.class, FirebaseDatabase.getInstance().getReference().child("userfriends").child(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+        adapter  = new FirebaseRecyclerAdapter<User,PeopleViewHolder>(User.class,
+                R.layout.people_card_view,PeopleViewHolder.class, FirebaseDatabase.getInstance().getReference().child("userfriends").child(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
 
             @Override
-            protected void populateViewHolder(FriendViewHolder viewHolder, User model, int position) {
-
-
+            protected void populateViewHolder(PeopleViewHolder viewHolder, User model, int position) {
 
                 viewHolder.messageUser.setText(model.getUsername());
                 viewHolder.userPhoto.setImageURI(model.getPhotoUrl());
+                viewHolder.button.setVisibility(View.GONE);
+                viewHolder.checkBox.setVisibility(View.GONE);
+
+
 
             }
         };
@@ -97,12 +95,5 @@ public class FriendFragment extends Fragment {
         return rootView;
     }
 
-    public List<PersonInfoBean> getData(){
-        details = new ArrayList<>();
-        details.add(new PersonInfoBean("Ivana","Zivic"));
-        details.add(new PersonInfoBean("Ivan","Divljak"));
-        details.add(new PersonInfoBean("Violeta","Novakovic"));
 
-        return details;
-    }
 }

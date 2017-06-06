@@ -1,4 +1,4 @@
-package com.countmein.countmein.fragments;
+package com.countmein.countmein.fragments.other;
 
 
 import android.os.Bundle;
@@ -19,8 +19,8 @@ public class DatePickerFragment extends Fragment {
 
     public  ActivityBean eActivity;
     public int isEdit;
-    public static DatePicker aDate;
-    public static  View rootView;
+    public  DatePicker aDate;
+    public  View rootView;
 
     public DatePickerFragment() {
         // Required empty public constructor
@@ -32,6 +32,7 @@ public class DatePickerFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView =inflater.inflate(R.layout.fragment_date_picker, container, false);
         Bundle bundle = this.getArguments();
+        aDate=(DatePicker)rootView.findViewById(R.id.new_activity_date);
 
         try {
             eActivity = (ActivityBean) bundle.getSerializable("data");
@@ -39,8 +40,7 @@ public class DatePickerFragment extends Fragment {
 
             if (isEdit == 1) {
                 String[] eDate = eActivity.getDate().split("-");
-                ((DatePicker) rootView.findViewById(R.id.new_activity_date))
-                        .init(Integer.valueOf(eDate[2]), Integer.valueOf(eDate[1]) - 1, Integer.valueOf(eDate[0]), null);
+                aDate.init(Integer.valueOf(eDate[2]), Integer.valueOf(eDate[1]) - 1, Integer.valueOf(eDate[0]), null);
             }
 
         }catch (Exception e){
@@ -49,9 +49,7 @@ public class DatePickerFragment extends Fragment {
         return rootView;
     }
 
-    public static void fetchData(){
-        aDate = ((DatePicker) rootView.findViewById(R.id.new_activity_date));
-    }
+
 
 
 }

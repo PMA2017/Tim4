@@ -1,14 +1,8 @@
 package com.countmein.countmein.activities;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,42 +11,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.ChatMessageBean;
-import com.countmein.countmein.fragments.FriendFragment;
-import com.countmein.countmein.fragments.MapFragment;
+import com.countmein.countmein.fragments.other.MapFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.EActivity;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 
 //@EActivity(R.layout.activity_selected)
 public class SelectedActivity extends AppCompatActivity {
@@ -167,10 +135,10 @@ public class SelectedActivity extends AppCompatActivity {
         listOfMessages.setStackFromBottom(true);
 
         adapter = new FirebaseListAdapter<ChatMessageBean>(this, ChatMessageBean.class,
-                R.layout.message, FirebaseDatabase.getInstance().getReference().child("chatrooms").child(mTextView1.getText().toString())) {
+                R.layout.message_card_view, FirebaseDatabase.getInstance().getReference().child("chatrooms").child(mTextView1.getText().toString())) {
             @Override
             protected void populateView(View v, ChatMessageBean model, int position) {
-                // Get references to the views of message.xml
+                // Get references to the views of message_card_view.xmld_view.xml
                 TextView messageText = (TextView)v.findViewById(R.id.message_text);
                 TextView messageUser = (TextView)v.findViewById(R.id.message_user);
                 TextView messageTime = (TextView)v.findViewById(R.id.message_time);
