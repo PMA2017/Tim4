@@ -40,9 +40,10 @@ public class ActivitiesFragment extends Fragment {
 
     protected RecyclerView mRecyclerView;
     protected RecyclerView.LayoutManager mLayoutManager;
-    Map<String, MockUpActivity> messageMap = new HashMap<String, MockUpActivity>();
+    //Map<String, MockUpActivity> messageMap = new HashMap<String, MockUpActivity>();
     View rootView;
     private FirebaseRecyclerAdapter<ActivityBean, ActivityViewHolder> adapter;
+    Map<String, Map<String,MockUpActivity>> messageMap = new HashMap<String,Map<String,MockUpActivity> >();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,23 +119,25 @@ public class ActivitiesFragment extends Fragment {
                         FirebaseDatabase.getInstance().getReference()
                                 .child("useractivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                 .child(activity.getId()).removeValue();
-                        FirebaseDatabase.getInstance().getReference().child("invitedactivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        FirebaseDatabase.getInstance().getReference().child("invitedactivities").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                messageMap = dataSnapshot.getValue(new GenericTypeIndicator<Map<String, MockUpActivity>>() {
+                                messageMap = dataSnapshot.getValue(new GenericTypeIndicator<Map<String, Map<String,MockUpActivity>>>() {
                                 });
                                 if (messageMap != null) {
-                                    ArrayList<MockUpActivity> list = new ArrayList<MockUpActivity>(messageMap.values());
-                                    for (int i = 0; i < list.size(); i++) {
-                                        if (list.get(i).getId().equals(activity.getId())) {
-                                            list.remove(i);
+                                    for (Map.Entry<String, Map<String,MockUpActivity> > set:messageMap.entrySet()) {
+                                        ArrayList<MockUpActivity> list= new ArrayList<MockUpActivity>(set.getValue().values());
+
+                                        for (int i = 0; i < list.size(); i++) {
+                                            if (list.get(i).getId().equals(activity.getId())) {
+                                                FirebaseDatabase.getInstance().getReference().child("invitedactivities")
+                                                        .child(set.getKey())
+                                                        .child(list.get(i).getId()).removeValue();
+                                            }
                                         }
                                     }
-                                    FirebaseDatabase.getInstance().getReference().child("invitedactivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-                                    for (int i = 0; i < list.size(); i++) {
-                                        FirebaseDatabase.getInstance().getReference().child("invitedactivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().setValue(list.get(i));
-                                    }
+
                                 }
                             }
 
