@@ -35,6 +35,11 @@
             android:layout_height="200dp"
             android:id="@+id/fragment_selected_map">
         </FrameLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/show_who_attends"
+          android:text="@string/show_who_attends"/>
 
         <include android:id="@+id/chatinclude" layout="@layout/chatlayout" />
 

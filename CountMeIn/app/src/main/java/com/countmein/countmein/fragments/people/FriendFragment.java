@@ -16,6 +16,7 @@ import com.countmein.countmein.beans.User;
 import com.countmein.countmein.holders.PeopleViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 
@@ -36,8 +37,6 @@ public class FriendFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         HomeActivity_.toolbar.setTitle(R.string.my_friends);
-
-
     }
 
     @Override

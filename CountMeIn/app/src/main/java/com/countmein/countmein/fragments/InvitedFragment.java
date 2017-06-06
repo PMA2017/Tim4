@@ -26,7 +26,9 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -99,6 +101,10 @@ public class InvitedFragment extends Fragment {
                 btnAttending.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
+                        Map<String, String> userWhoAttends = new HashMap<String, String>();
+                        userWhoAttends.put("activityId", model.getId());
+                        userWhoAttends.put("userId", FirebaseAuth.getInstance().getCurrentUser().getUid());
+
                         FirebaseDatabase.getInstance().getReference().child("attendingactivities")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                 .child(model.getId()).setValue(model);
@@ -106,6 +112,9 @@ public class InvitedFragment extends Fragment {
                         FirebaseDatabase.getInstance().getReference().child("invitedactivities")
                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                 .child(model.getId()).removeValue();
+
+                        FirebaseDatabase.getInstance().getReference().child("whoisattending")
+                                .push().setValue(userWhoAttends);
 
                         Toast.makeText(getApplicationContext(), "You are attending "+model.getName(), Toast.LENGTH_SHORT).show();
 

@@ -2,12 +2,14 @@ package com.countmein.countmein.activities;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.ChatMessageBean;
+import com.countmein.countmein.fragments.AttendingActivitiesFragment;
+import com.countmein.countmein.fragments.AttendingMyActFragment;
 import com.countmein.countmein.fragments.other.MapFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -42,6 +46,8 @@ public class SelectedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected);
 
+        Button showBtn = (Button) findViewById(R.id.show_who_attends);
+        final Bundle activeActivityBundle = new Bundle();
         Bundle bundle = getIntent().getExtras();
         ActivityBean activity=(ActivityBean) bundle.getSerializable("data");
 
@@ -50,6 +56,7 @@ public class SelectedActivity extends AppCompatActivity {
         String datum=activity.getDate();
         String lLat = activity.getlLat();
         String lLng = activity.getlLng();
+        final String id = activity.getId();
 
         mTextView1 = (TextView) findViewById(R.id.naslov);
         mTextView2 = (TextView) findViewById(R.id.opis);
@@ -97,6 +104,16 @@ public class SelectedActivity extends AppCompatActivity {
                 Intent returnIntent = new Intent();
                 setResult(RESULT_CANCELED, returnIntent);
                 finish();
+            }
+        });
+
+        showBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activeActivityBundle.putString("id", id);
+                DialogFragment fragment = AttendingMyActFragment.newIstance();
+                fragment.setArguments(activeActivityBundle);
+                fragment.show(getSupportFragmentManager(), "whoIsAttending");
             }
         });
 

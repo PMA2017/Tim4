@@ -25,14 +25,17 @@
         <CheckBox android:id="@+id/checkbox_push_notif"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/allow_push_not"/>
+            android:text="@string/allow_push_not"
+            android:onClick="onCheckboxClicked"/>
         <CheckBox android:id="@+id/checkbox_delete_acnt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/delete_acount"/>
+            android:text="@string/delete_acount"
+            />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/saveSettings"
             android:text="@string/save"/>
     </LinearLayout>
 </FrameLayout>
