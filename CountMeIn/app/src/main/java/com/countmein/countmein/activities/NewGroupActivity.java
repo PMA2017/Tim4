@@ -117,7 +117,7 @@ public class NewGroupActivity extends AppCompatActivity {
                             group = new GroupBean(gName,gDesc,selectedusers);
                             addNewGroup(group);
 
-                            Toast.makeText(getApplicationContext(), "Group was made successfully", Toast.LENGTH_SHORT);
+                            Toast.makeText(getApplicationContext(), "Group was made successfully", Toast.LENGTH_SHORT).show();
                             finish();
                             break;
                     }
@@ -140,7 +140,7 @@ public class NewGroupActivity extends AppCompatActivity {
                             editGroup(group);
 
 
-                            Toast.makeText(getApplicationContext(), "Group was made successfully", Toast.LENGTH_SHORT);
+                            Toast.makeText(getApplicationContext(), "Group was made successfully", Toast.LENGTH_SHORT).show();
                             finish();
 
                     }

@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,9 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class NewActivityActivity extends AppCompatActivity {
 
@@ -133,7 +132,23 @@ public class NewActivityActivity extends AppCompatActivity {
                             newAct = new ActivityBean(aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng),list);
                             addNewActivityAsaChild(newAct);
 
-                            Toast.makeText(getApplicationContext(), "Activiti was made successfully", Toast.LENGTH_SHORT);
+                            int size = newAct.getGroup().size();
+
+                            for(int i=0; i<size; i++){
+                                Log.d("size", Integer.toString(newAct.getGroup().get(i).getFriends().size()));
+                                for(int j=0; j<newAct.getGroup().get(i).getFriends().size(); j++){
+                                    String token  = newAct.getGroup().get(i).getFriends().get(j).getTokens();
+                                    Log.d("token",
+                                    FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).child(token).toString());
+                                //    if(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).child(token) == null){
+                                        Log.d("If_exists","Doesn't exist");
+                                        FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).push().setValue(token);
+                                 //   }
+
+                                }
+                            }
+
+                            Toast.makeText(getApplicationContext(), "Activity was made successfully", Toast.LENGTH_SHORT).show();
                             finish();
                             break;
                     }
