@@ -25,6 +25,7 @@ import com.countmein.countmein.beans.User;
 import com.countmein.countmein.dao.UserDao;
 import com.countmein.countmein.eventBus.event.UsersLoadedEvent;
 import com.countmein.countmein.fragments.AboutFragment;
+import com.countmein.countmein.fragments.InvitedFragment;
 import com.countmein.countmein.fragments.other.SettingsFragment;
 import com.countmein.countmein.fragments.people.AllPeopleFragment;
 import com.countmein.countmein.fragments.AttendingActivitiesFragment;
@@ -195,7 +196,17 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_my_activities) {
+        if(id == R.id.nav_home) {
+            InvitedFragment fragment =new InvitedFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack("mainFragment");
+            fragmentTransaction.commit();
+
+
+
+
+        } else if (id == R.id.nav_my_activities) {
 
             ActivitiesFragment fragment = new ActivitiesFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()

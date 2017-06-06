@@ -16,6 +16,9 @@ public class MockUpActivity extends BaseModel implements Serializable{
         this.description = description;
     }
 
+    public MockUpActivity() {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
