@@ -25,6 +25,7 @@ import com.countmein.countmein.beans.User;
 import com.countmein.countmein.dao.UserDao;
 import com.countmein.countmein.eventBus.event.UsersLoadedEvent;
 import com.countmein.countmein.fragments.AboutFragment;
+import com.countmein.countmein.fragments.other.SettingsFragment;
 import com.countmein.countmein.fragments.people.AllPeopleFragment;
 import com.countmein.countmein.fragments.AttendingActivitiesFragment;
 import com.countmein.countmein.fragments.people.FriendFragment;
@@ -295,6 +296,17 @@ public class HomeActivity extends AppCompatActivity
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
             fab.hide();
 
+        } else if(id == R.id.nav_setting){
+            SettingsFragment fragment = new SettingsFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                    .beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack("settingsFragment");
+            fragmentTransaction.commit();
+
+            //set specific floating action
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.hide();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
