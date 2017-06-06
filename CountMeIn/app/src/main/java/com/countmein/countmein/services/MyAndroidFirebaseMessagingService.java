@@ -11,8 +11,11 @@ import android.util.Log;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.SelectedActivity;
+import com.countmein.countmein.eventBus.PushNotificationEvent;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Home on 4/25/2017.
@@ -22,14 +25,29 @@ public class MyAndroidFirebaseMessagingService extends FirebaseMessagingService 
     private static final String TAG = "MyAndroidFCMService";
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        //Log data to Log Cat
         Log.d(TAG, "From: " + remoteMessage.getFrom());
-        Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
-        //create notification
-        createNotification(remoteMessage.getNotification().getBody());
+
+        // Check if message contains a data payload.
+        if (remoteMessage.getData().size() > 0) {
+            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+
+            String title = remoteMessage.getData().get("title");
+            String message = remoteMessage.getData().get("text");
+            String username = remoteMessage.getData().get("username");
+            String uid = remoteMessage.getData().get("uid");
+            String fcmToken = remoteMessage.getData().get("fcm_token");
+
+
+           createNotification(title,message,username, uid,fcmToken);
+
+        }
     }
 
-    private void createNotification( String messageBody) {
+    private void createNotification( String title,
+                                     String message,
+                                     String receiver,
+                                     String receiverUid,
+                                     String firebaseToken) {
         Intent intent = new Intent( this , SelectedActivity. class );
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent resultIntent = PendingIntent.getActivity( this , 0, intent,
@@ -37,9 +55,9 @@ public class MyAndroidFirebaseMessagingService extends FirebaseMessagingService 
 
         Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder( this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-
-                .setContentText(messageBody)
+                .setSmallIcon(R.drawable.logo)
+                .setContentTitle(title)
+                .setContentText(message)
                 .setAutoCancel( true )
                 .setSound(notificationSoundURI)
                 .setContentIntent(resultIntent)

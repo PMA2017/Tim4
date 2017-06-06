@@ -2,6 +2,7 @@ package com.countmein.countmein.activities;
 
 
 import android.content.Intent;
+
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,14 +26,20 @@ import com.countmein.countmein.fragments.other.DatePickerFragment;
 import com.countmein.countmein.fragments.other.LocationFragment;
 import com.countmein.countmein.fragments.other.MapFragment;
 import com.countmein.countmein.fragments.NewActivityDetailsFragment;
+import com.countmein.countmein.services.FcmNotificationBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@EActivity(R.layout.activity_new_activity)
 public class NewActivityActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
@@ -47,11 +54,8 @@ public class NewActivityActivity extends AppCompatActivity {
     private GroupAddActivityFragment groupFragment;
     private DatePickerFragment datePickerFragment;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_new_activity);
+    @AfterViews
+    void init(){
         Bundle bundle = getIntent().getExtras();
         newActivityDetailsFragment = new NewActivityDetailsFragment();
         mapFragment = new LocationFragment();
@@ -142,14 +146,17 @@ public class NewActivityActivity extends AppCompatActivity {
                                 for(int j=0; j<newAct.getGroup().get(i).getFriends().size(); j++){
                                     String token  = newAct.getGroup().get(i).getFriends().get(j).getTokens();
 
-                                  System.out.print(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).equalTo(token));
-                                  //  if(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).equalTo(token) == null){
-                                        Log.d("If_exists","Doesn't exist");
-                                        FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).push().setValue(token);
-                                  //  }
+                                    System.out.print(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).equalTo(token));
+                                    //  if(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).equalTo(token) == null){
+                                    Log.d("If_exists","Doesn't exist");
+                                    FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).push().setValue(token);
+                                    //  }
 
                                 }
                             }
+
+                            sendPushNotification();
+
                             finish();
                             break;
                     }
@@ -262,5 +269,16 @@ public class NewActivityActivity extends AppCompatActivity {
             }
             return null;
         }
+    }
+
+    @Background
+    public void sendPushNotification(){
+        FcmNotificationBuilder notBuilder = FcmNotificationBuilder.initialize();
+        notBuilder.message("You have been added to new activity.");
+        notBuilder.receiverFirebaseToken("dG8hBVCSGvs:APA91bF-UfTYOYcQP7TNAK9ApEczxBO7TC-T_Eb2zvGR8LNIOUB3VqBKFqtg6lpVXEyVXiEpqBjkp-Ur0py1xSN55cE9MqFo5X8bSPHKQXoQTzo3LgqFR7T7cHnFedeE6VHAEOWbrUdO");
+        notBuilder.firebaseToken("dG8hBVCSGvs:APA91bF-UfTYOYcQP7TNAK9ApEczxBO7TC-T_Eb2zvGR8LNIOUB3VqBKFqtg6lpVXEyVXiEpqBjkp-Ur0py1xSN55cE9MqFo5X8bSPHKQXoQTzo3LgqFR7T7cHnFedeE6VHAEOWbrUdO");
+        notBuilder.title("CountMeIn App Notification");
+
+        notBuilder.send();
     }
 }

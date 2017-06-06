@@ -95,7 +95,7 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(HomeActivity.this, NewActivityActivity.class);
+                Intent i = new Intent(HomeActivity.this, NewActivityActivity_.class);
                 startActivity(i);
             }
         });
@@ -210,7 +210,7 @@ public class HomeActivity extends AppCompatActivity
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(HomeActivity.this, NewActivityActivity.class);
+                    Intent i = new Intent(HomeActivity.this, NewActivityActivity_.class);
                     startActivity(i);
                 }
             });
