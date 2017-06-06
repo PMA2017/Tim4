@@ -132,6 +132,10 @@ public class NewActivityActivity extends AppCompatActivity {
                             newAct = new ActivityBean(aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng),list);
                             addNewActivityAsaChild(newAct);
 
+                            Toast.makeText(getApplicationContext(), "Activity was made successfully", Toast.LENGTH_SHORT).show();
+                            Intent jj = new Intent(NewActivityActivity.this, HomeActivity_.class);
+                            startActivity(jj);
+
                             int size = newAct.getGroup().size();
 
                             for(int i=0; i<size; i++){
@@ -146,8 +150,6 @@ public class NewActivityActivity extends AppCompatActivity {
 
                                 }
                             }
-
-                            Toast.makeText(getApplicationContext(), "Activity was made successfully", Toast.LENGTH_SHORT).show();
                             finish();
                             break;
                     }
@@ -172,7 +174,10 @@ public class NewActivityActivity extends AppCompatActivity {
                             newAct = new ActivityBean(eActivity.getId(), aName, aDesc, convertData(aDate), String.valueOf(lLat), String.valueOf(lLng),list);
                             updateActivity(newAct);
 
-                            Toast.makeText(getApplicationContext(), "Activity was edited successfuly", Toast.LENGTH_SHORT);
+
+                            Toast.makeText(getApplicationContext(), "Activity was edited successfuly", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(NewActivityActivity.this, HomeActivity_.class);
+                            startActivity(i);
                             finish();
                             break;
                     }

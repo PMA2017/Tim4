@@ -20,7 +20,10 @@
     <string name="search_people">Search people</string>
     <string name="about">About</string>
     <string name="app_version">Version 1.0.0</string>
-
+    <string name="allow_push_not">Allow push notifications</string>
+    <string name="delete_acount">Delete acount</string>
+    <string name="save">Save</string>
+    <string name="give_nickname">Give nickname</string>
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
