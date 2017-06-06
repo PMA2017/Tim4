@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -66,14 +67,14 @@ public class InvitedFragment extends Fragment {
                 R.layout.single_card_view,ActivityViewHolder.class, FirebaseDatabase.getInstance().getReference().child("invitedactivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
 
             @Override
-            protected void populateViewHolder(ActivityViewHolder viewHolder, MockUpActivity model, int position) {
+            protected void populateViewHolder(ActivityViewHolder viewHolder, final MockUpActivity model, int position) {
                 viewHolder.vName.setText(model.name);
                 viewHolder.vDescription.setText(model.description);
 
 
-                //viewHolder.vDate.setVisibility(View.GONE);
                 viewHolder.cv.findViewById(R.id.button_view_myActivity).setVisibility(View.GONE);
                 viewHolder.cv.findViewById(R.id.layout_checkbox).setVisibility(View.GONE);
+                viewHolder.cv.findViewById(R.id.activity_quit).setVisibility(View.GONE);
 
                 ImageButton btnAttending = (ImageButton) viewHolder.cv.findViewById(R.id.activity_attending);
                 ImageButton btnQuit = (ImageButton) viewHolder.cv.findViewById(R.id.activity_quit);
@@ -98,13 +99,16 @@ public class InvitedFragment extends Fragment {
                 btnAttending.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
-                        /*ActivityBean activity=(ActivityBean) view.getTag();
-                        Intent i = new Intent(view.getContext(), NewActivityActivity.class);
-                        Bundle data= new Bundle();
-                        data.putSerializable("data",activity);
-                        data.putInt("isEdit", 1);
-                        i.putExtras(data);
-                        view.getContext().startActivity(i);*/
+                        FirebaseDatabase.getInstance().getReference().child("attendingactivities")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .child(model.getId()).setValue(model);
+
+                        FirebaseDatabase.getInstance().getReference().child("invitedactivities")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .child(model.getId()).removeValue();
+
+                        Toast.makeText(getApplicationContext(), "You are attending "+model.getName(), Toast.LENGTH_SHORT).show();
+
                     }
 
                 });

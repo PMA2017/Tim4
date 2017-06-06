@@ -98,6 +98,7 @@ public class ActivitiesFragment extends Fragment {
                 btnEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         ActivityBean activity = (ActivityBean) view.getTag();
                         Intent i = new Intent(view.getContext(), NewActivityActivity_.class);
                         Bundle data = new Bundle();

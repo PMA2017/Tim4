@@ -210,7 +210,9 @@ public class NewActivityActivity extends AppCompatActivity {
             for(int i=0;i<newAct.getGroup().size();i++){
                 if(!newAct.getGroup().get(i).getFriends().isEmpty()){
                     for(int j=0;j<newAct.getGroup().get(i).getFriends().size();j++){
-                        FirebaseDatabase.getInstance().getReference().child("invitedactivities").child(newAct.getGroup().get(i).getFriends().get(j).getId()).push().setValue(newAct.convertMockUp());
+                        FirebaseDatabase.getInstance().getReference().child("invitedactivities")
+                                .child(newAct.getGroup().get(i).getFriends().get(j).getId())
+                                .child(newAct.getId()).setValue(newAct.convertMockUp());
                     }
                 }
             }
@@ -228,7 +230,8 @@ public class NewActivityActivity extends AppCompatActivity {
                         FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).child(token).toString());
                 //    if(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).child(token) == null){
                 Log.d("If_exists","Doesn't exist");
-                FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).push().setValue(token);
+                FirebaseDatabase.getInstance().getReference().child("topics")
+                        .child(newAct.getId()).push().setValue(token);
                 //   }
 
             }
