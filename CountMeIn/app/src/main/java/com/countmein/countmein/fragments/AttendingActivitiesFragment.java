@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
+import com.countmein.countmein.activities.HomeActivity_;
 import com.countmein.countmein.activities.SelectedActivity;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.listeners.RecyclerItemClickListener;
@@ -36,7 +37,7 @@ public class AttendingActivitiesFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
-            HomeActivity.toolbar.setTitle(R.string.attending_activities);
+            HomeActivity_.toolbar.setTitle(R.string.attending_activities);
 
         }
 

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
+import com.countmein.countmein.activities.HomeActivity_;
 import com.countmein.countmein.beans.User;
 import com.countmein.countmein.holders.PeopleViewHolder;
 
@@ -37,7 +38,7 @@ public class AllPeopleFragment  extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        HomeActivity.toolbar.setTitle("Search people");
+        HomeActivity_.toolbar.setTitle("Search people");
 
     }
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
+import com.countmein.countmein.activities.HomeActivity_;
 
 public class AboutFragment extends Fragment {
 
@@ -19,7 +20,7 @@ public class AboutFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HomeActivity.toolbar.setTitle(R.string.about);
+        HomeActivity_.toolbar.setTitle(R.string.about);
     }
 
     @Override

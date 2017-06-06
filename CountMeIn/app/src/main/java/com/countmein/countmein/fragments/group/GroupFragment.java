@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
+import com.countmein.countmein.activities.HomeActivity_;
 import com.countmein.countmein.activities.NewGroupActivity;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.GroupBean;
@@ -44,7 +45,7 @@ public class GroupFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HomeActivity.toolbar.setTitle(R.string.my_groups);
+        HomeActivity_.toolbar.setTitle(R.string.my_groups);
 
     }
 

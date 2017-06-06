@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.GroupBean;
+import com.countmein.countmein.beans.MockUpActivity;
 import com.countmein.countmein.fragments.group.GroupAddActivityFragment;
 import com.countmein.countmein.fragments.other.DatePickerFragment;
 import com.countmein.countmein.fragments.other.LocationFragment;
@@ -30,9 +31,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@EActivity(R.layout.activity_new_activity)
 public class NewActivityActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
@@ -46,12 +52,9 @@ public class NewActivityActivity extends AppCompatActivity {
     private LocationFragment mapFragment;
     private GroupAddActivityFragment groupFragment;
     private DatePickerFragment datePickerFragment;
+    @AfterViews
+    void init(){
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_new_activity);
         Bundle bundle = getIntent().getExtras();
         newActivityDetailsFragment = new NewActivityDetailsFragment();
         mapFragment = new LocationFragment();
@@ -133,24 +136,10 @@ public class NewActivityActivity extends AppCompatActivity {
                             addNewActivityAsaChild(newAct);
 
                             Toast.makeText(getApplicationContext(), "Activity was made successfully", Toast.LENGTH_SHORT).show();
-                            Intent jj = new Intent(NewActivityActivity.this, HomeActivity_.class);
-                            startActivity(jj);
 
-                            int size = newAct.getGroup().size();
 
-                            for(int i=0; i<size; i++){
-                                Log.d("size", Integer.toString(newAct.getGroup().get(i).getFriends().size()));
-                                for(int j=0; j<newAct.getGroup().get(i).getFriends().size(); j++){
-                                    String token  = newAct.getGroup().get(i).getFriends().get(j).getTokens();
-                                    Log.d("token",
-                                    FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).child(token).toString());
-                                //    if(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).child(token) == null){
-                                        Log.d("If_exists","Doesn't exist");
-                                        FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).push().setValue(token);
-                                 //   }
-
-                                }
-                            }
+                            Intent i = new Intent(NewActivityActivity.this, HomeActivity_.class);
+                            startActivity(i);
                             finish();
                             break;
                     }
@@ -188,6 +177,8 @@ public class NewActivityActivity extends AppCompatActivity {
         });
     }
 
+
+
     @Override
     public void onStart(){
         super.onStart();
@@ -208,11 +199,41 @@ public class NewActivityActivity extends AppCompatActivity {
         return new String(day+"-"+mth+"-"+year);
     }
 
+    @Background
     public void addNewActivityAsaChild(ActivityBean newAct){
+
         String key = mDatabase.push().getKey();
         newAct.setId(key);
 
         mDatabase.child(key).setValue(newAct);
+        if(!newAct.getGroup().isEmpty()){
+            for(int i=0;i<newAct.getGroup().size();i++){
+                if(!newAct.getGroup().get(i).getFriends().isEmpty()){
+                    for(int j=0;j<newAct.getGroup().get(i).getFriends().size();j++){
+                        FirebaseDatabase.getInstance().getReference().child("invitedactivities").child(newAct.getGroup().get(i).getFriends().get(j).getId()).push().setValue(newAct.convertMockUp());
+                    }
+                }
+            }
+        }
+
+
+
+        int size = newAct.getGroup().size();
+
+        for(int i=0; i<size; i++){
+            Log.d("size", Integer.toString(newAct.getGroup().get(i).getFriends().size()));
+            for(int j=0; j<newAct.getGroup().get(i).getFriends().size(); j++){
+                String token  = newAct.getGroup().get(i).getFriends().get(j).getTokens();
+                Log.d("token",
+                        FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).child(token).toString());
+                //    if(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).child(token) == null){
+                Log.d("If_exists","Doesn't exist");
+                FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).push().setValue(token);
+                //   }
+
+            }
+        }
+
     }
 
     public void updateActivity(ActivityBean activity){

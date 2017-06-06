@@ -20,6 +20,7 @@ import android.widget.ScrollView;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
+import com.countmein.countmein.activities.HomeActivity_;
 import com.countmein.countmein.activities.NewActivityActivity;
 import com.countmein.countmein.beans.ChatMessageBean;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -114,7 +115,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mMap.setMyLocationEnabled(true);
             float zoomLevel = 16;
 
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(HomeActivity.hLat,HomeActivity.hLog),zoomLevel));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(HomeActivity_.hLat,HomeActivity_.hLog),zoomLevel));
    /*         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(HomeActivity.hLat,HomeActivity.hLog),zoomLevel));
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(HomeActivity.hLat, HomeActivity.hLog))      // Sets the center of the map to location user

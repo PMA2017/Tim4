@@ -62,7 +62,7 @@
             android:value=" AIzaSyDIxMZBk5_5rM3OWbX6j4VN7LX-uJg44_c" />
 
         <activity
-            android:name=".activities.NewActivityActivity"
+            android:name=".activities.NewActivityActivity_"
             android:parentActivityName=".activities.HomeActivity_"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
