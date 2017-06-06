@@ -2,6 +2,7 @@ package com.countmein.countmein.activities;
 
 
 import android.content.Intent;
+
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,12 +21,12 @@ import android.widget.Toast;
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.GroupBean;
-import com.countmein.countmein.beans.MockUpActivity;
 import com.countmein.countmein.fragments.group.GroupAddActivityFragment;
 import com.countmein.countmein.fragments.other.DatePickerFragment;
 import com.countmein.countmein.fragments.other.LocationFragment;
 import com.countmein.countmein.fragments.other.MapFragment;
 import com.countmein.countmein.fragments.NewActivityDetailsFragment;
+import com.countmein.countmein.services.FcmNotificationBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -52,6 +53,7 @@ public class NewActivityActivity extends AppCompatActivity {
     private LocationFragment mapFragment;
     private GroupAddActivityFragment groupFragment;
     private DatePickerFragment datePickerFragment;
+
     @AfterViews
     void init(){
 
@@ -137,9 +139,26 @@ public class NewActivityActivity extends AppCompatActivity {
 
                             Toast.makeText(getApplicationContext(), "Activity was made successfully", Toast.LENGTH_SHORT).show();
 
+                            Intent jj = new Intent(NewActivityActivity.this, HomeActivity_.class);
+                            startActivity(jj);
 
-                            Intent i = new Intent(NewActivityActivity.this, HomeActivity_.class);
-                            startActivity(i);
+                            int size = newAct.getGroup().size();
+                            ArrayList<String> tokens = new ArrayList<String>();
+                            for(int i=0; i<size; i++){
+                                for(int j=0; j<newAct.getGroup().get(i).getFriends().size(); j++){
+                                    String token  = newAct.getGroup().get(i).getFriends().get(j).getTokens();
+
+                                    System.out.print(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).equalTo(token));
+                                    //  if(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).equalTo(token) == null){
+                                    Log.d("If_exists","Doesn't exist");
+                                    FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).push().setValue(token);
+                                    //  }
+                                    tokens.add(token);
+
+                                }
+                            }
+
+                            sendPushNotification(tokens);
                             finish();
                             break;
                     }
@@ -287,5 +306,14 @@ public class NewActivityActivity extends AppCompatActivity {
             }
             return null;
         }
+    }
+
+    @Background
+    public void sendPushNotification(ArrayList<String> tokens){
+        FcmNotificationBuilder notBuilder = FcmNotificationBuilder.initialize();
+        notBuilder.message("You have been added to new activity.");
+        notBuilder.receiversFirebaseTokens(tokens);
+        notBuilder.title("CountMeIn App Notification");
+        notBuilder.send();
     }
 }
