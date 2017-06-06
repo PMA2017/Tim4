@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -38,6 +40,12 @@ public class AllPeopleFragment  extends Fragment {
         super.onCreate(savedInstanceState);
 
         HomeActivity.toolbar.setTitle("Search people");
+
+
+        Menu menu = HomeActivity.toolbar.getMenu();
+
+        MenuItem itemSearch = menu.findItem(R.id.action_search);
+        itemSearch.setVisible(true);
 
     }
 

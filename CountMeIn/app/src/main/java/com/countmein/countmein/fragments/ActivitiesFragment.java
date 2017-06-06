@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -37,6 +39,8 @@ public class ActivitiesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         HomeActivity.toolbar.setTitle(R.string.my_activites);
+
+
     }
 
     @Override
@@ -116,4 +120,6 @@ public class ActivitiesFragment extends Fragment {
 
         return rootView;
     }
+
+
 }
