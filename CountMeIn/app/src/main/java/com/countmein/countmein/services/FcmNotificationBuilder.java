@@ -131,7 +131,9 @@ public class FcmNotificationBuilder {
         JSONArray jsArray = new JSONArray(mReceiversFirebaseTokens);
         jsonObjectBody.put("registration_ids", jsArray.toString());
 
+
         JSONObject jsonObjectData = new JSONObject();
+
         jsonObjectData.put(KEY_TITLE, mTitle);
         jsonObjectData.put(KEY_TEXT, mMessage);
         jsonObjectData.put(KEY_USERNAME, mUsername);

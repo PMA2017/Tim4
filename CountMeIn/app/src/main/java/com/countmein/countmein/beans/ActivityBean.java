@@ -24,6 +24,10 @@ public class ActivityBean  extends BaseModel implements Serializable{
     public String lLat;
     public List<GroupBean> group;
 
+    public MockUpActivity convertMockUp(){
+        return new MockUpActivity(this.getId(),this.getName(),this.getDescription());
+    }
+
     public ActivityBean(String name, String description, String date, String lLng, String lLat, List<GroupBean> group) {
         this.name = name;
         this.description = description;

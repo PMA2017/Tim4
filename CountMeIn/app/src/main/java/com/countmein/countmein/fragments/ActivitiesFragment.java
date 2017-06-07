@@ -15,31 +15,42 @@ import android.widget.LinearLayout;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
+import com.countmein.countmein.activities.HomeActivity_;
 import com.countmein.countmein.activities.NewActivityActivity;
+import com.countmein.countmein.activities.NewActivityActivity_;
 import com.countmein.countmein.activities.SelectedActivity;
 import com.countmein.countmein.beans.ActivityBean;
+import com.countmein.countmein.beans.MockUpActivity;
 import com.countmein.countmein.holders.ActivityViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
-
  */
 public class ActivitiesFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
 
     protected RecyclerView mRecyclerView;
     protected RecyclerView.LayoutManager mLayoutManager;
+    //Map<String, MockUpActivity> messageMap = new HashMap<String, MockUpActivity>();
     View rootView;
-    private FirebaseRecyclerAdapter<ActivityBean,ActivityViewHolder> adapter;
+    private FirebaseRecyclerAdapter<ActivityBean, ActivityViewHolder> adapter;
+    Map<String, Map<String,MockUpActivity>> messageMap = new HashMap<String,Map<String,MockUpActivity> >();
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HomeActivity.toolbar.setTitle(R.string.my_activites);
-
+        HomeActivity_.toolbar.setTitle(R.string.my_activites);
 
     }
 
@@ -55,11 +66,11 @@ public class ActivitiesFragment extends Fragment {
         // elements are laid out.
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        adapter  = new FirebaseRecyclerAdapter<ActivityBean,ActivityViewHolder >(ActivityBean.class,
-                R.layout.single_card_view,ActivityViewHolder.class, FirebaseDatabase.getInstance().getReference().child("useractivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+        adapter = new FirebaseRecyclerAdapter<ActivityBean, ActivityViewHolder>(ActivityBean.class,
+                R.layout.single_card_view, ActivityViewHolder.class, FirebaseDatabase.getInstance().getReference().child("useractivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
 
             @Override
-            protected void populateViewHolder(ActivityViewHolder viewHolder, ActivityBean model, int position) {
+            protected void populateViewHolder(ActivityViewHolder viewHolder, final ActivityBean model, int position) {
                 viewHolder.vName.setText(model.name);
                 viewHolder.vDescription.setText(model.description);
                 viewHolder.vDate.setText(model.date);
@@ -75,26 +86,27 @@ public class ActivitiesFragment extends Fragment {
                 btnDelete.setTag(model);
                 ln.setTag(model);
 
-                ln.setOnClickListener(new View.OnClickListener(){
+                ln.setOnClickListener(new View.OnClickListener() {
 
                     @Override
-                    public void onClick(View view){
-                        ActivityBean activity=(ActivityBean) view.getTag();
+                    public void onClick(View view) {
+                        ActivityBean activity = (ActivityBean) view.getTag();
                         Intent i = new Intent(view.getContext(), SelectedActivity.class);
-                        Bundle data= new Bundle();
-                        data.putSerializable("data",activity);
+                        Bundle data = new Bundle();
+                        data.putSerializable("data", activity);
                         i.putExtras(data);
                         view.getContext().startActivity(i);
                     }
                 });
 
-                btnEdit.setOnClickListener(new View.OnClickListener(){
+                btnEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ActivityBean activity=(ActivityBean) view.getTag();
-                        Intent i = new Intent(view.getContext(), NewActivityActivity.class);
-                        Bundle data= new Bundle();
-                        data.putSerializable("data",activity);
+
+                        ActivityBean activity = (ActivityBean) view.getTag();
+                        Intent i = new Intent(view.getContext(), NewActivityActivity_.class);
+                        Bundle data = new Bundle();
+                        data.putSerializable("data", activity);
                         data.putInt("isEdit", 1);
                         i.putExtras(data);
                         view.getContext().startActivity(i);
@@ -102,14 +114,41 @@ public class ActivitiesFragment extends Fragment {
 
                 });
 
-                btnDelete.setOnClickListener(new View.OnClickListener(){
+                btnDelete.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View view) {
-                        ActivityBean activity=(ActivityBean) view.getTag();
+                        final ActivityBean activity = (ActivityBean) view.getTag();
                         FirebaseDatabase.getInstance().getReference()
                                 .child("useractivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                 .child(activity.getId()).removeValue();
+                        FirebaseDatabase.getInstance().getReference().child("invitedactivities").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                messageMap = dataSnapshot.getValue(new GenericTypeIndicator<Map<String, Map<String,MockUpActivity>>>() {
+                                });
+                                if (messageMap != null) {
+                                    for (Map.Entry<String, Map<String,MockUpActivity> > set:messageMap.entrySet()) {
+                                        ArrayList<MockUpActivity> list= new ArrayList<MockUpActivity>(set.getValue().values());
+
+                                        for (int i = 0; i < list.size(); i++) {
+                                            if (list.get(i).getId().equals(activity.getId())) {
+                                                FirebaseDatabase.getInstance().getReference().child("invitedactivities")
+                                                        .child(set.getKey())
+                                                        .child(list.get(i).getId()).removeValue();
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 });
             }

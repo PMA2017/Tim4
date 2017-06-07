@@ -10,14 +10,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
+import com.countmein.countmein.activities.HomeActivity_;
 import com.countmein.countmein.activities.SelectedActivity;
 import com.countmein.countmein.beans.ActivityBean;
+import com.countmein.countmein.beans.MockUpActivity;
+import com.countmein.countmein.holders.ActivityViewHolder;
 import com.countmein.countmein.listeners.RecyclerItemClickListener;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,11 +42,12 @@ public class AttendingActivitiesFragment extends Fragment {
 
         protected RecyclerView.LayoutManager mLayoutManager;
         protected List<ActivityBean> activities;
+        private FirebaseRecyclerAdapter<MockUpActivity,ActivityViewHolder > adapter;
 
         @Override
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
-            HomeActivity.toolbar.setTitle(R.string.attending_activities);
+            HomeActivity_.toolbar.setTitle(R.string.attending_activities);
 
 
             Menu menu = HomeActivity.toolbar.getMenu();
@@ -62,30 +71,52 @@ public class AttendingActivitiesFragment extends Fragment {
             // elements are laid out.
             mLayoutManager = new LinearLayoutManager(getActivity());
             mRecyclerView.setLayoutManager(mLayoutManager);
+            adapter  = new FirebaseRecyclerAdapter<MockUpActivity,ActivityViewHolder >(MockUpActivity.class,
+                    R.layout.single_card_view,ActivityViewHolder.class, FirebaseDatabase.getInstance().getReference().child("attendingactivities").child(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
 
-
-            mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(),mRecyclerView,new RecyclerItemClickListener.OnItemClickListener(){
                 @Override
-                public void onItemClick(View view, int position){
-                    //selected item
-                    String selectedTitle = ((TextView)view.findViewById(R.id.activity_name)).getText().toString();
-                    String selectedDescription = ((TextView)view.findViewById(R.id.activity_description)).getText().toString();
-                    String selectedDate = ((TextView)view.findViewById(R.id.activity_date)).getText().toString();
+                protected void populateViewHolder(ActivityViewHolder viewHolder, final MockUpActivity model, int position) {
+                    viewHolder.vName.setText(model.name);
+                    viewHolder.vDescription.setText(model.description);
 
-                    Toast toast = Toast.makeText(getApplicationContext(), selectedTitle, Toast.LENGTH_SHORT);
-                    toast.show();
-                    Intent i = new Intent(getActivity(), SelectedActivity.class);
-                    i.putExtra("naslov", selectedTitle);
-                    i.putExtra("opis", selectedDescription);
-                    i.putExtra("datum", selectedDate);
 
-                    startActivity(i);
+                    viewHolder.cv.findViewById(R.id.button_view_myActivity).setVisibility(View.GONE);
+                    viewHolder.cv.findViewById(R.id.layout_checkbox).setVisibility(View.GONE);
+                    viewHolder.cv.findViewById(R.id.activity_attending).setVisibility(View.GONE);
+
+                    //ImageButton btnAttending = (ImageButton) viewHolder.cv.findViewById(R.id.activity_attending);
+                    ImageButton btnQuit = (ImageButton) viewHolder.cv.findViewById(R.id.activity_quit);
+                    LinearLayout ln = (LinearLayout) viewHolder.cv.findViewById(R.id.text_container);
+                   // btnAttending.setTag(model);
+                    btnQuit.setTag(model);
+                    ln.setTag(model);
+
+                    ln.setOnClickListener(new View.OnClickListener(){
+
+                        @Override
+                        public void onClick(View view){
+                        /*ActivityBean activity=(ActivityBean) view.getTag();
+                        Intent i = new Intent(view.getContext(), SelectedActivity.class);
+                        Bundle data= new Bundle();
+                        data.putSerializable("data",activity);
+                        i.putExtras(data);
+                        view.getContext().startActivity(i);*/
+                        }
+                    });
+
+                    btnQuit.setOnClickListener(new View.OnClickListener(){
+
+                        @Override
+                        public void onClick(View view) {
+                            FirebaseDatabase.getInstance().getReference().child("invitedactivities")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .child(model.getId()).removeValue();
+                        }
+                    });
                 }
-            }));
+            };
 
-            //mAdapter = new RVAdapter(activities);
-            // Set CustomAdapter as the adapter for RecyclerView.
-           // mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setAdapter(adapter);
 
 
             return rootView;

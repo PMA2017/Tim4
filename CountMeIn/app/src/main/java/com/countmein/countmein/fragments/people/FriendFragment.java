@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
 
+import com.countmein.countmein.activities.HomeActivity_;
 import com.countmein.countmein.beans.User;
 import com.countmein.countmein.holders.PeopleViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -36,7 +37,7 @@ public class FriendFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HomeActivity.toolbar.setTitle(R.string.my_friends);
+        HomeActivity_.toolbar.setTitle(R.string.my_friends);
 
 
         Menu menu = HomeActivity.toolbar.getMenu();

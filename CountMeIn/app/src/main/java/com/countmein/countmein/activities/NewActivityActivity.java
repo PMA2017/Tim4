@@ -56,6 +56,7 @@ public class NewActivityActivity extends AppCompatActivity {
 
     @AfterViews
     void init(){
+
         Bundle bundle = getIntent().getExtras();
         newActivityDetailsFragment = new NewActivityDetailsFragment();
         mapFragment = new LocationFragment();
@@ -137,6 +138,7 @@ public class NewActivityActivity extends AppCompatActivity {
                             addNewActivityAsaChild(newAct);
 
                             Toast.makeText(getApplicationContext(), "Activity was made successfully", Toast.LENGTH_SHORT).show();
+
                             Intent jj = new Intent(NewActivityActivity.this, HomeActivity_.class);
                             startActivity(jj);
 
@@ -145,8 +147,8 @@ public class NewActivityActivity extends AppCompatActivity {
                             for(int i=0; i<size; i++){
                                 for(int j=0; j<newAct.getGroup().get(i).getFriends().size(); j++){
                                     String token  = newAct.getGroup().get(i).getFriends().get(j).getTokens();
+                                    Log.d("token", token);
 
-                                    System.out.print(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).equalTo(token));
                                     //  if(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).equalTo(token) == null){
                                     Log.d("If_exists","Doesn't exist");
                                     FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).push().setValue(token);
@@ -155,9 +157,8 @@ public class NewActivityActivity extends AppCompatActivity {
 
                                 }
                             }
-
+                            Log.d("TOKENS", tokens.toString());
                             sendPushNotification(tokens);
-
                             finish();
                             break;
                     }
@@ -195,6 +196,8 @@ public class NewActivityActivity extends AppCompatActivity {
         });
     }
 
+
+
     @Override
     public void onStart(){
         super.onStart();
@@ -215,11 +218,47 @@ public class NewActivityActivity extends AppCompatActivity {
         return new String(day+"-"+mth+"-"+year);
     }
 
+    @Background
     public void addNewActivityAsaChild(ActivityBean newAct){
+
         String key = mDatabase.push().getKey();
         newAct.setId(key);
 
         mDatabase.child(key).setValue(newAct);
+        if(!newAct.getGroup().isEmpty()){
+            for(int i=0;i<newAct.getGroup().size();i++){
+                if(!newAct.getGroup().get(i).getFriends().isEmpty()){
+                    for(int j=0;j<newAct.getGroup().get(i).getFriends().size();j++){
+                        FirebaseDatabase.getInstance().getReference().child("invitedactivities")
+                                .child(newAct.getGroup().get(i).getFriends().get(j).getId())
+                                .child(newAct.getId()).setValue(newAct.convertMockUp());
+                    }
+                }
+            }
+        }
+
+
+
+        int size = newAct.getGroup().size();
+        ArrayList<String> tokens = new ArrayList<String>();
+        for(int i=0; i<size; i++){
+            Log.d("size", Integer.toString(newAct.getGroup().get(i).getFriends().size()));
+            for(int j=0; j<newAct.getGroup().get(i).getFriends().size(); j++){
+                String token  = newAct.getGroup().get(i).getFriends().get(j).getTokens();
+                Log.d("token",
+                        FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).child(token).toString());
+                //    if(FirebaseDatabase.getInstance().getReference().child("topics").child(newAct.getId()).child(token) == null){
+                Log.d("If_exists","Doesn't exist");
+                FirebaseDatabase.getInstance().getReference().child("topics")
+                        .child(newAct.getId()).push().setValue(token);
+                //   }
+                tokens.add(token);
+            }
+
+        }
+
+        sendPushNotification(tokens);
+
     }
 
     public void updateActivity(ActivityBean activity){
