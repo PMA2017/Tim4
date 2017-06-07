@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.activities.HomeActivity;
@@ -45,7 +47,7 @@ public class AllPeopleFragment  extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_recycle_view, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_recycle_view, container, false);
         rootView.setTag(TAG);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
@@ -55,17 +57,24 @@ public class AllPeopleFragment  extends Fragment {
                 R.layout.people_card_view,PeopleViewHolder.class, FirebaseDatabase.getInstance().getReference().child("users")) {
 
             @Override
-            protected void populateViewHolder(PeopleViewHolder viewHolder, User model, int position) {
-                viewHolder.messageUser.setText(model.getUsername());
+            protected void populateViewHolder(final PeopleViewHolder viewHolder, User model, int position) {
+                if(FirebaseAuth.getInstance().getCurrentUser().getUid()==model.getId()){
+                    viewHolder.cv.setVisibility(View.GONE);
+                    viewHolder.cv.setLayoutParams(new RelativeLayout.LayoutParams(0, 0));
+                }else
+
+                {viewHolder.messageUser.setText(model.getUsername());
                 viewHolder.userPhoto.setImageURI(model.getPhotoUrl());
                 viewHolder.button.setTag(model);
                 viewHolder.button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        v.setVisibility(View.GONE);
+                        Toast.makeText(rootView.getContext(), "You have added succesfully added a friend", Toast.LENGTH_LONG).show();
                         FirebaseDatabase.getInstance().getReference().child("userfriends").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().setValue(v.getTag());
                     }
                 });
-                viewHolder.checkBox.setVisibility(View.GONE);
+                viewHolder.checkBox.setVisibility(View.GONE);}
             }
         };
 
