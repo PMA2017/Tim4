@@ -18,12 +18,17 @@ import com.countmein.countmein.activities.HomeActivity;
 import com.countmein.countmein.activities.HomeActivity_;
 import com.countmein.countmein.activities.SelectedActivity;
 import com.countmein.countmein.beans.ActivityBean;
+import com.countmein.countmein.beans.JustId;
 import com.countmein.countmein.beans.MockUpActivity;
+import com.countmein.countmein.beans.User;
 import com.countmein.countmein.holders.ActivityViewHolder;
 import com.countmein.countmein.listeners.RecyclerItemClickListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -102,6 +107,27 @@ public class AttendingActivitiesFragment extends Fragment {
                             FirebaseDatabase.getInstance().getReference().child("attendingactivities")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .child(model.getId()).removeValue();
+
+                            FirebaseDatabase.getInstance().getReference()
+                                    .child("whoisattending").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        JustId appid = snapshot.getValue(JustId.class);
+                                        if (appid.activityId.equals(model.getId())) {
+                                            FirebaseDatabase.getInstance().getReference()
+                                                    .child("whoisattending")
+                                                    .child(snapshot.getKey()).removeValue();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                         }
                     });
                 }
