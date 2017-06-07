@@ -3,8 +3,10 @@ package com.countmein.countmein.fragments.group;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +22,7 @@ import com.countmein.countmein.beans.ActivityBean;
 import com.countmein.countmein.beans.GroupBean;
 import com.countmein.countmein.holders.ActivityViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.common.data.DataHolder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -50,7 +53,7 @@ public class GroupFragment extends Fragment {
 
         Menu menu = HomeActivity.toolbar.getMenu();
 
-        MenuItem itemSearch = menu.findItem(R.id.action_search);
+        final MenuItem itemSearch = menu.findItem(R.id.action_search);
         itemSearch.setVisible(true);
 
     }
@@ -69,6 +72,7 @@ public class GroupFragment extends Fragment {
 
         adapter  = new FirebaseRecyclerAdapter<GroupBean,ActivityViewHolder>(GroupBean.class,
                 R.layout.single_card_view,ActivityViewHolder.class,  FirebaseDatabase.getInstance().getReference().child("usergroup").child(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+
 
             @Override
             protected void populateViewHolder(ActivityViewHolder viewHolder, GroupBean model, int position) {
@@ -133,6 +137,8 @@ public class GroupFragment extends Fragment {
 
         return rootView;
     }
+
+
 
 
 }
