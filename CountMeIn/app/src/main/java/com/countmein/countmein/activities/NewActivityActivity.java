@@ -123,6 +123,7 @@ public class NewActivityActivity extends AppCompatActivity {
                         case R.id.miSave:
 
                             try {
+                                list=new ArrayList<GroupBean>();
                                 aName = newActivityDetailsFragment.aName.getText().toString();
                                 aDesc = newActivityDetailsFragment.aDesc.getText().toString();
 
@@ -168,6 +169,7 @@ public class NewActivityActivity extends AppCompatActivity {
                         case R.id.miSave:
 
                             try {
+                                list=new ArrayList<GroupBean>();
 
                                 aName = newActivityDetailsFragment.aName.getText().toString();
                                 aDesc = newActivityDetailsFragment.aDesc.getText().toString();

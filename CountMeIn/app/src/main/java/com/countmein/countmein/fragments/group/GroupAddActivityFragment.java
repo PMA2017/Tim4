@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.countmein.countmein.R;
 import com.countmein.countmein.beans.ActivityBean;
@@ -72,13 +74,21 @@ public class GroupAddActivityFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        try {
+            eActivity = (ActivityBean) bundle.getSerializable("data");
+            isEdit = bundle.getInt("isEdit");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
 
         adapter  = new FirebaseRecyclerAdapter<GroupBean,ActivityViewHolder>(GroupBean.class,
                 R.layout.single_card_view,ActivityViewHolder.class, FirebaseDatabase.getInstance().getReference().child("usergroup").child(FirebaseAuth.getInstance().getCurrentUser().getUid())){
 
             @Override
-            protected void populateViewHolder(ActivityViewHolder viewHolder, GroupBean model, int position) {
+            protected void populateViewHolder(final ActivityViewHolder viewHolder, GroupBean model, int position) {
 
                 viewHolder.vName.setText(model.getName().toString());
                 viewHolder.vDescription.setText(model.getDescription().toString());
@@ -86,6 +96,20 @@ public class GroupAddActivityFragment extends Fragment {
                 viewHolder.cv.findViewById(R.id.button_view_myActivity).setVisibility(View.GONE);
                 viewHolder.vDate.setVisibility(View.GONE);
                 viewHolder.checkBox.setTag(model);
+
+                if (isEdit == 1) {
+                    for(int i=0;i<eActivity.getGroup().size();i++){
+                        String model_id = model.getId();
+
+                        if(eActivity.getGroup().get(i).getId().equals(model_id)){
+                            viewHolder.checkBox.setChecked(true);
+                            selectedgroups.add(model);
+
+                        }
+
+                    }
+
+                }
 
 
 
@@ -97,7 +121,13 @@ public class GroupAddActivityFragment extends Fragment {
                         boolean checked = ((CheckBox) v).isChecked();
                         if(checked){
                             selectedgroups.add(user);
+
                         }else {
+                            if(selectedgroups.size()==1){
+                                Toast.makeText(getActivity(), "You need to have at least one group selected!", Toast.LENGTH_LONG).show();
+                                viewHolder.checkBox.setChecked(true);
+                                Log.d("size",Integer.toString(selectedgroups.size()));
+                            }else
                             for(int i=0;i<selectedgroups.size();i++){
                                 if(user.getId()==selectedgroups.get(i).getId()){
                                     selectedgroups.remove(i);
